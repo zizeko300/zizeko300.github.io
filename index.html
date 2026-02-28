@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TASK FORCE 141 - IDENTIFICATION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), 
+                              url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23111" stroke-width="1"/></svg>');
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: rgba(20, 20, 20, 0.95);
+            border-radius: 10px;
+            border: 1px solid #333;
+            box-shadow: 0 0 30px rgba(0, 80, 255, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background-color: #111;
+            padding: 20px;
+            border-bottom: 2px solid #0055ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        
+        .logo-text span {
+            color: #0055ff;
+        }
+        
+        .translate-btn {
+            background-color: #0055ff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .translate-btn:hover {
+            background-color: #0044cc;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .screen {
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        .title {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #fff;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 15px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #151515;
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #0055ff;
+        }
+        
+        .other-nationality-input {
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .btn {
+            background-color: #0055ff;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #0044cc;
+        }
+        
+        .btn:disabled {
+            background-color: #333;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .loader {
+            border: 5px solid #222;
+            border-top: 5px solid #0055ff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .result {
+            background-color: #151515;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #0055ff;
+        }
+        
+        .result-item {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
+        }
+        
+        .result-label {
+            color: #aaa;
+            font-weight: bold;
+        }
+        
+        .result-value {
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        .level-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .level-1 { background-color: #006600; }
+        .level-2 { background-color: #009900; }
+        .level-3 { background-color: #ff9900; }
+        .level-4 { background-color: #ff5500; }
+        .level-5 { background-color: #ff0000; }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #222;
+            padding-top: 15px;
+        }
+        
+        /* 人脸识别样式 */
+        .face-scan-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+        
+        .face-camera {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background-color: #222;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .face-overlay {
+            position: absolute;
+            width: 160px;
+            height: 200px;
+            border: 3px solid #0055ff;
+            border-radius: 40%;
+        }
+        
+        .face-scan-line {
+            position: absolute;
+            width: 180px;
+            height: 3px;
+            background-color: #0055ff;
+            animation: scan 2s linear infinite;
+            opacity: 0.8;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 200px; }
+        }
+        
+        .face-status {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #aaa;
+        }
+        
+        .face-success {
+            color: #00aa00;
+            font-weight: bold;
+        }
+        
+        .face-failure {
+            color: #ff5500;
+            font-weight: bold;
+        }
+        
+        /* 指纹认证样式 */
+        .fingerprint-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+        
+        .fingerprint-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background-color: #222;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .fingerprint-lines {
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+        
+        .fingerprint-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: #0055ff;
+            border-radius: 1px;
+        }
+        
+        .fingerprint-line:nth-child(1) { top: 10px; }
+        .fingerprint-line:nth-child(2) { top: 20px; width: 80%; left: 10%; }
+        .fingerprint-line:nth-child(3) { top: 30px; width: 90%; left: 5%; }
+        .fingerprint-line:nth-child(4) { top: 40px; width: 70%; left: 15%; }
+        .fingerprint-line:nth-child(5) { top: 50px; }
+        
+        .fingerprint-btn {
+            background-color: #0055ff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 200px;
+            margin: 20px auto 0;
+            display: block;
+        }
+        
+        .fingerprint-btn.active {
+            background-color: #00aa00;
+            transform: scale(1.05);
+        }
+        
+        .fingerprint-btn.failed {
+            background-color: #ff5500;
+        }
+        
+        /* 门禁卡样式 */
+        .access-card-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+        
+        .card-reader {
+            width: 300px;
+            height: 180px;
+            margin: 0 auto 20px;
+            background-color: #151515;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 2px solid #0055ff;
+        }
+        
+        .card-reader-light {
+            width: 20px;
+            height: 20px;
+            background-color: #666;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        
+        .card-reader-light.active {
+            background-color: #00aa00;
+            box-shadow: 0 0 10px #00aa00;
+        }
+        
+        .card-reader-light.failed {
+            background-color: #ff0000;
+            box-shadow: 0 0 10px #ff0000;
+        }
+        
+        .card-reader-text {
+            font-size: 20px;
+            color: #0055ff;
+            text-align: center;
+        }
+        
+        .card-reader-level {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px #0055ff;
+        }
+        
+        .access-card-btn {
+            background-color: #0055ff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 250px;
+            margin: 20px auto 0;
+            display: block;
+        }
+        
+        .access-card-btn.active {
+            background-color: #00aa00;
+            transform: scale(1.05);
+        }
+        
+        .access-card-btn.failed {
+            background-color: #ff5500;
+        }
+        
+        .countdown {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .retry-btn {
+            background-color: #ff5500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        
+        .access-result {
+            margin-top: 15px;
+            font-size: 16px;
+        }
+        
+        .access-success {
+            color: #00aa00;
+            font-weight: bold;
+        }
+        
+        .access-failure {
+            color: #ff5500;
+            font-weight: bold;
+        }
+        
+        /* 警报样式 */
+        .alert-screen {
+            background-color: rgba(255, 0, 0, 0.1);
+            animation: alertPulse 0.5s infinite alternate;
+        }
+        
+        @keyframes alertPulse {
+            from { background-color: rgba(255, 0, 0, 0.1); }
+            to { background-color: rgba(255, 0, 0, 0.2); }
+        }
+        
+        .alert-message {
+            text-align: center;
+            padding: 40px;
+            color: #ff0000;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .alert-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-details {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #ff8888;
+            text-transform: none;
+            letter-spacing: 1px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 20px;
+            }
+            
+            .logo-text {
+                font-size: 20px;
+            }
+            
+            .face-camera {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .face-overlay {
+                width: 120px;
+                height: 150px;
+            }
+            
+            .fingerprint-icon {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .fingerprint-lines {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .card-reader {
+                width: 250px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-text">TASK FORCE <span>141</span></div>
+            </div>
+            <button class="translate-btn" id="translateBtn">Translate to Chinese</button>
+        </div>
+        
+        <div class="content">
+            <!-- Screen 1: Basic Information Input -->
+            <div class="screen active" id="screen1">
+                <h2 class="title">IDENTIFICATION VERIFICATION</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">FULL NAME</label>
+                        <input type="text" id="name" placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="nationality">NATIONALITY</label>
+                        <select id="nationality">
+                            <option value="">Select Nationality</option>
+                            <option value="USA">United States of America</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <input type="text" id="otherNationality" class="other-nationality-input" placeholder="Specify your nationality">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="idNumber">PERSONNEL IDENTIFICATION NUMBER</label>
+                    <input type="text" id="idNumber" placeholder="TF141-2026-XXXX">
+                </div>
+                <button class="btn" id="verifyBtn">VERIFY IDENTITY</button>
+                <div class="footer">
+                    Personnel ID format: TF141-2026-XXXX (Enter 4 digits of your choice)
+                </div>
+            </div>
+            
+            <!-- Screen 2: Loading -->
+            <div class="screen" id="screen2">
+                <h2 class="title">VERIFYING CREDENTIALS</h2>
+                <div class="loading">
+                    <div class="loader"></div>
+                    <p>Accessing secure database...</p>
+                </div>
+            </div>
+            
+            <!-- Screen 3: Department and Position Selection -->
+            <div class="screen" id="screen3">
+                <h2 class="title">ASSIGNMENT SELECTION</h2>
+                <div class="form-group">
+                    <label for="department">DEPARTMENT</label>
+                    <select id="department">
+                        <option value="">Select Department</option>
+                        <option value="operations">Operations Department</option>
+                        <option value="medical">Medical & Rescue</option>
+                        <option value="communications">Communications & C2</option>
+                        <option value="logistics">Logistics & Equipment Department</option>
+                        <option value="admin">Administration & Personnel</option>
+                        <option value="special">Special Operations Element</option>
+                        <option value="intelligence">Intelligence & Information Department</option>
+                        <option value="command">Command Level</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="position">POSITION / RANK</label>
+                    <select id="position" disabled>
+                        <option value="">Select Department First</option>
+                    </select>
+                </div>
+                
+                <button class="btn" id="assignBtn" disabled>CONFIRM ASSIGNMENT</button>
+            </div>
+            
+            <!-- Screen 4: Face Recognition (for Level 3+) -->
+            <div class="screen" id="screen4">
+                <h2 class="title">FACIAL RECOGNITION REQUIRED</h2>
+                <div class="face-scan-section">
+                    <div class="face-camera">
+                        <div class="face-overlay"></div>
+                        <div class="face-scan-line"></div>
+                    </div>
+                    <p>Position your face within the frame</p>
+                    <div class="face-status" id="faceStatus">Please look directly at the camera...</div>
+                    <div class="face-result" id="faceResult"></div>
+                    <button class="retry-btn" id="faceRetryBtn" style="display: none;">TRY AGAIN</button>
+                </div>
+            </div>
+            
+            <!-- Screen 5: Fingerprint Verification (for Level 4+) -->
+            <div class="screen" id="screen5">
+                <h2 class="title">BIOMETRIC VERIFICATION REQUIRED</h2>
+                <div class="fingerprint-section">
+                    <div class="fingerprint-icon">
+                        <div class="fingerprint-lines">
+                            <div class="fingerprint-line"></div>
+                            <div class="fingerprint-line"></div>
+                            <div class="fingerprint-line"></div>
+                            <div class="fingerprint-line"></div>
+                            <div class="fingerprint-line"></div>
+                        </div>
+                    </div>
+                    <p>Clearance Level 4+ requires fingerprint verification</p>
+                    <p>Press and hold the button below for 3 seconds</p>
+                    <button class="fingerprint-btn" id="fingerprintBtn">PRESS AND HOLD FOR VERIFICATION</button>
+                    <div class="countdown" id="fingerprintCountdown"></div>
+                    <div class="fingerprint-result" id="fingerprintResult"></div>
+                    <button class="retry-btn" id="fingerprintRetryBtn" style="display: none;">TRY AGAIN</button>
+                </div>
+            </div>
+            
+            <!-- Screen 6: Access Card Verification (for all levels) -->
+            <div class="screen" id="screen6">
+                <h2 class="title">ACCESS CARD VERIFICATION</h2>
+                <div class="access-card-section">
+                    <div class="card-reader">
+                        <div class="card-reader-light" id="cardLight"></div>
+                        <div class="card-reader-text">
+                            <div>LEVEL</div>
+                            <div class="card-reader-level" id="cardLevel">1</div>
+                            <div>ACCESS CARD</div>
+                        </div>
+                    </div>
+                    <p id="cardInstruction">Place your Level 1 access card on the reader for 3 seconds</p>
+                    <button class="access-card-btn" id="accessCardBtn">PLACE CARD ON READER</button>
+                    <div class="countdown" id="cardCountdown"></div>
+                    <div class="access-result" id="accessResult"></div>
+                    <button class="retry-btn" id="accessCardRetryBtn" style="display: none;">TRY AGAIN</button>
+                </div>
+            </div>
+            
+            <!-- Screen 7: Results -->
+            <div class="screen" id="screen7">
+                <h2 class="title">IDENTIFICATION CONFIRMED</h2>
+                <div class="result">
+                    <div class="result-item">
+                        <span class="result-label">NAME:</span>
+                        <span class="result-value" id="resultName"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">NATIONALITY:</span>
+                        <span class="result-value" id="resultNationality"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">PERSONNEL ID:</span>
+                        <span class="result-value" id="resultId"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">DEPARTMENT:</span>
+                        <span class="result-value" id="resultDept"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">POSITION:</span>
+                        <span class="result-value" id="resultPos"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">CLEARANCE LEVEL:</span>
+                        <span class="result-value">
+                            <span id="resultLevel"></span>
+                            <span class="level-badge" id="levelBadge"></span>
+                        </span>
+                    </div>
+                </div>
+                <button class="btn" id="restartBtn">NEW VERIFICATION</button>
+            </div>
+            
+            <!-- Screen 8: Alert Screen (Easter Egg - After Face Recognition) -->
+            <div class="screen alert-screen" id="screen8">
+                <div class="alert-message">
+                    <div class="alert-icon">⚠️</div>
+                    <p>UNAUTHORIZED ACCESS DETECTED</p>
+                    <p>FACIAL RECOGNITION MISMATCH</p>
+                    <div class="alert-details">
+                        <p>You are not authorized as Task Force Commander</p>
+                        <p>This incident has been reported to superior officers</p>
+                        <p>Security personnel have been alerted</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Department and position data
+        const positionsData = {
+            operations: [
+                { name: "Rifleman", level: 1 },
+                { name: "Breacher", level: 1 },
+                { name: "Machine Gunner", level: 1 },
+                { name: "Entry Operator", level: 1 },
+                { name: "Forward Reconnaissance Operator", level: 1 },
+                { name: "Designated Marksman / Sniper", level: 2 },
+                { name: "Spotter", level: 2 },
+                { name: "Hostage Rescue Specialist", level: 2 },
+                { name: "Assault Team Leader", level: 3 },
+                { name: "Recon Team Leader", level: 3 },
+                { name: "CQB Team Leader", level: 3 }
+            ],
+            medical: [
+                { name: "Combat Medic", level: 1 },
+                { name: "Search & Rescue Team", level: 3 },
+                { name: "Field Surgeon", level: 4 },
+                { name: "Psychological Intervention Specialist", level: 4 }
+            ],
+            communications: [
+                { name: "Tactical Communications Operator", level: 1 },
+                { name: "Crypto Communications Specialist", level: 2 },
+                { name: "Command Center Controller", level: 3 },
+                { name: "Frequency & Crypto Manager", level: 3 },
+                { name: "Communications Chief", level: 4 }
+            ],
+            logistics: [
+                { name: "Vehicle Maintenance Technician", level: 1 },
+                { name: "Ammunition Supply Specialist", level: 1 },
+                { name: "Equipment Officer", level: 2 },
+                { name: "Armorer / Weapons Technician", level: 2 },
+                { name: "Base Security Chief", level: 3 },
+                { name: "Logistics & Supply Officer", level: 4 }
+            ],
+            admin: [
+                { name: "Finance & Logistics Clerk", level: 1 },
+                { name: "Base Manager", level: 3 },
+                { name: "Administration Chief", level: 4 },
+                { name: "Personnel Officer / Archivist", level: 4 },
+                { name: "Security Clearance Officer", level: 4 }
+            ],
+            special: [
+                { name: "Tactical K9 Handler", level: 1 },
+                { name: "Demolitions & Explosives Specialist", level: 2 },
+                { name: "Undercover / Infiltration Operator", level: 2 },
+                { name: "Tactical Airborne / Dive Specialist", level: 2 },
+                { name: "Counter-Terrorism Negotiator", level: 4 }
+            ],
+            intelligence: [
+                { name: "Satellite / UAV Operator", level: 2 },
+                { name: "Intelligence Analyst", level: 3 },
+                { name: "Battlefield Intelligence Officer", level: 3 },
+                { name: "Interrogation / Intelligence Collection Specialist", level: 4 },
+                { name: "Cyber Warfare & Electronic Intelligence Officer", level: 4 }
+            ],
+            command: [
+                { name: "Deputy Operations Commander", level: 4 },
+                { name: "Chief Intelligence Officer", level: 4 },
+                { name: "Operations Planner", level: 4 },
+                { name: "Tactical Advisor", level: 4 },
+                { name: "Task Force Commander", level: 5 }
+            ]
+        };
+        
+        // DOM elements
+        const screens = document.querySelectorAll('.screen');
+        const nameInput = document.getElementById('name');
+        const nationalitySelect = document.getElementById('nationality');
+        const otherNationalityInput = document.getElementById('otherNationality');
+        const idInput = document.getElementById('idNumber');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const departmentSelect = document.getElementById('department');
+        const positionSelect = document.getElementById('position');
+        const assignBtn = document.getElementById('assignBtn');
+        const translateBtn = document.getElementById('translateBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        
+        // Face recognition elements
+        const faceStatusEl = document.getElementById('faceStatus');
+        const faceResultEl = document.getElementById('faceResult');
+        const faceRetryBtn = document.getElementById('faceRetryBtn');
+        
+        // Fingerprint elements
+        const fingerprintBtn = document.getElementById('fingerprintBtn');
+        const fingerprintCountdownEl = document.getElementById('fingerprintCountdown');
+        const fingerprintResultEl = document.getElementById('fingerprintResult');
+        const fingerprintRetryBtn = document.getElementById('fingerprintRetryBtn');
+        
+        // Access card elements
+        const cardLevelEl = document.getElementById('cardLevel');
+        const cardLightEl = document.getElementById('cardLight');
+        const cardInstructionEl = document.getElementById('cardInstruction');
+        const accessCardBtn = document.getElementById('accessCardBtn');
+        const cardCountdownEl = document.getElementById('cardCountdown');
+        const accessResultEl = document.getElementById('accessResult');
+        const accessCardRetryBtn = document.getElementById('accessCardRetryBtn');
+        
+        // Result elements
+        const resultName = document.getElementById('resultName');
+        const resultNationality = document.getElementById('resultNationality');
+        const resultId = document.getElementById('resultId');
+        const resultDept = document.getElementById('resultDept');
+        const resultPos = document.getElementById('resultPos');
+        const resultLevel = document.getElementById('resultLevel');
+        const levelBadge = document.getElementById('levelBadge');
+        
+        // Current state
+        let currentName = "";
+        let currentNationality = "";
+        let currentId = "";
+        let isTranslated = false;
+        let selectedLevel = 1;
+        let selectedPosition = "";
+        let selectedDepartment = "";
+        
+        // Verification attempts
+        let faceScanAttempts = 0;
+        let fingerprintAttempts = 0;
+        let accessCardAttempts = 0;
+        
+        // Verification timers
+        let fingerprintTimer = null;
+        let fingerprintCountdown = 0;
+        let accessCardTimer = null;
+        let accessCardCountdown = 0;
+        
+        // Special flags
+        let isTaskForceCommander = false;
+        
+        // Translation data
+        const translations = {
+            "en": {
+                "title1": "IDENTIFICATION VERIFICATION",
+                "title2": "VERIFYING CREDENTIALS",
+                "title3": "ASSIGNMENT SELECTION",
+                "title4": "FACIAL RECOGNITION REQUIRED",
+                "title5": "BIOMETRIC VERIFICATION REQUIRED",
+                "title6": "ACCESS CARD VERIFICATION",
+                "title7": "IDENTIFICATION CONFIRMED",
+                "nameLabel": "FULL NAME",
+                "namePlaceholder": "Enter your full name",
+                "nationalityLabel": "NATIONALITY",
+                "nationalityPlaceholder": "Select Nationality",
+                "otherNationalityPlaceholder": "Specify your nationality",
+                "USA": "United States of America",
+                "UK": "United Kingdom",
+                "Australia": "Australia",
+                "Canada": "Canada",
+                "Other": "Other",
+                "idLabel": "PERSONNEL IDENTIFICATION NUMBER",
+                "idPlaceholder": "TF141-2026-XXXX",
+                "verifyBtn": "VERIFY IDENTITY",
+                "footerText": "Personnel ID format: TF141-2026-XXXX (Enter 4 digits of your choice)",
+                "loadingText": "Accessing secure database...",
+                "deptLabel": "DEPARTMENT",
+                "deptDefault": "Select Department",
+                "posLabel": "POSITION / RANK",
+                "posDefault": "Select Department First",
+                "assignBtn": "CONFIRM ASSIGNMENT",
+                "resultName": "NAME:",
+                "resultNationality": "NATIONALITY:",
+                "resultId": "PERSONNEL ID:",
+                "resultDept": "DEPARTMENT:",
+                "resultPos": "POSITION:",
+                "resultLevel": "CLEARANCE LEVEL:",
+                "restartBtn": "NEW VERIFICATION",
+                "translateBtn": "Translate to Chinese",
+                "operations": "Operations Department",
+                "medical": "Medical & Rescue",
+                "communications": "Communications & C2",
+                "logistics": "Logistics & Equipment Department",
+                "admin": "Administration & Personnel",
+                "special": "Special Operations Element",
+                "intelligence": "Intelligence & Information Department",
+                "command": "Command Level",
+                "level1": "Level 1",
+                "level2": "Level 2",
+                "level3": "Level 3",
+                "level4": "Level 4",
+                "level5": "Level 5",
+                "faceInstruction": "Position your face within the frame",
+                "faceStatus1": "Please look directly at the camera...",
+                "faceStatus2": "Scanning facial features...",
+                "faceSuccess": "Facial recognition successful",
+                "faceFailure": "Facial recognition failed. Please try again.",
+                "fingerprintText1": "Clearance Level 4+ requires fingerprint verification",
+                "fingerprintText2": "Press and hold the button below for 3 seconds",
+                "fingerprintBtn": "PRESS AND HOLD FOR VERIFICATION",
+                "fingerprintSuccess": "Fingerprint verification successful",
+                "fingerprintFailure": "Fingerprint verification failed. Please try again.",
+                "accessCardInstruction": "Place your Level LEVEL access card on the reader for 3 seconds",
+                "accessCardBtn": "PLACE CARD ON READER",
+                "accessCardSuccess": "Access card verification successful",
+                "accessCardFailure": "Access card verification failed. Please try again.",
+                "countdown": "Hold for",
+                "retryBtn": "TRY AGAIN"
+            },
+            "zh": {
+                "title1": "身份验证",
+                "title2": "正在验证凭证",
+                "title3": "分配选择",
+                "title4": "需要人脸识别",
+                "title5": "需要生物识别验证",
+                "title6": "门禁卡验证",
+                "title7": "身份已确认",
+                "nameLabel": "全名",
+                "namePlaceholder": "输入您的全名",
+                "nationalityLabel": "国籍",
+                "nationalityPlaceholder": "选择国籍",
+                "otherNationalityPlaceholder": "请指定您的国籍",
+                "USA": "美国",
+                "UK": "英国",
+                "Australia": "澳大利亚",
+                "Canada": "加拿大",
+                "Other": "其他",
+                "idLabel": "人员识别号",
+                "idPlaceholder": "TF141-2026-XXXX",
+                "verifyBtn": "验证身份",
+                "footerText": "人员ID格式：TF141-2026-XXXX（输入4位您选择的数字）",
+                "loadingText": "正在访问安全数据库...",
+                "deptLabel": "部门",
+                "deptDefault": "选择部门",
+                "posLabel": "职位/等级",
+                "posDefault": "请先选择部门",
+                "assignBtn": "确认分配",
+                "resultName": "姓名：",
+                "resultNationality": "国籍：",
+                "resultId": "人员ID：",
+                "resultDept": "部门：",
+                "resultPos": "职位：",
+                "resultLevel": "权限等级：",
+                "restartBtn": "重新验证",
+                "translateBtn": "翻译成中文",
+                "operations": "作战部门",
+                "medical": "医疗与救援",
+                "communications": "通信与指挥控制",
+                "logistics": "后勤与装备部门",
+                "admin": "行政与人事",
+                "special": "特殊职能单位",
+                "intelligence": "情报与信息部门",
+                "command": "指挥层",
+                "level1": "一级",
+                "level2": "二级",
+                "level3": "三级",
+                "level4": "四级",
+                "level5": "五级",
+                "faceInstruction": "将脸部对准框内",
+                "faceStatus1": "请直视摄像头...",
+                "faceStatus2": "正在扫描面部特征...",
+                "faceSuccess": "人脸识别成功",
+                "faceFailure": "人脸识别失败，请重试",
+                "fingerprintText1": "四级及以上权限需要指纹验证",
+                "fingerprintText2": "长按下方按钮3秒钟",
+                "fingerprintBtn": "长按进行验证",
+                "fingerprintSuccess": "指纹验证成功",
+                "fingerprintFailure": "指纹验证失败，请重试",
+                "accessCardInstruction": "将您的LEVEL级门禁卡放置在感应器上3秒钟",
+                "accessCardBtn": "放置门禁卡",
+                "accessCardSuccess": "门禁卡验证成功",
+                "accessCardFailure": "门禁卡验证失败，请重试",
+                "countdown": "保持",
+                "retryBtn": "重试"
+            }
+        };
+        
+        // Position translations
+        const positionTranslations = {
+            "en": {
+                "Rifleman": "Rifleman",
+                "Breacher": "Breacher",
+                "Machine Gunner": "Machine Gunner",
+                "Entry Operator": "Entry Operator",
+                "Forward Reconnaissance Operator": "Forward Reconnaissance Operator",
+                "Combat Medic": "Combat Medic",
+                "Tactical Communications Operator": "Tactical Communications Operator",
+                "Vehicle Maintenance Technician": "Vehicle Maintenance Technician",
+                "Ammunition Supply Specialist": "Ammunition Supply Specialist",
+                "Finance & Logistics Clerk": "Finance & Logistics Clerk",
+                "Tactical K9 Handler": "Tactical K9 Handler",
+                "Designated Marksman / Sniper": "Designated Marksman / Sniper",
+                "Spotter": "Spotter",
+                "Hostage Rescue Specialist": "Hostage Rescue Specialist",
+                "Demolitions & Explosives Specialist": "Demolitions & Explosives Specialist",
+                "Undercover / Infiltration Operator": "Undercover / Infiltration Operator",
+                "Tactical Airborne / Dive Specialist": "Tactical Airborne / Dive Specialist",
+                "Equipment Officer": "Equipment Officer",
+                "Armorer / Weapons Technician": "Armorer / Weapons Technician",
+                "Satellite / UAV Operator": "Satellite / UAV Operator",
+                "Crypto Communications Specialist": "Crypto Communications Specialist",
+                "Assault Team Leader": "Assault Team Leader",
+                "Recon Team Leader": "Recon Team Leader",
+                "CQB Team Leader": "CQB Team Leader",
+                "Search & Rescue Team": "Search & Rescue Team",
+                "Intelligence Analyst": "Intelligence Analyst",
+                "Battlefield Intelligence Officer": "Battlefield Intelligence Officer",
+                "Base Security Chief": "Base Security Chief",
+                "Base Manager": "Base Manager",
+                "Command Center Controller": "Command Center Controller",
+                "Frequency & Crypto Manager": "Frequency & Crypto Manager",
+                "Deputy Operations Commander": "Deputy Operations Commander",
+                "Chief Intelligence Officer": "Chief Intelligence Officer",
+                "Operations Planner": "Operations Planner",
+                "Tactical Advisor": "Tactical Advisor",
+                "Interrogation / Intelligence Collection Specialist": "Interrogation / Intelligence Collection Specialist",
+                "Cyber Warfare & Electronic Intelligence Officer": "Cyber Warfare & Electronic Intelligence Officer",
+                "Logistics & Supply Officer": "Logistics & Supply Officer",
+                "Field Surgeon": "Field Surgeon",
+                "Psychological Intervention Specialist": "Psychological Intervention Specialist",
+                "Counter-Terrorism Negotiator": "Counter-Terrorism Negotiator",
+                "Administration Chief": "Administration Chief",
+                "Personnel Officer / Archivist": "Personnel Officer / Archivist",
+                "Security Clearance Officer": "Security Clearance Officer",
+                "Communications Chief": "Communications Chief",
+                "Task Force Commander": "Task Force Commander"
+            },
+            "zh": {
+                "Rifleman": "步枪手",
+                "Breacher": "破门手",
+                "Machine Gunner": "机枪手",
+                "Entry Operator": "突入队员",
+                "Forward Reconnaissance Operator": "前沿侦察兵",
+                "Combat Medic": "战斗医护兵",
+                "Tactical Communications Operator": "战术通信兵",
+                "Vehicle Maintenance Technician": "载具维护技师",
+                "Ammunition Supply Specialist": "弹药管理员",
+                "Finance & Logistics Clerk": "财务与后勤文员",
+                "Tactical K9 Handler": "战术犬训导员",
+                "Designated Marksman / Sniper": "精确射手/狙击手",
+                "Spotter": "观察手",
+                "Hostage Rescue Specialist": "人质救援专家",
+                "Demolitions & Explosives Specialist": "破坏与爆破专家",
+                "Undercover / Infiltration Operator": "卧底/渗透行动员",
+                "Tactical Airborne / Dive Specialist": "战术空降/潜水专员",
+                "Equipment Officer": "装备官",
+                "Armorer / Weapons Technician": "军械师/武器维护技师",
+                "Satellite / UAV Operator": "卫星/无人机操控员",
+                "Crypto Communications Specialist": "加密通信专员",
+                "Assault Team Leader": "突击队长",
+                "Recon Team Leader": "侦察组长",
+                "CQB Team Leader": "CQB组长",
+                "Search & Rescue Team": "搜救与撤离小队",
+                "Intelligence Analyst": "情报分析官",
+                "Battlefield Intelligence Officer": "战场情报官",
+                "Base Security Chief": "基地安保主管",
+                "Base Manager": "基地管理员",
+                "Command Center Controller": "指挥中心控制员",
+                "Frequency & Crypto Manager": "频率/加密管理员",
+                "Deputy Operations Commander": "作战副指挥官",
+                "Chief Intelligence Officer": "情报主管",
+                "Operations Planner": "行动策划官",
+                "Tactical Advisor": "战术顾问",
+                "Interrogation / Intelligence Collection Specialist": "审讯/情报获取专员",
+                "Cyber Warfare & Electronic Intelligence Officer": "网络战与电子情报官",
+                "Logistics & Supply Officer": "物资补给官",
+                "Field Surgeon": "战地军医",
+                "Psychological Intervention Specialist": "心理干预专员",
+                "Counter-Terrorism Negotiator": "反恐谈判专家",
+                "Administration Chief": "行政主管",
+                "Personnel Officer / Archivist": "人事官/档案管理员",
+                "Security Clearance Officer": "安全审查官",
+                "Communications Chief": "通信主管",
+                "Task Force Commander": "特遣队指挥官"
+            }
+        };
+        
+        // Switch screen function
+        function switchScreen(screenNumber) {
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(`screen${screenNumber}`).classList.add('active');
+        }
+        
+        // Nationality select change handler
+        nationalitySelect.addEventListener('change', function() {
+            if (this.value === "Other") {
+                otherNationalityInput.style.display = "block";
+                otherNationalityInput.required = true;
+            } else {
+                otherNationalityInput.style.display = "none";
+                otherNationalityInput.required = false;
+                otherNationalityInput.value = "";
+            }
+        });
+        
+        // Verify button click
+        verifyBtn.addEventListener('click', function() {
+            currentName = nameInput.value.trim();
+            currentId = idInput.value.trim();
+            
+            // Get nationality
+            const nationalityValue = nationalitySelect.value;
+            if (nationalityValue === "Other") {
+                currentNationality = otherNationalityInput.value.trim();
+            } else {
+                currentNationality = nationalityValue;
+            }
+            
+            if (!currentName) {
+                alert(isTranslated ? "请输入姓名" : "Please enter your name");
+                return;
+            }
+            
+            if (!currentNationality) {
+                alert(isTranslated ? "请选择或输入国籍" : "Please select or enter your nationality");
+                return;
+            }
+            
+            if (!currentId.match(/^TF141-2026-\d{4}$/)) {
+                alert(isTranslated ? "ID格式无效。正确格式：TF141-2026-XXXX（4位数字）" : "Invalid ID format. Correct format: TF141-2026-XXXX (4 digits)");
+                return;
+            }
+            
+            // Show loading screen
+            switchScreen(2);
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                switchScreen(3);
+            }, 2500);
+        });
+        
+        // Department change
+        departmentSelect.addEventListener('change', function() {
+            const dept = this.value;
+            positionSelect.innerHTML = '<option value="">' + (isTranslated ? translations.zh.posDefault : translations.en.posDefault) + '</option>';
+            positionSelect.disabled = !dept;
+            assignBtn.disabled = true;
+            
+            if (dept && positionsData[dept]) {
+                positionsData[dept].forEach(pos => {
+                    const option = document.createElement('option');
+                    option.value = pos.name;
+                    option.textContent = isTranslated ? positionTranslations.zh[pos.name] || pos.name : positionTranslations.en[pos.name] || pos.name;
+                    option.dataset.level = pos.level;
+                    positionSelect.appendChild(option);
+                });
+            }
+        });
+        
+        // Position change
+        positionSelect.addEventListener('change', function() {
+            assignBtn.disabled = !this.value;
+        });
+        
+        // Assign button click
+        assignBtn.addEventListener('click', function() {
+            const deptValue = departmentSelect.value;
+            const posValue = positionSelect.value;
+            
+            if (!deptValue || !posValue) return;
+            
+            // Find position data
+            let level = 1;
+            let deptName = "";
+            let posName = "";
+            
+            // Get department name
+            const lang = isTranslated ? "zh" : "en";
+            deptName = translations[lang][deptValue] || deptValue;
+            
+            // Get position name and level
+            if (positionsData[deptValue]) {
+                const posObj = positionsData[deptValue].find(p => p.name === posValue);
+                if (posObj) {
+                    posName = isTranslated ? positionTranslations.zh[posObj.name] || posObj.name : positionTranslations.en[posObj.name] || posObj.name;
+                    level = posObj.level;
+                    
+                    // Check if this is Task Force Commander
+                    isTaskForceCommander = (posValue === "Task Force Commander");
+                }
+            }
+            
+            // Save selections for later use
+            selectedLevel = level;
+            selectedPosition = posValue;
+            selectedDepartment = deptValue;
+            
+            // Reset verification attempts
+            faceScanAttempts = 0;
+            fingerprintAttempts = 0;
+            accessCardAttempts = 0;
+            
+            // Determine next step based on clearance level
+            if (level >= 3) {
+                // Level 3+ requires face recognition first
+                startFaceRecognition();
+            } else {
+                // Level 1-2: direct to access card verification
+                startAccessCardVerification();
+            }
+        });
+        
+        // Face recognition function
+        function startFaceRecognition() {
+            switchScreen(4);
+            faceStatusEl.textContent = isTranslated ? translations.zh.faceStatus1 : translations.en.faceStatus1;
+            faceResultEl.textContent = "";
+            faceRetryBtn.style.display = "none";
+            
+            // Start face scan process
+            setTimeout(() => {
+                faceStatusEl.textContent = isTranslated ? translations.zh.faceStatus2 : translations.en.faceStatus2;
+                
+                // After 2 seconds, show result
+                setTimeout(() => {
+                    completeFaceRecognition();
+                }, 2000);
+            }, 1000);
+        }
+        
+        function completeFaceRecognition() {
+            faceScanAttempts++;
+            
+            // 25% chance of failure
+            const isSuccess = Math.random() > 0.25;
+            
+            if (isSuccess) {
+                // Face recognition successful
+                faceStatusEl.classList.remove("face-failure");
+                faceStatusEl.classList.add("face-success");
+                faceStatusEl.textContent = isTranslated ? translations.zh.faceSuccess : translations.en.faceSuccess;
+                
+                // Special handling for Task Force Commander (Easter Egg)
+                if (isTaskForceCommander) {
+                    setTimeout(() => {
+                        triggerCommanderEasterEgg();
+                    }, 1500);
+                    return;
+                }
+                
+                // For normal cases, proceed to next step
+                setTimeout(() => {
+                    if (selectedLevel >= 4) {
+                        // Level 4+ requires fingerprint verification
+                        startFingerprintVerificationScreen();
+                    } else {
+                        // Level 3: go to access card verification
+                        startAccessCardVerification();
+                    }
+                }, 1500);
+            } else {
+                // Face recognition failed
+                faceStatusEl.classList.remove("face-success");
+                faceStatusEl.classList.add("face-failure");
+                faceStatusEl.textContent = isTranslated ? translations.zh.faceFailure : translations.en.faceFailure;
+                faceRetryBtn.style.display = "block";
+                faceRetryBtn.textContent = isTranslated ? translations.zh.retryBtn : translations.en.retryBtn;
+            }
+        }
+        
+        // Face retry button
+        faceRetryBtn.addEventListener('click', function() {
+            startFaceRecognition();
+        });
+        
+        // Start fingerprint verification screen
+        function startFingerprintVerificationScreen() {
+            switchScreen(5);
+            resetFingerprintButton();
+        }
+        
+        // Fingerprint button handlers
+        function resetFingerprintButton() {
+            fingerprintBtn.classList.remove('active', 'failed');
+            fingerprintBtn.textContent = isTranslated ? translations.zh.fingerprintBtn : translations.en.fingerprintBtn;
+            fingerprintCountdownEl.textContent = "";
+            fingerprintResultEl.textContent = "";
+            fingerprintRetryBtn.style.display = "none";
+        }
+        
+        fingerprintBtn.addEventListener('mousedown', function() {
+            startFingerprintVerification();
+        });
+        
+        fingerprintBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            startFingerprintVerification();
+        });
+        
+        fingerprintBtn.addEventListener('mouseup', function() {
+            stopFingerprintVerification();
+        });
+        
+        fingerprintBtn.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            stopFingerprintVerification();
+        });
+        
+        fingerprintBtn.addEventListener('mouseleave', function() {
+            stopFingerprintVerification();
+        });
+        
+        function startFingerprintVerification() {
+            if (fingerprintTimer) return;
+            
+            fingerprintBtn.classList.add('active');
+            fingerprintCountdown = 3;
+            
+            // Update countdown display
+            const lang = isTranslated ? "zh" : "en";
+            fingerprintCountdownEl.textContent = `${translations[lang].countdown} ${fingerprintCountdown}s`;
+            
+            fingerprintTimer = setInterval(() => {
+                fingerprintCountdown--;
+                
+                if (fingerprintCountdown > 0) {
+                    fingerprintCountdownEl.textContent = `${translations[isTranslated ? "zh" : "en"].countdown} ${fingerprintCountdown}s`;
+                } else {
+                    // Verification complete
+                    clearInterval(fingerprintTimer);
+                    fingerprintTimer = null;
+                    completeFingerprintVerification();
+                }
+            }, 1000);
+        }
+        
+        function stopFingerprintVerification() {
+            if (fingerprintTimer) {
+                clearInterval(fingerprintTimer);
+                fingerprintTimer = null;
+                resetFingerprintButton();
+            }
+        }
+        
+        function completeFingerprintVerification() {
+            fingerprintAttempts++;
+            
+            // 25% chance of failure
+            const isSuccess = Math.random() > 0.25;
+            
+            if (isSuccess) {
+                // Fingerprint verification successful
+                fingerprintResultEl.textContent = isTranslated ? translations.zh.fingerprintSuccess : translations.en.fingerprintSuccess;
+                fingerprintResultEl.style.color = "#00aa00";
+                
+                // Go to access card verification
+                setTimeout(() => {
+                    startAccessCardVerification();
+                }, 1500);
+            } else {
+                // Fingerprint verification failed
+                fingerprintBtn.classList.remove('active');
+                fingerprintBtn.classList.add('failed');
+                fingerprintResultEl.textContent = isTranslated ? translations.zh.fingerprintFailure : translations.en.fingerprintFailure;
+                fingerprintResultEl.style.color = "#ff5500";
+                fingerprintRetryBtn.style.display = "block";
+                fingerprintRetryBtn.textContent = isTranslated ? translations.zh.retryBtn : translations.en.retryBtn;
+            }
+        }
+        
+        // Fingerprint retry button
+        fingerprintRetryBtn.addEventListener('click', function() {
+            startFingerprintVerificationScreen();
+        });
+        
+        // Start access card verification
+        function startAccessCardVerification() {
+            switchScreen(6);
+            resetAccessCardButton();
+            
+            // Update card level display
+            cardLevelEl.textContent = selectedLevel;
+            cardLightEl.className = "card-reader-light";
+            
+            // Update instruction text
+            const lang = isTranslated ? "zh" : "en";
+            const levelText = isTranslated ? translations.zh[`level${selectedLevel}`] : `Level ${selectedLevel}`;
+            cardInstructionEl.textContent = translations[lang].accessCardInstruction.replace("LEVEL", levelText);
+        }
+        
+        // Access card button handlers
+        function resetAccessCardButton() {
+            accessCardBtn.classList.remove('active', 'failed');
+            accessCardBtn.textContent = isTranslated ? translations.zh.accessCardBtn : translations.en.accessCardBtn;
+            cardCountdownEl.textContent = "";
+            accessResultEl.textContent = "";
+            accessResultEl.className = "access-result";
+            accessCardRetryBtn.style.display = "none";
+        }
+        
+        accessCardBtn.addEventListener('mousedown', function() {
+            startAccessCardVerificationProcess();
+        });
+        
+        accessCardBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            startAccessCardVerificationProcess();
+        });
+        
+        accessCardBtn.addEventListener('mouseup', function() {
+            stopAccessCardVerificationProcess();
+        });
+        
+        accessCardBtn.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            stopAccessCardVerificationProcess();
+        });
+        
+        accessCardBtn.addEventListener('mouseleave', function() {
+            stopAccessCardVerificationProcess();
+        });
+        
+        function startAccessCardVerificationProcess() {
+            if (accessCardTimer) return;
+            
+            accessCardBtn.classList.add('active');
+            cardLightEl.classList.add('active');
+            accessCardCountdown = 3;
+            
+            // Update countdown display
+            const lang = isTranslated ? "zh" : "en";
+            cardCountdownEl.textContent = `${translations[lang].countdown} ${accessCardCountdown}s`;
+            
+            accessCardTimer = setInterval(() => {
+                accessCardCountdown--;
+                
+                if (accessCardCountdown > 0) {
+                    cardCountdownEl.textContent = `${translations[isTranslated ? "zh" : "en"].countdown} ${accessCardCountdown}s`;
+                } else {
+                    // Verification complete
+                    clearInterval(accessCardTimer);
+                    accessCardTimer = null;
+                    completeAccessCardVerification();
+                }
+            }, 1000);
+        }
+        
+        function stopAccessCardVerificationProcess() {
+            if (accessCardTimer) {
+                clearInterval(accessCardTimer);
+                accessCardTimer = null;
+                cardLightEl.classList.remove('active');
+                resetAccessCardButton();
+            }
+        }
+        
+        function completeAccessCardVerification() {
+            accessCardAttempts++;
+            cardLightEl.classList.remove('active');
+            
+            // 25% chance of failure
+            const isSuccess = Math.random() > 0.25;
+            
+            if (isSuccess) {
+                // Access card verification successful
+                cardLightEl.classList.add('active');
+                accessResultEl.textContent = isTranslated ? translations.zh.accessCardSuccess : translations.en.accessCardSuccess;
+                accessResultEl.classList.add("access-success");
+                
+                // Show results
+                setTimeout(() => {
+                    const lang = isTranslated ? "zh" : "en";
+                    const deptName = translations[lang][selectedDepartment] || selectedDepartment;
+                    let posName = selectedPosition;
+                    const posTranslations = isTranslated ? positionTranslations.zh : positionTranslations.en;
+                    if (posTranslations[selectedPosition]) {
+                        posName = posTranslations[selectedPosition];
+                    }
+                    showResults(selectedLevel, deptName, posName);
+                }, 1500);
+            } else {
+                // Access card verification failed
+                accessCardBtn.classList.remove('active');
+                accessCardBtn.classList.add('failed');
+                cardLightEl.classList.add('failed');
+                accessResultEl.textContent = isTranslated ? translations.zh.accessCardFailure : translations.en.accessCardFailure;
+                accessResultEl.classList.add("access-failure");
+                accessCardRetryBtn.style.display = "block";
+                accessCardRetryBtn.textContent = isTranslated ? translations.zh.retryBtn : translations.en.retryBtn;
+            }
+        }
+        
+        // Access card retry button
+        accessCardRetryBtn.addEventListener('click', function() {
+            startAccessCardVerification();
+        });
+        
+        // Show results function
+        function showResults(level, deptName, posName) {
+            // Update result display
+            resultName.textContent = currentName;
+            resultId.textContent = currentId;
+            
+            // Get nationality for display
+            let displayNationality = currentNationality;
+            if (currentNationality === "USA") {
+                displayNationality = isTranslated ? "美国" : "United States of America";
+            } else if (currentNationality === "UK") {
+                displayNationality = isTranslated ? "英国" : "United Kingdom";
+            } else if (currentNationality === "Australia") {
+                displayNationality = isTranslated ? "澳大利亚" : "Australia";
+            } else if (currentNationality === "Canada") {
+                displayNationality = isTranslated ? "加拿大" : "Canada";
+            }
+            resultNationality.textContent = displayNationality;
+            
+            resultDept.textContent = deptName;
+            resultPos.textContent = posName;
+            
+            // Set level
+            const levelText = isTranslated ? 
+                `Level ${level} (${translations.zh[`level${level}`]})` : 
+                `Level ${level} (${translations.en[`level${level}`]})`;
+            
+            resultLevel.textContent = levelText;
+            
+            // Set badge
+            levelBadge.className = `level-badge level-${level}`;
+            levelBadge.textContent = isTranslated ? translations.zh[`level${level}`] : `LEVEL ${level}`;
+            
+            // Show result screen
+            switchScreen(7);
+        }
+        
+        // Task Force Commander Easter Egg
+        function triggerCommanderEasterEgg() {
+            // Switch to alert screen
+            switchScreen(8);
+            
+            // Add vibration effect (simulated with CSS)
+            document.querySelector('.container').style.animation = 'none';
+            setTimeout(() => {
+                document.querySelector('.container').style.animation = 'shake 0.5s';
+            }, 10);
+            
+            // Add CSS for shaking effect
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shake {
+                    0% { transform: translate(1px, 1px) rotate(0deg); }
+                    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+                    20% { transform: translate(-3px, 0px) rotate(1deg); }
+                    30% { transform: translate(3px, 2px) rotate(0deg); }
+                    40% { transform: translate(1px, -1px) rotate(1deg); }
+                    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+                    60% { transform: translate(-3px, 1px) rotate(0deg); }
+                    70% { transform: translate(3px, 1px) rotate(-1deg); }
+                    80% { transform: translate(-1px, -1px) rotate(1deg); }
+                    90% { transform: translate(1px, 2px) rotate(0deg); }
+                    100% { transform: translate(1px, -2px) rotate(-1deg); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // After 5 seconds, restart
+            setTimeout(() => {
+                restartSystem();
+            }, 5000);
+        }
+        
+        // Restart system
+        function restartSystem() {
+            // Reset form
+            nameInput.value = "";
+            nationalitySelect.selectedIndex = 0;
+            otherNationalityInput.style.display = "none";
+            otherNationalityInput.value = "";
+            idInput.value = "TF141-2026-";
+            departmentSelect.selectedIndex = 0;
+            positionSelect.innerHTML = '<option value="">' + (isTranslated ? translations.zh.posDefault : translations.en.posDefault) + '</option>';
+            positionSelect.disabled = true;
+            assignBtn.disabled = true;
+            
+            // Reset state
+            isTaskForceCommander = false;
+            
+            // Remove shake animation
+            document.querySelector('.container').style.animation = '';
+            
+            // Reset face recognition elements
+            faceStatusEl.classList.remove("face-success", "face-failure");
+            
+            // Go back to first screen
+            switchScreen(1);
+        }
+        
+        // Restart button
+        restartBtn.addEventListener('click', restartSystem);
+        
+        // Translate button
+        translateBtn.addEventListener('click', function() {
+            isTranslated = !isTranslated;
+            const lang = isTranslated ? "zh" : "en";
+            const t = translations[lang];
+            
+            // Update button text
+            translateBtn.textContent = isTranslated ? "Translate to English" : "Translate to Chinese";
+            
+            // Update titles
+            document.querySelectorAll('.title').forEach((title, index) => {
+                if (index === 0) title.textContent = t.title1;
+                if (index === 1) title.textContent = t.title2;
+                if (index === 2) title.textContent = t.title3;
+                if (index === 3) title.textContent = t.title4;
+                if (index === 4) title.textContent = t.title5;
+                if (index === 5) title.textContent = t.title6;
+                if (index === 6) title.textContent = t.title7;
+            });
+            
+            // Update form labels and placeholders
+            document.querySelector('label[for="name"]').textContent = t.nameLabel;
+            nameInput.placeholder = t.namePlaceholder;
+            
+            document.querySelector('label[for="nationality"]').textContent = t.nationalityLabel;
+            nationalitySelect.querySelector('option[value=""]').textContent = t.nationalityPlaceholder;
+            otherNationalityInput.placeholder = t.otherNationalityPlaceholder;
+            
+            // Update nationality options
+            const nationalityOptions = nationalitySelect.querySelectorAll('option');
+            nationalityOptions.forEach(option => {
+                const value = option.value;
+                if (value && t[value]) {
+                    option.textContent = t[value];
+                }
+            });
+            
+            document.querySelector('label[for="idNumber"]').textContent = t.idLabel;
+            idInput.placeholder = t.idPlaceholder;
+            
+            verifyBtn.textContent = t.verifyBtn;
+            document.querySelector('.footer').textContent = t.footerText;
+            
+            document.querySelector('#screen2 p').textContent = t.loadingText;
+            
+            document.querySelector('label[for="department"]').textContent = t.deptLabel;
+            departmentSelect.querySelector('option[value=""]').textContent = t.deptDefault;
+            
+            document.querySelector('label[for="position"]').textContent = t.posLabel;
+            if (positionSelect.disabled) {
+                positionSelect.querySelector('option[value=""]').textContent = t.posDefault;
+            }
+            
+            assignBtn.textContent = t.assignBtn;
+            restartBtn.textContent = t.restartBtn;
+            
+            // Update face recognition screen text
+            const faceScanSection = document.querySelector('.face-scan-section');
+            if (faceScanSection) {
+                faceScanSection.querySelector('p').textContent = t.faceInstruction;
+                
+                // Only update status if it's not showing a result message
+                if (!faceStatusEl.classList.contains("face-success") && 
+                    !faceStatusEl.classList.contains("face-failure")) {
+                    faceStatusEl.textContent = t.faceStatus1;
+                }
+            }
+            
+            // Update fingerprint screen text
+            const fingerprintSection = document.querySelector('.fingerprint-section');
+            if (fingerprintSection) {
+                fingerprintSection.querySelector('p:nth-of-type(1)').textContent = t.fingerprintText1;
+                fingerprintSection.querySelector('p:nth-of-type(2)').textContent = t.fingerprintText2;
+            }
+            
+            // Update fingerprint button text
+            fingerprintBtn.textContent = t.fingerprintBtn;
+            
+            // Update countdown text if active
+            if (fingerprintCountdownEl.textContent) {
+                fingerprintCountdownEl.textContent = `${t.countdown} ${fingerprintCountdown}s`;
+            }
+            
+            // Update access card screen text
+            if (cardInstructionEl) {
+                const levelText = isTranslated ? translations.zh[`level${selectedLevel}`] : `Level ${selectedLevel}`;
+                cardInstructionEl.textContent = t.accessCardInstruction.replace("LEVEL", levelText);
+            }
+            
+            accessCardBtn.textContent = t.accessCardBtn;
+            
+            if (cardCountdownEl.textContent) {
+                cardCountdownEl.textContent = `${t.countdown} ${accessCardCountdown}s`;
+            }
+            
+            // Update retry buttons
+            faceRetryBtn.textContent = t.retryBtn;
+            fingerprintRetryBtn.textContent = t.retryBtn;
+            accessCardRetryBtn.textContent = t.retryBtn;
+            
+            // Update result labels
+            document.querySelectorAll('.result-label').forEach((label, index) => {
+                if (index === 0) label.textContent = t.resultName;
+                if (index === 1) label.textContent = t.resultNationality;
+                if (index === 2) label.textContent = t.resultId;
+                if (index === 3) label.textContent = t.resultDept;
+                if (index === 4) label.textContent = t.resultPos;
+                if (index === 5) label.textContent = t.resultLevel;
+            });
+            
+            // Update department options
+            const deptOptions = departmentSelect.querySelectorAll('option');
+            deptOptions.forEach(option => {
+                const value = option.value;
+                if (value && t[value]) {
+                    option.textContent = t[value];
+                }
+            });
+            
+            // Update position options if any are loaded
+            if (!positionSelect.disabled) {
+                const posOptions = positionSelect.querySelectorAll('option');
+                posOptions.forEach(option => {
+                    const value = option.value;
+                    if (value && positionTranslations[lang][value]) {
+                        option.textContent = positionTranslations[lang][value];
+                    }
+                });
+            }
+            
+            // Update current results if on results screen
+            if (document.getElementById('screen7').classList.contains('active')) {
+                // Update nationality in results
+                const currentNat = resultNationality.textContent;
+                for (const key in translations.en) {
+                    if (translations.en[key] === currentNat && t[key]) {
+                        resultNationality.textContent = t[key];
+                        break;
+                    }
+                }
+                
+                // Update department name in results
+                const currentDept = resultDept.textContent;
+                for (const key in translations.en) {
+                    if (translations.en[key] === currentDept && t[key]) {
+                        resultDept.textContent = t[key];
+                        break;
+                    }
+                }
+                
+                // Update position name in results
+                const currentPos = resultPos.textContent;
+                for (const key in positionTranslations.en) {
+                    if (positionTranslations.en[key] === currentPos && positionTranslations[lang][key]) {
+                        resultPos.textContent = positionTranslations[lang][key];
+                        break;
+                    }
+                }
+                
+                // Update level text
+                const levelMatch = resultLevel.textContent.match(/Level (\d+)/);
+                if (levelMatch) {
+                    const levelNum = levelMatch[1];
+                    resultLevel.textContent = isTranslated ? 
+                        `Level ${levelNum} (${translations.zh[`level${levelNum}`]})` : 
+                        `Level ${levelNum} (${translations.en[`level${levelNum}`]})`;
+                    
+                    levelBadge.textContent = isTranslated ? 
+                        translations.zh[`level${levelNum}`] : 
+                        `LEVEL ${levelNum}`;
+                }
+            }
+        });
+        
+        // Enter key support
+        nameInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                verifyBtn.click();
+            }
+        });
+        
+        idInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                verifyBtn.click();
+            }
+        });
+        
+        otherNationalityInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                verifyBtn.click();
+            }
+        });
+        
+        // Initialize ID field placeholder
+        idInput.value = "TF141-2026-";
+    </script>
+</body>
+</html>
