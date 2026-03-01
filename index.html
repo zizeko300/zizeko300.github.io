@@ -33,6 +33,7 @@
             border: 1px solid #333;
             box-shadow: 0 0 30px rgba(0, 80, 255, 0.2);
             overflow: hidden;
+            position: relative;
         }
         
         .header {
@@ -70,6 +71,11 @@
             cursor: pointer;
             font-size: 14px;
             transition: background-color 0.3s;
+            display: none;
+        }
+        
+        .translate-btn.visible {
+            display: inline-block;
         }
         
         .translate-btn:hover {
@@ -359,6 +365,85 @@
         .fingerprint-btn.failed {
             background-color: #ff5500;
         }
+
+        /* 虹膜识别样式 (新增) */
+        .iris-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+        
+        .iris-scanner {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background: radial-gradient(circle at 30% 30%, #2a6f97, #0a2a44);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #0055ff;
+            box-shadow: 0 0 20px #0055ff;
+        }
+        
+        .iris-pupil {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 25% 25%, #fff, #aaa);
+            border-radius: 50%;
+            position: relative;
+            animation: irisScan 3s infinite alternate;
+        }
+        
+        @keyframes irisScan {
+            0% { transform: scale(0.8) translateX(-10px); opacity: 0.9; }
+            100% { transform: scale(1.2) translateX(10px); opacity: 1; }
+        }
+        
+        .iris-scan-line {
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 170, 255, 0.6);
+            top: 50%;
+            transform: translateY(-50%);
+            animation: scanHorizontal 2s linear infinite;
+            box-shadow: 0 0 15px #00aaff;
+        }
+        
+        @keyframes scanHorizontal {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .iris-btn {
+            background-color: #0055ff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 200px;
+            margin: 20px auto 0;
+            display: block;
+        }
+        
+        .iris-btn.active {
+            background-color: #00aa00;
+            transform: scale(1.05);
+        }
+        
+        .iris-btn.failed {
+            background-color: #ff5500;
+        }
         
         /* 门禁卡样式 */
         .access-card-section {
@@ -474,19 +559,20 @@
         
         /* 警报样式 */
         .alert-screen {
-            background-color: rgba(255, 0, 0, 0.1);
-            animation: alertPulse 0.5s infinite alternate;
+            background-color: rgba(180, 0, 0, 0.15);
+            border-left: 6px solid #ff0000;
+            animation: alertPulse 1s infinite alternate;
         }
         
         @keyframes alertPulse {
-            from { background-color: rgba(255, 0, 0, 0.1); }
-            to { background-color: rgba(255, 0, 0, 0.2); }
+            from { background-color: rgba(180, 0, 0, 0.15); }
+            to { background-color: rgba(255, 0, 0, 0.3); }
         }
         
         .alert-message {
             text-align: center;
-            padding: 40px;
-            color: #ff0000;
+            padding: 30px;
+            color: #ff5555;
             font-size: 20px;
             font-weight: bold;
             text-transform: uppercase;
@@ -496,14 +582,185 @@
         .alert-icon {
             font-size: 60px;
             margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px #ff0000);
         }
         
         .alert-details {
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 16px;
-            color: #ff8888;
+            color: #ffaaaa;
             text-transform: none;
             letter-spacing: 1px;
+            background: rgba(0,0,0,0.5);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ff0000;
+        }
+
+        /* 新增: 安全协议弹窗 */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: #1a1a1a;
+            border: 2px solid #0055ff;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            color: #eee;
+            box-shadow: 0 0 30px #0055ff66;
+            text-align: center;
+        }
+        .modal-box p {
+            margin: 20px 0;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+        .modal-btn {
+            background-color: #0055ff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 15px;
+            width: auto;
+            min-width: 200px;
+        }
+        .modal-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        .modal-countdown {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffaa00;
+            margin-bottom: 10px;
+        }
+
+        /* 签名板样式 */
+        .signature-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1100;
+        }
+        .signature-overlay.active {
+            display: flex;
+        }
+        .signature-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 20px 25px;
+            max-width: 700px;
+            width: 95%;
+            text-align: center;
+            box-shadow: 0 0 40px #0055ff;
+        }
+        .signature-title {
+            color: #111;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #0055ff;
+            padding-bottom: 10px;
+        }
+        canvas.signature-pad {
+            width: 100%;
+            height: 200px;
+            background: white;
+            border: 2px solid #333;
+            border-radius: 8px;
+            touch-action: none;
+            cursor: crosshair;
+        }
+        .signature-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .signature-actions button {
+            background-color: #0055ff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            min-width: 120px;
+        }
+        .signature-actions button.clear-btn {
+            background-color: #6c757d;
+        }
+        .signature-actions button.clear-btn:hover {
+            background-color: #5a6268;
+        }
+        .signature-actions button.confirm-btn {
+            background-color: #28a745;
+        }
+        .signature-actions button.confirm-btn:hover {
+            background-color: #218838;
+        }
+        .signature-actions button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 视频展示按钮 */
+        .video-showcase-btn {
+            background-color: #ff5500;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 25px auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: fit-content;
+            border: 2px solid #ffaa00;
+            box-shadow: 0 0 20px #ff5500;
+        }
+        
+        .video-showcase-btn:hover {
+            background-color: #ff7700;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px #ff7700;
+        }
+        
+        .video-showcase-btn i {
+            font-size: 24px;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
         }
         
         @media (max-width: 768px) {
@@ -524,7 +781,7 @@
                 font-size: 20px;
             }
             
-            .face-camera {
+            .face-camera, .iris-scanner {
                 width: 150px;
                 height: 150px;
             }
@@ -547,6 +804,11 @@
             .card-reader {
                 width: 250px;
                 height: 150px;
+            }
+            
+            .video-showcase-btn {
+                font-size: 16px;
+                padding: 12px 20px;
             }
         }
     </style>
@@ -629,7 +891,7 @@
                 <button class="btn" id="assignBtn" disabled>CONFIRM ASSIGNMENT</button>
             </div>
             
-            <!-- Screen 4: Face Recognition (for Level 3+) -->
+            <!-- Screen 4: Face Recognition (Level 3+) -->
             <div class="screen" id="screen4">
                 <h2 class="title">FACIAL RECOGNITION REQUIRED</h2>
                 <div class="face-scan-section">
@@ -644,7 +906,7 @@
                 </div>
             </div>
             
-            <!-- Screen 5: Fingerprint Verification (for Level 4+) -->
+            <!-- Screen 5: Fingerprint Verification (Level 4+) -->
             <div class="screen" id="screen5">
                 <h2 class="title">BIOMETRIC VERIFICATION REQUIRED</h2>
                 <div class="fingerprint-section">
@@ -666,7 +928,24 @@
                 </div>
             </div>
             
-            <!-- Screen 6: Access Card Verification (for all levels) -->
+            <!-- Screen 5B: Iris Recognition (新增 - 仅Level 5) -->
+            <div class="screen" id="screen5b">
+                <h2 class="title">IRIS RECOGNITION REQUIRED</h2>
+                <div class="iris-section">
+                    <div class="iris-scanner">
+                        <div class="iris-pupil"></div>
+                        <div class="iris-scan-line"></div>
+                    </div>
+                    <p>Level 5 requires iris pattern verification</p>
+                    <p>Look directly into the scanner</p>
+                    <button class="iris-btn" id="irisBtn">START IRIS SCAN</button>
+                    <div class="countdown" id="irisCountdown"></div>
+                    <div class="iris-result" id="irisResult"></div>
+                    <button class="retry-btn" id="irisRetryBtn" style="display: none;">TRY AGAIN</button>
+                </div>
+            </div>
+            
+            <!-- Screen 6: Access Card Verification (all levels) -->
             <div class="screen" id="screen6">
                 <h2 class="title">ACCESS CARD VERIFICATION</h2>
                 <div class="access-card-section">
@@ -686,7 +965,7 @@
                 </div>
             </div>
             
-            <!-- Screen 7: Results -->
+            <!-- Screen 7: Results (含视频展示按钮) -->
             <div class="screen" id="screen7">
                 <h2 class="title">IDENTIFICATION CONFIRMED</h2>
                 <div class="result">
@@ -718,88 +997,99 @@
                         </span>
                     </div>
                 </div>
+                
+                <!-- 新增视频展示按钮 -->
+                <div class="button-container">
+                    <button class="video-showcase-btn" id="videoShowcaseBtn">
+                        <span>▶</span> VIEW CLEARANCE PROTOCOL <span>▶</span>
+                    </button>
+                </div>
+                
                 <button class="btn" id="restartBtn">NEW VERIFICATION</button>
             </div>
             
-            <!-- Screen 8: Alert Screen (Easter Egg - After Face Recognition) -->
+            <!-- Screen 8: Alert Screen -->
             <div class="screen alert-screen" id="screen8">
                 <div class="alert-message">
                     <div class="alert-icon">⚠️</div>
-                    <p>UNAUTHORIZED ACCESS DETECTED</p>
-                    <p>FACIAL RECOGNITION MISMATCH</p>
-                    <div class="alert-details">
-                        <p>You are not authorized as Task Force Commander</p>
-                        <p>This incident has been reported to superior officers</p>
-                        <p>Security personnel have been alerted</p>
+                    <p id="alertTitle">ACCESS ALERT</p>
+                    <p id="alertSubtitle">COMMAND VERIFICATION FAILED</p>
+                    <div class="alert-details" id="alertDetails">
+                        <p id="alertLine1">Security protocol activated</p>
+                        <p id="alertLine2">Command credentials do not match</p>
+                        <p id="alertLine3">Automated report filed to command</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- 安全协议弹窗 -->
+    <div class="modal-overlay" id="protocolModal">
+        <div class="modal-box">
+            <h2 style="color:#0055ff;" id="protocolTitle">⚠️ SECURITY PROTOCOL</h2>
+            <p id="protocolLine1">1. All information is classified.</p>
+            <p id="protocolLine2">2. Unauthorized disclosure is prohibited.</p>
+            <p id="protocolLine3">3. You are subject to continuous monitoring.</p>
+            <div class="modal-countdown" id="protocolCountdown">8</div>
+            <button class="modal-btn" id="protocolConfirmBtn" disabled>ACKNOWLEDGE (8s)</button>
+        </div>
+    </div>
+
+    <!-- 签名板弹窗 -->
+    <div class="signature-overlay" id="signatureModal">
+        <div class="signature-box">
+            <div class="signature-title" id="signatureTitle">OFFICIAL SIGNATURE REQUIRED</div>
+            <canvas id="signatureCanvas" class="signature-pad" width="600" height="200"></canvas>
+            <div class="signature-actions">
+                <button class="clear-btn" id="signatureClear">CLEAR</button>
+                <button class="confirm-btn" id="signatureConfirm" disabled>CONFIRM SIGNATURE</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Department and position data
+        // ==================== 原有数据与函数 ====================
         const positionsData = {
             operations: [
-                { name: "Rifleman", level: 1 },
-                { name: "Breacher", level: 1 },
-                { name: "Machine Gunner", level: 1 },
-                { name: "Entry Operator", level: 1 },
-                { name: "Forward Reconnaissance Operator", level: 1 },
-                { name: "Designated Marksman / Sniper", level: 2 },
-                { name: "Spotter", level: 2 },
-                { name: "Hostage Rescue Specialist", level: 2 },
-                { name: "Assault Team Leader", level: 3 },
-                { name: "Recon Team Leader", level: 3 },
-                { name: "CQB Team Leader", level: 3 }
+                { name: "Rifleman", level: 1 }, { name: "Breacher", level: 1 }, { name: "Machine Gunner", level: 1 },
+                { name: "Entry Operator", level: 1 }, { name: "Forward Reconnaissance Operator", level: 1 },
+                { name: "Designated Marksman / Sniper", level: 2 }, { name: "Spotter", level: 2 },
+                { name: "Hostage Rescue Specialist", level: 2 }, { name: "Assault Team Leader", level: 3 },
+                { name: "Recon Team Leader", level: 3 }, { name: "CQB Team Leader", level: 3 }
             ],
             medical: [
-                { name: "Combat Medic", level: 1 },
-                { name: "Search & Rescue Team", level: 3 },
-                { name: "Field Surgeon", level: 4 },
-                { name: "Psychological Intervention Specialist", level: 4 }
+                { name: "Combat Medic", level: 1 }, { name: "Search & Rescue Team", level: 3 },
+                { name: "Field Surgeon", level: 4 }, { name: "Psychological Intervention Specialist", level: 4 }
             ],
             communications: [
-                { name: "Tactical Communications Operator", level: 1 },
-                { name: "Crypto Communications Specialist", level: 2 },
-                { name: "Command Center Controller", level: 3 },
-                { name: "Frequency & Crypto Manager", level: 3 },
+                { name: "Tactical Communications Operator", level: 1 }, { name: "Crypto Communications Specialist", level: 2 },
+                { name: "Command Center Controller", level: 3 }, { name: "Frequency & Crypto Manager", level: 3 },
                 { name: "Communications Chief", level: 4 }
             ],
             logistics: [
-                { name: "Vehicle Maintenance Technician", level: 1 },
-                { name: "Ammunition Supply Specialist", level: 1 },
-                { name: "Equipment Officer", level: 2 },
-                { name: "Armorer / Weapons Technician", level: 2 },
-                { name: "Base Security Chief", level: 3 },
-                { name: "Logistics & Supply Officer", level: 4 }
+                { name: "Vehicle Maintenance Technician", level: 1 }, { name: "Ammunition Supply Specialist", level: 1 },
+                { name: "Equipment Officer", level: 2 }, { name: "Armorer / Weapons Technician", level: 2 },
+                { name: "Base Security Chief", level: 3 }, { name: "Logistics & Supply Officer", level: 4 }
             ],
             admin: [
-                { name: "Finance & Logistics Clerk", level: 1 },
-                { name: "Base Manager", level: 3 },
-                { name: "Administration Chief", level: 4 },
-                { name: "Personnel Officer / Archivist", level: 4 },
+                { name: "Finance & Logistics Clerk", level: 1 }, { name: "Base Manager", level: 3 },
+                { name: "Administration Chief", level: 4 }, { name: "Personnel Officer / Archivist", level: 4 },
                 { name: "Security Clearance Officer", level: 4 }
             ],
             special: [
-                { name: "Tactical K9 Handler", level: 1 },
-                { name: "Demolitions & Explosives Specialist", level: 2 },
-                { name: "Undercover / Infiltration Operator", level: 2 },
-                { name: "Tactical Airborne / Dive Specialist", level: 2 },
+                { name: "Tactical K9 Handler", level: 1 }, { name: "Demolitions & Explosives Specialist", level: 2 },
+                { name: "Undercover / Infiltration Operator", level: 2 }, { name: "Tactical Airborne / Dive Specialist", level: 2 },
                 { name: "Counter-Terrorism Negotiator", level: 4 }
             ],
             intelligence: [
-                { name: "Satellite / UAV Operator", level: 2 },
-                { name: "Intelligence Analyst", level: 3 },
-                { name: "Battlefield Intelligence Officer", level: 3 },
-                { name: "Interrogation / Intelligence Collection Specialist", level: 4 },
+                { name: "Satellite / UAV Operator", level: 2 }, { name: "Intelligence Analyst", level: 3 },
+                { name: "Battlefield Intelligence Officer", level: 3 }, { name: "Interrogation / Intelligence Collection Specialist", level: 4 },
                 { name: "Cyber Warfare & Electronic Intelligence Officer", level: 4 }
             ],
             command: [
-                { name: "Deputy Operations Commander", level: 4 },
-                { name: "Chief Intelligence Officer", level: 4 },
-                { name: "Operations Planner", level: 4 },
-                { name: "Tactical Advisor", level: 4 },
+                { name: "Deputy Operations Commander", level: 4 }, { name: "Chief Intelligence Officer", level: 4 },
+                { name: "Operations Planner", level: 4 }, { name: "Tactical Advisor", level: 4 },
                 { name: "Task Force Commander", level: 5 }
             ]
         };
@@ -816,8 +1106,9 @@
         const assignBtn = document.getElementById('assignBtn');
         const translateBtn = document.getElementById('translateBtn');
         const restartBtn = document.getElementById('restartBtn');
+        const videoShowcaseBtn = document.getElementById('videoShowcaseBtn');
         
-        // Face recognition elements
+        // Face elements
         const faceStatusEl = document.getElementById('faceStatus');
         const faceResultEl = document.getElementById('faceResult');
         const faceRetryBtn = document.getElementById('faceRetryBtn');
@@ -827,6 +1118,12 @@
         const fingerprintCountdownEl = document.getElementById('fingerprintCountdown');
         const fingerprintResultEl = document.getElementById('fingerprintResult');
         const fingerprintRetryBtn = document.getElementById('fingerprintRetryBtn');
+        
+        // Iris elements (新增)
+        const irisBtn = document.getElementById('irisBtn');
+        const irisCountdownEl = document.getElementById('irisCountdown');
+        const irisResultEl = document.getElementById('irisResult');
+        const irisRetryBtn = document.getElementById('irisRetryBtn');
         
         // Access card elements
         const cardLevelEl = document.getElementById('cardLevel');
@@ -846,274 +1143,426 @@
         const resultLevel = document.getElementById('resultLevel');
         const levelBadge = document.getElementById('levelBadge');
         
+        // Alert screen elements
+        const alertTitle = document.getElementById('alertTitle');
+        const alertSubtitle = document.getElementById('alertSubtitle');
+        const alertLine1 = document.getElementById('alertLine1');
+        const alertLine2 = document.getElementById('alertLine2');
+        const alertLine3 = document.getElementById('alertLine3');
+        
+        // Protocol modal elements
+        const protocolModal = document.getElementById('protocolModal');
+        const protocolTitle = document.getElementById('protocolTitle');
+        const protocolLine1 = document.getElementById('protocolLine1');
+        const protocolLine2 = document.getElementById('protocolLine2');
+        const protocolLine3 = document.getElementById('protocolLine3');
+        const protocolCountdownEl = document.getElementById('protocolCountdown');
+        const protocolConfirmBtn = document.getElementById('protocolConfirmBtn');
+        
+        // Signature modal elements
+        const signatureModal = document.getElementById('signatureModal');
+        const signatureTitle = document.getElementById('signatureTitle');
+        const signatureClear = document.getElementById('signatureClear');
+        const signatureConfirm = document.getElementById('signatureConfirm');
+        const signatureCanvas = document.getElementById('signatureCanvas');
+        const ctx = signatureCanvas.getContext('2d');
+        
         // Current state
-        let currentName = "";
-        let currentNationality = "";
-        let currentId = "";
+        let currentName = "", currentNationality = "", currentId = "";
         let isTranslated = false;
-        let selectedLevel = 1;
-        let selectedPosition = "";
-        let selectedDepartment = "";
+        let selectedLevel = 1, selectedPosition = "", selectedDepartment = "";
         
         // Verification attempts
-        let faceScanAttempts = 0;
-        let fingerprintAttempts = 0;
-        let accessCardAttempts = 0;
+        let faceScanAttempts = 0, fingerprintAttempts = 0, irisAttempts = 0, accessCardAttempts = 0;
         
-        // Verification timers
-        let fingerprintTimer = null;
-        let fingerprintCountdown = 0;
-        let accessCardTimer = null;
-        let accessCardCountdown = 0;
+        // Timers
+        let fingerprintTimer = null, fingerprintCountdown = 0;
+        let irisTimer = null, irisCountdown = 0;
+        let accessCardTimer = null, accessCardCountdown = 0;
+        let protocolTimer = null;
+        let protocolSeconds = 8;
         
         // Special flags
         let isTaskForceCommander = false;
-        
-        // Translation data
+        let isDrawing = false;
+        let lastX = 0, lastY = 0;
+        let signatureDrawn = false;
+
+        // ========== 翻译数据 ==========
         const translations = {
             "en": {
-                "title1": "IDENTIFICATION VERIFICATION",
-                "title2": "VERIFYING CREDENTIALS",
-                "title3": "ASSIGNMENT SELECTION",
-                "title4": "FACIAL RECOGNITION REQUIRED",
-                "title5": "BIOMETRIC VERIFICATION REQUIRED",
-                "title6": "ACCESS CARD VERIFICATION",
-                "title7": "IDENTIFICATION CONFIRMED",
-                "nameLabel": "FULL NAME",
-                "namePlaceholder": "Enter your full name",
-                "nationalityLabel": "NATIONALITY",
-                "nationalityPlaceholder": "Select Nationality",
-                "otherNationalityPlaceholder": "Specify your nationality",
-                "USA": "United States of America",
-                "UK": "United Kingdom",
-                "Australia": "Australia",
-                "Canada": "Canada",
-                "Other": "Other",
-                "idLabel": "PERSONNEL IDENTIFICATION NUMBER",
-                "idPlaceholder": "TF141-2026-XXXX",
-                "verifyBtn": "VERIFY IDENTITY",
-                "footerText": "Personnel ID format: TF141-2026-XXXX (Enter 4 digits of your choice)",
-                "loadingText": "Accessing secure database...",
-                "deptLabel": "DEPARTMENT",
-                "deptDefault": "Select Department",
-                "posLabel": "POSITION / RANK",
-                "posDefault": "Select Department First",
-                "assignBtn": "CONFIRM ASSIGNMENT",
-                "resultName": "NAME:",
-                "resultNationality": "NATIONALITY:",
-                "resultId": "PERSONNEL ID:",
-                "resultDept": "DEPARTMENT:",
-                "resultPos": "POSITION:",
-                "resultLevel": "CLEARANCE LEVEL:",
-                "restartBtn": "NEW VERIFICATION",
-                "translateBtn": "Translate to Chinese",
-                "operations": "Operations Department",
-                "medical": "Medical & Rescue",
-                "communications": "Communications & C2",
-                "logistics": "Logistics & Equipment Department",
-                "admin": "Administration & Personnel",
-                "special": "Special Operations Element",
-                "intelligence": "Intelligence & Information Department",
-                "command": "Command Level",
-                "level1": "Level 1",
-                "level2": "Level 2",
-                "level3": "Level 3",
-                "level4": "Level 4",
-                "level5": "Level 5",
-                "faceInstruction": "Position your face within the frame",
-                "faceStatus1": "Please look directly at the camera...",
-                "faceStatus2": "Scanning facial features...",
-                "faceSuccess": "Facial recognition successful",
-                "faceFailure": "Facial recognition failed. Please try again.",
-                "fingerprintText1": "Clearance Level 4+ requires fingerprint verification",
-                "fingerprintText2": "Press and hold the button below for 3 seconds",
-                "fingerprintBtn": "PRESS AND HOLD FOR VERIFICATION",
-                "fingerprintSuccess": "Fingerprint verification successful",
-                "fingerprintFailure": "Fingerprint verification failed. Please try again.",
-                "accessCardInstruction": "Place your Level LEVEL access card on the reader for 3 seconds",
-                "accessCardBtn": "PLACE CARD ON READER",
-                "accessCardSuccess": "Access card verification successful",
-                "accessCardFailure": "Access card verification failed. Please try again.",
-                "countdown": "Hold for",
-                "retryBtn": "TRY AGAIN"
+                // 界面标题
+                "title1":"IDENTIFICATION VERIFICATION",
+                "title2":"VERIFYING CREDENTIALS",
+                "title3":"ASSIGNMENT SELECTION",
+                "title4":"FACIAL RECOGNITION REQUIRED",
+                "title5":"BIOMETRIC VERIFICATION REQUIRED",
+                "title5b":"IRIS RECOGNITION REQUIRED",
+                "title6":"ACCESS CARD VERIFICATION",
+                "title7":"IDENTIFICATION CONFIRMED",
+                // 表单
+                "nameLabel":"FULL NAME",
+                "namePlaceholder":"Enter your full name",
+                "nationalityLabel":"NATIONALITY",
+                "nationalityPlaceholder":"Select Nationality",
+                "otherNationalityPlaceholder":"Specify your nationality",
+                "USA":"United States of America",
+                "UK":"United Kingdom",
+                "Australia":"Australia",
+                "Canada":"Canada",
+                "Other":"Other",
+                "idLabel":"PERSONNEL IDENTIFICATION NUMBER",
+                "idPlaceholder":"TF141-2026-XXXX",
+                "verifyBtn":"VERIFY IDENTITY",
+                "footerText":"Personnel ID format: TF141-2026-XXXX (Enter 4 digits of your choice)",
+                "loadingText":"Accessing secure database...",
+                // 部门
+                "deptLabel":"DEPARTMENT",
+                "deptDefault":"Select Department",
+                "posLabel":"POSITION / RANK",
+                "posDefault":"Select Department First",
+                "assignBtn":"CONFIRM ASSIGNMENT",
+                // 结果页
+                "resultName":"NAME:",
+                "resultNationality":"NATIONALITY:",
+                "resultId":"PERSONNEL ID:",
+                "resultDept":"DEPARTMENT:",
+                "resultPos":"POSITION:",
+                "resultLevel":"CLEARANCE LEVEL:",
+                "restartBtn":"NEW VERIFICATION",
+                "translateBtn":"Translate to Chinese",
+                // 部门选项
+                "operations":"Operations Department",
+                "medical":"Medical & Rescue",
+                "communications":"Communications & C2",
+                "logistics":"Logistics & Equipment Department",
+                "admin":"Administration & Personnel",
+                "special":"Special Operations Element",
+                "intelligence":"Intelligence & Information Department",
+                "command":"Command Level",
+                // 等级
+                "level1":"Level 1",
+                "level2":"Level 2",
+                "level3":"Level 3",
+                "level4":"Level 4",
+                "level5":"Level 5",
+                // 人脸识别
+                "faceInstruction":"Position your face within the frame",
+                "faceStatus1":"Please look directly at the camera...",
+                "faceStatus2":"Scanning facial features...",
+                "faceSuccess":"Facial recognition successful",
+                "faceFailure":"Facial recognition failed. Please try again.",
+                // 指纹
+                "fingerprintText1":"Clearance Level 4+ requires fingerprint verification",
+                "fingerprintText2":"Press and hold the button below for 3 seconds",
+                "fingerprintBtn":"PRESS AND HOLD FOR VERIFICATION",
+                "fingerprintSuccess":"Fingerprint verification successful",
+                "fingerprintFailure":"Fingerprint verification failed. Please try again.",
+                // 虹膜 (新增)
+                "irisText1":"Level 5 requires iris pattern verification",
+                "irisText2":"Look directly into the scanner",
+                "irisBtn":"START IRIS SCAN",
+                "irisSuccess":"Iris recognition successful",
+                "irisFailure":"Iris recognition failed. Please try again.",
+                // 门禁卡
+                "accessCardInstruction":"Place your Level LEVEL access card on the reader for 3 seconds",
+                "accessCardBtn":"PLACE CARD ON READER",
+                "accessCardSuccess":"Access card verification successful",
+                "accessCardFailure":"Access card verification failed. Please try again.",
+                "countdown":"Hold for",
+                "retryBtn":"TRY AGAIN",
+                // 协议弹窗
+                "protocolTitle":"⚠️ SECURITY PROTOCOL",
+                "protocolLine1":"1. All information is classified.",
+                "protocolLine2":"2. Unauthorized disclosure is prohibited.",
+                "protocolLine3":"3. You are subject to continuous monitoring.",
+                "protocolBtn":"ACKNOWLEDGE",
+                // 签名板
+                "signatureTitle":"OFFICIAL SIGNATURE REQUIRED",
+                "clearBtn":"CLEAR",
+                "confirmBtn":"CONFIRM SIGNATURE",
+                // 警报界面
+                "alertTitle":"ACCESS ALERT",
+                "alertSubtitle":"COMMAND VERIFICATION FAILED",
+                "alertLine1":"Security protocol activated",
+                "alertLine2":"Command credentials do not match",
+                "alertLine3":"Automated report filed to command",
+                // 视频按钮
+                "videoBtn":"VIEW CLEARANCE PROTOCOL"
             },
             "zh": {
-                "title1": "身份验证",
-                "title2": "正在验证凭证",
-                "title3": "分配选择",
-                "title4": "需要人脸识别",
-                "title5": "需要生物识别验证",
-                "title6": "门禁卡验证",
-                "title7": "身份已确认",
-                "nameLabel": "全名",
-                "namePlaceholder": "输入您的全名",
-                "nationalityLabel": "国籍",
-                "nationalityPlaceholder": "选择国籍",
-                "otherNationalityPlaceholder": "请指定您的国籍",
-                "USA": "美国",
-                "UK": "英国",
-                "Australia": "澳大利亚",
-                "Canada": "加拿大",
-                "Other": "其他",
-                "idLabel": "人员识别号",
-                "idPlaceholder": "TF141-2026-XXXX",
-                "verifyBtn": "验证身份",
-                "footerText": "人员ID格式：TF141-2026-XXXX（输入4位您选择的数字）",
-                "loadingText": "正在访问安全数据库...",
-                "deptLabel": "部门",
-                "deptDefault": "选择部门",
-                "posLabel": "职位/等级",
-                "posDefault": "请先选择部门",
-                "assignBtn": "确认分配",
-                "resultName": "姓名：",
-                "resultNationality": "国籍：",
-                "resultId": "人员ID：",
-                "resultDept": "部门：",
-                "resultPos": "职位：",
-                "resultLevel": "权限等级：",
-                "restartBtn": "重新验证",
-                "translateBtn": "翻译成中文",
-                "operations": "作战部门",
-                "medical": "医疗与救援",
-                "communications": "通信与指挥控制",
-                "logistics": "后勤与装备部门",
-                "admin": "行政与人事",
-                "special": "特殊职能单位",
-                "intelligence": "情报与信息部门",
-                "command": "指挥层",
-                "level1": "一级",
-                "level2": "二级",
-                "level3": "三级",
-                "level4": "四级",
-                "level5": "五级",
-                "faceInstruction": "将脸部对准框内",
-                "faceStatus1": "请直视摄像头...",
-                "faceStatus2": "正在扫描面部特征...",
-                "faceSuccess": "人脸识别成功",
-                "faceFailure": "人脸识别失败，请重试",
-                "fingerprintText1": "四级及以上权限需要指纹验证",
-                "fingerprintText2": "长按下方按钮3秒钟",
-                "fingerprintBtn": "长按进行验证",
-                "fingerprintSuccess": "指纹验证成功",
-                "fingerprintFailure": "指纹验证失败，请重试",
-                "accessCardInstruction": "将您的LEVEL级门禁卡放置在感应器上3秒钟",
-                "accessCardBtn": "放置门禁卡",
-                "accessCardSuccess": "门禁卡验证成功",
-                "accessCardFailure": "门禁卡验证失败，请重试",
-                "countdown": "保持",
-                "retryBtn": "重试"
+                "title1":"身份验证",
+                "title2":"正在验证凭证",
+                "title3":"分配选择",
+                "title4":"需要人脸识别",
+                "title5":"需要生物识别验证",
+                "title5b":"需要虹膜识别",
+                "title6":"门禁卡验证",
+                "title7":"身份已确认",
+                "nameLabel":"全名",
+                "namePlaceholder":"输入您的全名",
+                "nationalityLabel":"国籍",
+                "nationalityPlaceholder":"选择国籍",
+                "otherNationalityPlaceholder":"请指定您的国籍",
+                "USA":"美国",
+                "UK":"英国",
+                "Australia":"澳大利亚",
+                "Canada":"加拿大",
+                "Other":"其他",
+                "idLabel":"人员识别号",
+                "idPlaceholder":"TF141-2026-XXXX",
+                "verifyBtn":"验证身份",
+                "footerText":"人员ID格式：TF141-2026-XXXX（输入4位您选择的数字）",
+                "loadingText":"正在访问安全数据库...",
+                "deptLabel":"部门",
+                "deptDefault":"选择部门",
+                "posLabel":"职位/等级",
+                "posDefault":"请先选择部门",
+                "assignBtn":"确认分配",
+                "resultName":"姓名：",
+                "resultNationality":"国籍：",
+                "resultId":"人员ID：",
+                "resultDept":"部门：",
+                "resultPos":"职位：",
+                "resultLevel":"权限等级：",
+                "restartBtn":"重新验证",
+                "translateBtn":"翻译成英文",
+                "operations":"作战部门",
+                "medical":"医疗与救援",
+                "communications":"通信与指挥控制",
+                "logistics":"后勤与装备部门",
+                "admin":"行政与人事",
+                "special":"特殊职能单位",
+                "intelligence":"情报与信息部门",
+                "command":"指挥层",
+                "level1":"一级",
+                "level2":"二级",
+                "level3":"三级",
+                "level4":"四级",
+                "level5":"五级",
+                "faceInstruction":"将脸部对准框内",
+                "faceStatus1":"请直视摄像头...",
+                "faceStatus2":"正在扫描面部特征...",
+                "faceSuccess":"人脸识别成功",
+                "faceFailure":"人脸识别失败，请重试",
+                "fingerprintText1":"四级及以上权限需要指纹验证",
+                "fingerprintText2":"长按下方按钮3秒钟",
+                "fingerprintBtn":"长按进行验证",
+                "fingerprintSuccess":"指纹验证成功",
+                "fingerprintFailure":"指纹验证失败，请重试",
+                // 虹膜 (新增)
+                "irisText1":"五级权限需要虹膜识别",
+                "irisText2":"请直视扫描仪",
+                "irisBtn":"开始虹膜扫描",
+                "irisSuccess":"虹膜识别成功",
+                "irisFailure":"虹膜识别失败，请重试",
+                "accessCardInstruction":"将您的LEVEL级门禁卡放置在感应器上3秒钟",
+                "accessCardBtn":"放置门禁卡",
+                "accessCardSuccess":"门禁卡验证成功",
+                "accessCardFailure":"门禁卡验证失败，请重试",
+                "countdown":"保持",
+                "retryBtn":"重试",
+                // 协议弹窗中文
+                "protocolTitle":"⚠️ 安全协议",
+                "protocolLine1":"1. 所有信息均属机密。",
+                "protocolLine2":"2. 严禁未经授权披露。",
+                "protocolLine3":"3. 您将受到持续监控。",
+                "protocolBtn":"确认",
+                // 签名板中文
+                "signatureTitle":"需要官方签名",
+                "clearBtn":"清除",
+                "confirmBtn":"确认签名",
+                // 警报界面中文
+                "alertTitle":"访问警报",
+                "alertSubtitle":"指挥验证失败",
+                "alertLine1":"安全协议已激活",
+                "alertLine2":"指挥凭证不匹配",
+                "alertLine3":"自动报告已提交至指挥部",
+                // 视频按钮中文
+                "videoBtn":"查看权限协议演示"
             }
         };
-        
-        // Position translations
+
+        // 职位翻译
         const positionTranslations = {
             "en": {
-                "Rifleman": "Rifleman",
-                "Breacher": "Breacher",
-                "Machine Gunner": "Machine Gunner",
-                "Entry Operator": "Entry Operator",
-                "Forward Reconnaissance Operator": "Forward Reconnaissance Operator",
-                "Combat Medic": "Combat Medic",
-                "Tactical Communications Operator": "Tactical Communications Operator",
-                "Vehicle Maintenance Technician": "Vehicle Maintenance Technician",
-                "Ammunition Supply Specialist": "Ammunition Supply Specialist",
-                "Finance & Logistics Clerk": "Finance & Logistics Clerk",
-                "Tactical K9 Handler": "Tactical K9 Handler",
-                "Designated Marksman / Sniper": "Designated Marksman / Sniper",
-                "Spotter": "Spotter",
-                "Hostage Rescue Specialist": "Hostage Rescue Specialist",
-                "Demolitions & Explosives Specialist": "Demolitions & Explosives Specialist",
-                "Undercover / Infiltration Operator": "Undercover / Infiltration Operator",
-                "Tactical Airborne / Dive Specialist": "Tactical Airborne / Dive Specialist",
-                "Equipment Officer": "Equipment Officer",
-                "Armorer / Weapons Technician": "Armorer / Weapons Technician",
-                "Satellite / UAV Operator": "Satellite / UAV Operator",
-                "Crypto Communications Specialist": "Crypto Communications Specialist",
-                "Assault Team Leader": "Assault Team Leader",
-                "Recon Team Leader": "Recon Team Leader",
-                "CQB Team Leader": "CQB Team Leader",
-                "Search & Rescue Team": "Search & Rescue Team",
-                "Intelligence Analyst": "Intelligence Analyst",
-                "Battlefield Intelligence Officer": "Battlefield Intelligence Officer",
-                "Base Security Chief": "Base Security Chief",
-                "Base Manager": "Base Manager",
-                "Command Center Controller": "Command Center Controller",
-                "Frequency & Crypto Manager": "Frequency & Crypto Manager",
-                "Deputy Operations Commander": "Deputy Operations Commander",
-                "Chief Intelligence Officer": "Chief Intelligence Officer",
-                "Operations Planner": "Operations Planner",
-                "Tactical Advisor": "Tactical Advisor",
-                "Interrogation / Intelligence Collection Specialist": "Interrogation / Intelligence Collection Specialist",
-                "Cyber Warfare & Electronic Intelligence Officer": "Cyber Warfare & Electronic Intelligence Officer",
-                "Logistics & Supply Officer": "Logistics & Supply Officer",
-                "Field Surgeon": "Field Surgeon",
-                "Psychological Intervention Specialist": "Psychological Intervention Specialist",
-                "Counter-Terrorism Negotiator": "Counter-Terrorism Negotiator",
-                "Administration Chief": "Administration Chief",
-                "Personnel Officer / Archivist": "Personnel Officer / Archivist",
-                "Security Clearance Officer": "Security Clearance Officer",
-                "Communications Chief": "Communications Chief",
-                "Task Force Commander": "Task Force Commander"
+                "Rifleman":"Rifleman","Breacher":"Breacher","Machine Gunner":"Machine Gunner","Entry Operator":"Entry Operator",
+                "Forward Reconnaissance Operator":"Forward Reconnaissance Operator","Combat Medic":"Combat Medic",
+                "Tactical Communications Operator":"Tactical Communications Operator","Vehicle Maintenance Technician":"Vehicle Maintenance Technician",
+                "Ammunition Supply Specialist":"Ammunition Supply Specialist","Finance & Logistics Clerk":"Finance & Logistics Clerk",
+                "Tactical K9 Handler":"Tactical K9 Handler","Designated Marksman / Sniper":"Designated Marksman / Sniper","Spotter":"Spotter",
+                "Hostage Rescue Specialist":"Hostage Rescue Specialist","Demolitions & Explosives Specialist":"Demolitions & Explosives Specialist",
+                "Undercover / Infiltration Operator":"Undercover / Infiltration Operator","Tactical Airborne / Dive Specialist":"Tactical Airborne / Dive Specialist",
+                "Equipment Officer":"Equipment Officer","Armorer / Weapons Technician":"Armorer / Weapons Technician",
+                "Satellite / UAV Operator":"Satellite / UAV Operator","Crypto Communications Specialist":"Crypto Communications Specialist",
+                "Assault Team Leader":"Assault Team Leader","Recon Team Leader":"Recon Team Leader","CQB Team Leader":"CQB Team Leader",
+                "Search & Rescue Team":"Search & Rescue Team","Intelligence Analyst":"Intelligence Analyst",
+                "Battlefield Intelligence Officer":"Battlefield Intelligence Officer","Base Security Chief":"Base Security Chief",
+                "Base Manager":"Base Manager","Command Center Controller":"Command Center Controller","Frequency & Crypto Manager":"Frequency & Crypto Manager",
+                "Deputy Operations Commander":"Deputy Operations Commander","Chief Intelligence Officer":"Chief Intelligence Officer",
+                "Operations Planner":"Operations Planner","Tactical Advisor":"Tactical Advisor",
+                "Interrogation / Intelligence Collection Specialist":"Interrogation / Intelligence Collection Specialist",
+                "Cyber Warfare & Electronic Intelligence Officer":"Cyber Warfare & Electronic Intelligence Officer",
+                "Logistics & Supply Officer":"Logistics & Supply Officer","Field Surgeon":"Field Surgeon",
+                "Psychological Intervention Specialist":"Psychological Intervention Specialist","Counter-Terrorism Negotiator":"Counter-Terrorism Negotiator",
+                "Administration Chief":"Administration Chief","Personnel Officer / Archivist":"Personnel Officer / Archivist",
+                "Security Clearance Officer":"Security Clearance Officer","Communications Chief":"Communications Chief",
+                "Task Force Commander":"Task Force Commander"
             },
             "zh": {
-                "Rifleman": "步枪手",
-                "Breacher": "破门手",
-                "Machine Gunner": "机枪手",
-                "Entry Operator": "突入队员",
-                "Forward Reconnaissance Operator": "前沿侦察兵",
-                "Combat Medic": "战斗医护兵",
-                "Tactical Communications Operator": "战术通信兵",
-                "Vehicle Maintenance Technician": "载具维护技师",
-                "Ammunition Supply Specialist": "弹药管理员",
-                "Finance & Logistics Clerk": "财务与后勤文员",
-                "Tactical K9 Handler": "战术犬训导员",
-                "Designated Marksman / Sniper": "精确射手/狙击手",
-                "Spotter": "观察手",
-                "Hostage Rescue Specialist": "人质救援专家",
-                "Demolitions & Explosives Specialist": "破坏与爆破专家",
-                "Undercover / Infiltration Operator": "卧底/渗透行动员",
-                "Tactical Airborne / Dive Specialist": "战术空降/潜水专员",
-                "Equipment Officer": "装备官",
-                "Armorer / Weapons Technician": "军械师/武器维护技师",
-                "Satellite / UAV Operator": "卫星/无人机操控员",
-                "Crypto Communications Specialist": "加密通信专员",
-                "Assault Team Leader": "突击队长",
-                "Recon Team Leader": "侦察组长",
-                "CQB Team Leader": "CQB组长",
-                "Search & Rescue Team": "搜救与撤离小队",
-                "Intelligence Analyst": "情报分析官",
-                "Battlefield Intelligence Officer": "战场情报官",
-                "Base Security Chief": "基地安保主管",
-                "Base Manager": "基地管理员",
-                "Command Center Controller": "指挥中心控制员",
-                "Frequency & Crypto Manager": "频率/加密管理员",
-                "Deputy Operations Commander": "作战副指挥官",
-                "Chief Intelligence Officer": "情报主管",
-                "Operations Planner": "行动策划官",
-                "Tactical Advisor": "战术顾问",
-                "Interrogation / Intelligence Collection Specialist": "审讯/情报获取专员",
-                "Cyber Warfare & Electronic Intelligence Officer": "网络战与电子情报官",
-                "Logistics & Supply Officer": "物资补给官",
-                "Field Surgeon": "战地军医",
-                "Psychological Intervention Specialist": "心理干预专员",
-                "Counter-Terrorism Negotiator": "反恐谈判专家",
-                "Administration Chief": "行政主管",
-                "Personnel Officer / Archivist": "人事官/档案管理员",
-                "Security Clearance Officer": "安全审查官",
-                "Communications Chief": "通信主管",
-                "Task Force Commander": "特遣队指挥官"
+                "Rifleman":"步枪手","Breacher":"破门手","Machine Gunner":"机枪手","Entry Operator":"突入队员",
+                "Forward Reconnaissance Operator":"前沿侦察兵","Combat Medic":"战斗医护兵",
+                "Tactical Communications Operator":"战术通信兵","Vehicle Maintenance Technician":"载具维护技师",
+                "Ammunition Supply Specialist":"弹药管理员","Finance & Logistics Clerk":"财务与后勤文员",
+                "Tactical K9 Handler":"战术犬训导员","Designated Marksman / Sniper":"精确射手/狙击手","Spotter":"观察手",
+                "Hostage Rescue Specialist":"人质救援专家","Demolitions & Explosives Specialist":"破坏与爆破专家",
+                "Undercover / Infiltration Operator":"卧底/渗透行动员","Tactical Airborne / Dive Specialist":"战术空降/潜水专员",
+                "Equipment Officer":"装备官","Armorer / Weapons Technician":"军械师/武器维护技师",
+                "Satellite / UAV Operator":"卫星/无人机操控员","Crypto Communications Specialist":"加密通信专员",
+                "Assault Team Leader":"突击队长","Recon Team Leader":"侦察组长","CQB Team Leader":"CQB组长",
+                "Search & Rescue Team":"搜救与撤离小队","Intelligence Analyst":"情报分析官",
+                "Battlefield Intelligence Officer":"战场情报官","Base Security Chief":"基地安保主管",
+                "Base Manager":"基地管理员","Command Center Controller":"指挥中心控制员","Frequency & Crypto Manager":"频率/加密管理员",
+                "Deputy Operations Commander":"作战副指挥官","Chief Intelligence Officer":"情报主管",
+                "Operations Planner":"行动策划官","Tactical Advisor":"战术顾问",
+                "Interrogation / Intelligence Collection Specialist":"审讯/情报获取专员",
+                "Cyber Warfare & Electronic Intelligence Officer":"网络战与电子情报官",
+                "Logistics & Supply Officer":"物资补给官","Field Surgeon":"战地军医",
+                "Psychological Intervention Specialist":"心理干预专员","Counter-Terrorism Negotiator":"反恐谈判专家",
+                "Administration Chief":"行政主管","Personnel Officer / Archivist":"人事官/档案管理员",
+                "Security Clearance Officer":"安全审查官","Communications Chief":"通信主管",
+                "Task Force Commander":"特遣队指挥官"
             }
         };
-        
-        // Switch screen function
+
+        // ========== 功能函数 ==========
         function switchScreen(screenNumber) {
-            screens.forEach(screen => {
-                screen.classList.remove('active');
-            });
+            screens.forEach(screen => screen.classList.remove('active'));
             document.getElementById(`screen${screenNumber}`).classList.add('active');
         }
-        
-        // Nationality select change handler
+
+        // 签名板初始化
+        function initSignaturePad() {
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+            signatureDrawn = false;
+            signatureConfirm.disabled = true;
+        }
+
+        // 签名绘制事件
+        function startDrawing(e) {
+            e.preventDefault();
+            isDrawing = true;
+            const pos = getCanvasCoordinates(e);
+            lastX = pos.x;
+            lastY = pos.y;
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+        }
+        function draw(e) {
+            e.preventDefault();
+            if (!isDrawing) return;
+            const pos = getCanvasCoordinates(e);
+            const currentX = pos.x, currentY = pos.y;
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(currentX, currentY);
+            ctx.stroke();
+            lastX = currentX; lastY = currentY;
+            signatureDrawn = true;
+            signatureConfirm.disabled = false;
+        }
+        function stopDrawing() { isDrawing = false; }
+        function getCanvasCoordinates(e) {
+            const rect = signatureCanvas.getBoundingClientRect();
+            const scaleX = signatureCanvas.width / rect.width;
+            const scaleY = signatureCanvas.height / rect.height;
+            let clientX, clientY;
+            if (e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+            else { clientX = e.clientX; clientY = e.clientY; }
+            const x = (clientX - rect.left) * scaleX;
+            const y = (clientY - rect.top) * scaleY;
+            return { x: Math.min(signatureCanvas.width, Math.max(0, x)), y: Math.min(signatureCanvas.height, Math.max(0, y)) };
+        }
+
+        signatureCanvas.addEventListener('mousedown', startDrawing);
+        signatureCanvas.addEventListener('mousemove', draw);
+        signatureCanvas.addEventListener('mouseup', stopDrawing);
+        signatureCanvas.addEventListener('mouseleave', stopDrawing);
+        signatureCanvas.addEventListener('touchstart', startDrawing, { passive: false });
+        signatureCanvas.addEventListener('touchmove', draw, { passive: false });
+        signatureCanvas.addEventListener('touchend', stopDrawing);
+        signatureCanvas.addEventListener('touchcancel', stopDrawing);
+
+        signatureClear.addEventListener('click', initSignaturePad);
+
+        signatureConfirm.addEventListener('click', () => {
+            signatureModal.classList.remove('active');
+            switchScreen(2);
+            setTimeout(() => switchScreen(3), 2500);
+        });
+
+        // 协议弹窗倒计时
+        function startProtocolModal() {
+            protocolModal.classList.add('active');
+            protocolSeconds = 8;
+            protocolCountdownEl.textContent = protocolSeconds;
+            protocolConfirmBtn.disabled = true;
+            updateProtocolButtonText();
+            if (protocolTimer) clearInterval(protocolTimer);
+            protocolTimer = setInterval(() => {
+                protocolSeconds--;
+                protocolCountdownEl.textContent = protocolSeconds;
+                updateProtocolButtonText();
+                if (protocolSeconds <= 0) {
+                    clearInterval(protocolTimer);
+                    protocolTimer = null;
+                    protocolConfirmBtn.disabled = false;
+                    protocolConfirmBtn.textContent = isTranslated ? translations.zh.protocolBtn : translations.en.protocolBtn;
+                }
+            }, 1000);
+        }
+
+        function updateProtocolButtonText() {
+            if (protocolSeconds > 0) {
+                protocolConfirmBtn.textContent = (isTranslated ? translations.zh.protocolBtn : translations.en.protocolBtn) + ` (${protocolSeconds}s)`;
+            } else {
+                protocolConfirmBtn.textContent = isTranslated ? translations.zh.protocolBtn : translations.en.protocolBtn;
+            }
+        }
+
+        protocolConfirmBtn.addEventListener('click', () => {
+            if (protocolConfirmBtn.disabled) return;
+            protocolModal.classList.remove('active');
+            if (protocolTimer) clearInterval(protocolTimer);
+            initSignaturePad();
+            signatureModal.classList.add('active');
+        });
+
+        // 国籍变化监听翻译按钮显示
+        function checkNationalityForTranslate() {
+            const natValue = nationalitySelect.value;
+            const otherValue = otherNationalityInput.value.trim().toLowerCase();
+            const chineseKeywords = ['china', '中国', '中华人民共和国', "people's republic of china"];
+            let show = false;
+            if (natValue === "Other" && otherValue) {
+                show = chineseKeywords.some(keyword => otherValue.includes(keyword.toLowerCase()));
+            } else if (natValue) {
+                const natLower = natValue.toLowerCase();
+                show = chineseKeywords.some(keyword => natLower.includes(keyword.toLowerCase()) || keyword.includes(natLower));
+            }
+            if (show) {
+                translateBtn.classList.add('visible');
+            } else {
+                translateBtn.classList.remove('visible');
+            }
+        }
+
         nationalitySelect.addEventListener('change', function() {
             if (this.value === "Other") {
                 otherNationalityInput.style.display = "block";
@@ -1123,52 +1572,33 @@
                 otherNationalityInput.required = false;
                 otherNationalityInput.value = "";
             }
+            checkNationalityForTranslate();
         });
-        
-        // Verify button click
+
+        otherNationalityInput.addEventListener('input', checkNationalityForTranslate);
+
+        // Verify按钮
         verifyBtn.addEventListener('click', function() {
             currentName = nameInput.value.trim();
             currentId = idInput.value.trim();
-            
-            // Get nationality
             const nationalityValue = nationalitySelect.value;
             if (nationalityValue === "Other") {
                 currentNationality = otherNationalityInput.value.trim();
             } else {
                 currentNationality = nationalityValue;
             }
-            
-            if (!currentName) {
-                alert(isTranslated ? "请输入姓名" : "Please enter your name");
-                return;
-            }
-            
-            if (!currentNationality) {
-                alert(isTranslated ? "请选择或输入国籍" : "Please select or enter your nationality");
-                return;
-            }
-            
-            if (!currentId.match(/^TF141-2026-\d{4}$/)) {
-                alert(isTranslated ? "ID格式无效。正确格式：TF141-2026-XXXX（4位数字）" : "Invalid ID format. Correct format: TF141-2026-XXXX (4 digits)");
-                return;
-            }
-            
-            // Show loading screen
-            switchScreen(2);
-            
-            // Simulate loading delay
-            setTimeout(() => {
-                switchScreen(3);
-            }, 2500);
+            if (!currentName) { alert(isTranslated ? "请输入姓名" : "Please enter your name"); return; }
+            if (!currentNationality) { alert(isTranslated ? "请选择或输入国籍" : "Please select or enter your nationality"); return; }
+            if (!currentId.match(/^TF141-2026-\d{4}$/)) { alert(isTranslated ? "ID格式无效。正确格式：TF141-2026-XXXX（4位数字）" : "Invalid ID format. Correct format: TF141-2026-XXXX (4 digits)"); return; }
+            startProtocolModal();
         });
-        
-        // Department change
+
+        // 部门/职位逻辑
         departmentSelect.addEventListener('change', function() {
             const dept = this.value;
             positionSelect.innerHTML = '<option value="">' + (isTranslated ? translations.zh.posDefault : translations.en.posDefault) + '</option>';
             positionSelect.disabled = !dept;
             assignBtn.disabled = true;
-            
             if (dept && positionsData[dept]) {
                 positionsData[dept].forEach(pos => {
                     const option = document.createElement('option');
@@ -1179,110 +1609,64 @@
                 });
             }
         });
-        
-        // Position change
-        positionSelect.addEventListener('change', function() {
-            assignBtn.disabled = !this.value;
-        });
-        
-        // Assign button click
+
+        positionSelect.addEventListener('change', function() { assignBtn.disabled = !this.value; });
+
         assignBtn.addEventListener('click', function() {
             const deptValue = departmentSelect.value;
             const posValue = positionSelect.value;
-            
             if (!deptValue || !posValue) return;
-            
-            // Find position data
             let level = 1;
             let deptName = "";
             let posName = "";
-            
-            // Get department name
             const lang = isTranslated ? "zh" : "en";
             deptName = translations[lang][deptValue] || deptValue;
-            
-            // Get position name and level
             if (positionsData[deptValue]) {
                 const posObj = positionsData[deptValue].find(p => p.name === posValue);
                 if (posObj) {
                     posName = isTranslated ? positionTranslations.zh[posObj.name] || posObj.name : positionTranslations.en[posObj.name] || posObj.name;
                     level = posObj.level;
-                    
-                    // Check if this is Task Force Commander
                     isTaskForceCommander = (posValue === "Task Force Commander");
                 }
             }
-            
-            // Save selections for later use
             selectedLevel = level;
             selectedPosition = posValue;
             selectedDepartment = deptValue;
-            
-            // Reset verification attempts
-            faceScanAttempts = 0;
-            fingerprintAttempts = 0;
-            accessCardAttempts = 0;
-            
-            // Determine next step based on clearance level
-            if (level >= 3) {
-                // Level 3+ requires face recognition first
-                startFaceRecognition();
-            } else {
-                // Level 1-2: direct to access card verification
-                startAccessCardVerification();
-            }
+            faceScanAttempts = 0; fingerprintAttempts = 0; irisAttempts = 0; accessCardAttempts = 0;
+            if (level >= 3) { startFaceRecognition(); } else { startAccessCardVerification(); }
         });
-        
-        // Face recognition function
+
+        // 人脸识别
         function startFaceRecognition() {
             switchScreen(4);
             faceStatusEl.textContent = isTranslated ? translations.zh.faceStatus1 : translations.en.faceStatus1;
             faceResultEl.textContent = "";
             faceRetryBtn.style.display = "none";
-            
-            // Start face scan process
             setTimeout(() => {
                 faceStatusEl.textContent = isTranslated ? translations.zh.faceStatus2 : translations.en.faceStatus2;
-                
-                // After 2 seconds, show result
-                setTimeout(() => {
-                    completeFaceRecognition();
-                }, 2000);
+                setTimeout(() => completeFaceRecognition(), 2000);
             }, 1000);
         }
-        
+
         function completeFaceRecognition() {
             faceScanAttempts++;
-            
-            // 25% chance of failure
             const isSuccess = Math.random() > 0.25;
-            
             if (isSuccess) {
-                // Face recognition successful
                 faceStatusEl.classList.remove("face-failure");
                 faceStatusEl.classList.add("face-success");
                 faceStatusEl.textContent = isTranslated ? translations.zh.faceSuccess : translations.en.faceSuccess;
-                
-                // Special handling for Task Force Commander (Easter Egg)
                 if (isTaskForceCommander) {
-                    setTimeout(() => {
-                        triggerCommanderEasterEgg();
-                    }, 1500);
+                    setTimeout(() => triggerCommanderAlert(), 1500);
                     return;
                 }
-                
-                // For normal cases, proceed to next step
                 setTimeout(() => {
-                    if (selectedLevel >= 4) {
-                        // Level 4+ requires fingerprint verification
-                        startFingerprintVerificationScreen();
-                    } else {
-                        // Level 3: go to access card verification
-                        startAccessCardVerification();
+                    if (selectedLevel >= 4) { 
+                        startFingerprintVerificationScreen(); 
+                    } else { 
+                        startAccessCardVerification(); 
                     }
                 }, 1500);
             } else {
-                // Face recognition failed
                 faceStatusEl.classList.remove("face-success");
                 faceStatusEl.classList.add("face-failure");
                 faceStatusEl.textContent = isTranslated ? translations.zh.faceFailure : translations.en.faceFailure;
@@ -1290,19 +1674,15 @@
                 faceRetryBtn.textContent = isTranslated ? translations.zh.retryBtn : translations.en.retryBtn;
             }
         }
-        
-        // Face retry button
-        faceRetryBtn.addEventListener('click', function() {
-            startFaceRecognition();
-        });
-        
-        // Start fingerprint verification screen
-        function startFingerprintVerificationScreen() {
-            switchScreen(5);
-            resetFingerprintButton();
+
+        faceRetryBtn.addEventListener('click', startFaceRecognition);
+
+        // 指纹
+        function startFingerprintVerificationScreen() { 
+            switchScreen(5); 
+            resetFingerprintButton(); 
         }
         
-        // Fingerprint button handlers
         function resetFingerprintButton() {
             fingerprintBtn.classList.remove('active', 'failed');
             fingerprintBtn.textContent = isTranslated ? translations.zh.fingerprintBtn : translations.en.fingerprintBtn;
@@ -1311,79 +1691,47 @@
             fingerprintRetryBtn.style.display = "none";
         }
         
-        fingerprintBtn.addEventListener('mousedown', function() {
-            startFingerprintVerification();
-        });
-        
-        fingerprintBtn.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            startFingerprintVerification();
-        });
-        
-        fingerprintBtn.addEventListener('mouseup', function() {
-            stopFingerprintVerification();
-        });
-        
-        fingerprintBtn.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            stopFingerprintVerification();
-        });
-        
-        fingerprintBtn.addEventListener('mouseleave', function() {
-            stopFingerprintVerification();
-        });
-        
+        fingerprintBtn.addEventListener('mousedown', startFingerprintVerification);
+        fingerprintBtn.addEventListener('touchstart', e => { e.preventDefault(); startFingerprintVerification(); });
+        fingerprintBtn.addEventListener('mouseup', stopFingerprintVerification);
+        fingerprintBtn.addEventListener('touchend', e => { e.preventDefault(); stopFingerprintVerification(); });
+        fingerprintBtn.addEventListener('mouseleave', stopFingerprintVerification);
+
         function startFingerprintVerification() {
             if (fingerprintTimer) return;
-            
             fingerprintBtn.classList.add('active');
             fingerprintCountdown = 3;
-            
-            // Update countdown display
-            const lang = isTranslated ? "zh" : "en";
-            fingerprintCountdownEl.textContent = `${translations[lang].countdown} ${fingerprintCountdown}s`;
-            
+            fingerprintCountdownEl.textContent = `${translations[isTranslated ? "zh" : "en"].countdown} ${fingerprintCountdown}s`;
             fingerprintTimer = setInterval(() => {
                 fingerprintCountdown--;
-                
                 if (fingerprintCountdown > 0) {
                     fingerprintCountdownEl.textContent = `${translations[isTranslated ? "zh" : "en"].countdown} ${fingerprintCountdown}s`;
                 } else {
-                    // Verification complete
-                    clearInterval(fingerprintTimer);
-                    fingerprintTimer = null;
+                    clearInterval(fingerprintTimer); fingerprintTimer = null;
                     completeFingerprintVerification();
                 }
             }, 1000);
         }
         
         function stopFingerprintVerification() {
-            if (fingerprintTimer) {
-                clearInterval(fingerprintTimer);
-                fingerprintTimer = null;
-                resetFingerprintButton();
-            }
+            if (fingerprintTimer) { clearInterval(fingerprintTimer); fingerprintTimer = null; resetFingerprintButton(); }
         }
         
         function completeFingerprintVerification() {
             fingerprintAttempts++;
-            
-            // 25% chance of failure
             const isSuccess = Math.random() > 0.25;
-            
             if (isSuccess) {
-                // Fingerprint verification successful
                 fingerprintResultEl.textContent = isTranslated ? translations.zh.fingerprintSuccess : translations.en.fingerprintSuccess;
                 fingerprintResultEl.style.color = "#00aa00";
-                
-                // Go to access card verification
                 setTimeout(() => {
-                    startAccessCardVerification();
+                    if (selectedLevel >= 5) {
+                        startIrisVerificationScreen();
+                    } else {
+                        startAccessCardVerification();
+                    }
                 }, 1500);
             } else {
-                // Fingerprint verification failed
-                fingerprintBtn.classList.remove('active');
-                fingerprintBtn.classList.add('failed');
+                fingerprintBtn.classList.remove('active'); fingerprintBtn.classList.add('failed');
                 fingerprintResultEl.textContent = isTranslated ? translations.zh.fingerprintFailure : translations.en.fingerprintFailure;
                 fingerprintResultEl.style.color = "#ff5500";
                 fingerprintRetryBtn.style.display = "block";
@@ -1391,120 +1739,123 @@
             }
         }
         
-        // Fingerprint retry button
-        fingerprintRetryBtn.addEventListener('click', function() {
-            startFingerprintVerificationScreen();
-        });
+        fingerprintRetryBtn.addEventListener('click', startFingerprintVerificationScreen);
+
+        // 虹膜识别 (新增)
+        function startIrisVerificationScreen() {
+            switchScreen('5b');
+            resetIrisButton();
+        }
         
-        // Start access card verification
-        function startAccessCardVerification() {
-            switchScreen(6);
-            resetAccessCardButton();
+        function resetIrisButton() {
+            irisBtn.classList.remove('active', 'failed');
+            irisBtn.textContent = isTranslated ? translations.zh.irisBtn : translations.en.irisBtn;
+            irisCountdownEl.textContent = "";
+            irisResultEl.textContent = "";
+            irisRetryBtn.style.display = "none";
+        }
+        
+        irisBtn.addEventListener('click', function() {
+            if (irisTimer) return;
+            startIrisVerification();
+        });
+
+        function startIrisVerification() {
+            irisBtn.classList.add('active');
+            irisCountdown = 3;
+            irisCountdownEl.textContent = `${translations[isTranslated ? "zh" : "en"].countdown} ${irisCountdown}s`;
             
-            // Update card level display
+            irisTimer = setInterval(() => {
+                irisCountdown--;
+                if (irisCountdown > 0) {
+                    irisCountdownEl.textContent = `${translations[isTranslated ? "zh" : "en"].countdown} ${irisCountdown}s`;
+                } else {
+                    clearInterval(irisTimer); irisTimer = null;
+                    completeIrisVerification();
+                }
+            }, 1000);
+        }
+        
+        function completeIrisVerification() {
+            irisAttempts++;
+            const isSuccess = Math.random() > 0.25;
+            if (isSuccess) {
+                irisResultEl.textContent = isTranslated ? translations.zh.irisSuccess : translations.en.irisSuccess;
+                irisResultEl.style.color = "#00aa00";
+                setTimeout(() => startAccessCardVerification(), 1500);
+            } else {
+                irisBtn.classList.remove('active'); irisBtn.classList.add('failed');
+                irisResultEl.textContent = isTranslated ? translations.zh.irisFailure : translations.en.irisFailure;
+                irisResultEl.style.color = "#ff5500";
+                irisRetryBtn.style.display = "block";
+                irisRetryBtn.textContent = isTranslated ? translations.zh.retryBtn : translations.en.retryBtn;
+            }
+        }
+        
+        irisRetryBtn.addEventListener('click', startIrisVerificationScreen);
+
+        // 门禁卡
+        function startAccessCardVerification() {
+            switchScreen(6); 
+            resetAccessCardButton();
             cardLevelEl.textContent = selectedLevel;
             cardLightEl.className = "card-reader-light";
-            
-            // Update instruction text
             const lang = isTranslated ? "zh" : "en";
             const levelText = isTranslated ? translations.zh[`level${selectedLevel}`] : `Level ${selectedLevel}`;
             cardInstructionEl.textContent = translations[lang].accessCardInstruction.replace("LEVEL", levelText);
         }
         
-        // Access card button handlers
         function resetAccessCardButton() {
             accessCardBtn.classList.remove('active', 'failed');
             accessCardBtn.textContent = isTranslated ? translations.zh.accessCardBtn : translations.en.accessCardBtn;
             cardCountdownEl.textContent = "";
-            accessResultEl.textContent = "";
-            accessResultEl.className = "access-result";
+            accessResultEl.textContent = ""; accessResultEl.className = "access-result";
             accessCardRetryBtn.style.display = "none";
         }
         
-        accessCardBtn.addEventListener('mousedown', function() {
-            startAccessCardVerificationProcess();
-        });
-        
-        accessCardBtn.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            startAccessCardVerificationProcess();
-        });
-        
-        accessCardBtn.addEventListener('mouseup', function() {
-            stopAccessCardVerificationProcess();
-        });
-        
-        accessCardBtn.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            stopAccessCardVerificationProcess();
-        });
-        
-        accessCardBtn.addEventListener('mouseleave', function() {
-            stopAccessCardVerificationProcess();
-        });
-        
+        accessCardBtn.addEventListener('mousedown', startAccessCardVerificationProcess);
+        accessCardBtn.addEventListener('touchstart', e => { e.preventDefault(); startAccessCardVerificationProcess(); });
+        accessCardBtn.addEventListener('mouseup', stopAccessCardVerificationProcess);
+        accessCardBtn.addEventListener('touchend', e => { e.preventDefault(); stopAccessCardVerificationProcess(); });
+        accessCardBtn.addEventListener('mouseleave', stopAccessCardVerificationProcess);
+
         function startAccessCardVerificationProcess() {
             if (accessCardTimer) return;
-            
-            accessCardBtn.classList.add('active');
-            cardLightEl.classList.add('active');
+            accessCardBtn.classList.add('active'); cardLightEl.classList.add('active');
             accessCardCountdown = 3;
-            
-            // Update countdown display
-            const lang = isTranslated ? "zh" : "en";
-            cardCountdownEl.textContent = `${translations[lang].countdown} ${accessCardCountdown}s`;
-            
+            cardCountdownEl.textContent = `${translations[isTranslated ? "zh" : "en"].countdown} ${accessCardCountdown}s`;
             accessCardTimer = setInterval(() => {
                 accessCardCountdown--;
-                
                 if (accessCardCountdown > 0) {
                     cardCountdownEl.textContent = `${translations[isTranslated ? "zh" : "en"].countdown} ${accessCardCountdown}s`;
                 } else {
-                    // Verification complete
-                    clearInterval(accessCardTimer);
-                    accessCardTimer = null;
+                    clearInterval(accessCardTimer); accessCardTimer = null;
                     completeAccessCardVerification();
                 }
             }, 1000);
         }
         
         function stopAccessCardVerificationProcess() {
-            if (accessCardTimer) {
-                clearInterval(accessCardTimer);
-                accessCardTimer = null;
-                cardLightEl.classList.remove('active');
-                resetAccessCardButton();
-            }
+            if (accessCardTimer) { clearInterval(accessCardTimer); accessCardTimer = null; cardLightEl.classList.remove('active'); resetAccessCardButton(); }
         }
         
         function completeAccessCardVerification() {
-            accessCardAttempts++;
-            cardLightEl.classList.remove('active');
-            
-            // 25% chance of failure
+            accessCardAttempts++; cardLightEl.classList.remove('active');
             const isSuccess = Math.random() > 0.25;
-            
             if (isSuccess) {
-                // Access card verification successful
                 cardLightEl.classList.add('active');
                 accessResultEl.textContent = isTranslated ? translations.zh.accessCardSuccess : translations.en.accessCardSuccess;
                 accessResultEl.classList.add("access-success");
-                
-                // Show results
                 setTimeout(() => {
                     const lang = isTranslated ? "zh" : "en";
                     const deptName = translations[lang][selectedDepartment] || selectedDepartment;
                     let posName = selectedPosition;
                     const posTranslations = isTranslated ? positionTranslations.zh : positionTranslations.en;
-                    if (posTranslations[selectedPosition]) {
-                        posName = posTranslations[selectedPosition];
-                    }
+                    if (posTranslations[selectedPosition]) posName = posTranslations[selectedPosition];
                     showResults(selectedLevel, deptName, posName);
                 }, 1500);
             } else {
-                // Access card verification failed
-                accessCardBtn.classList.remove('active');
-                accessCardBtn.classList.add('failed');
+                accessCardBtn.classList.remove('active'); accessCardBtn.classList.add('failed');
                 cardLightEl.classList.add('failed');
                 accessResultEl.textContent = isTranslated ? translations.zh.accessCardFailure : translations.en.accessCardFailure;
                 accessResultEl.classList.add("access-failure");
@@ -1513,307 +1864,186 @@
             }
         }
         
-        // Access card retry button
-        accessCardRetryBtn.addEventListener('click', function() {
-            startAccessCardVerification();
-        });
-        
-        // Show results function
+        accessCardRetryBtn.addEventListener('click', startAccessCardVerification);
+
         function showResults(level, deptName, posName) {
-            // Update result display
             resultName.textContent = currentName;
             resultId.textContent = currentId;
-            
-            // Get nationality for display
             let displayNationality = currentNationality;
-            if (currentNationality === "USA") {
-                displayNationality = isTranslated ? "美国" : "United States of America";
-            } else if (currentNationality === "UK") {
-                displayNationality = isTranslated ? "英国" : "United Kingdom";
-            } else if (currentNationality === "Australia") {
-                displayNationality = isTranslated ? "澳大利亚" : "Australia";
-            } else if (currentNationality === "Canada") {
-                displayNationality = isTranslated ? "加拿大" : "Canada";
-            }
+            if (currentNationality === "USA") displayNationality = isTranslated ? "美国" : "United States of America";
+            else if (currentNationality === "UK") displayNationality = isTranslated ? "英国" : "United Kingdom";
+            else if (currentNationality === "Australia") displayNationality = isTranslated ? "澳大利亚" : "Australia";
+            else if (currentNationality === "Canada") displayNationality = isTranslated ? "加拿大" : "Canada";
             resultNationality.textContent = displayNationality;
-            
             resultDept.textContent = deptName;
             resultPos.textContent = posName;
-            
-            // Set level
-            const levelText = isTranslated ? 
-                `Level ${level} (${translations.zh[`level${level}`]})` : 
-                `Level ${level} (${translations.en[`level${level}`]})`;
-            
+            const levelText = isTranslated ? `Level ${level} (${translations.zh[`level${level}`]})` : `Level ${level} (${translations.en[`level${level}`]})`;
             resultLevel.textContent = levelText;
-            
-            // Set badge
             levelBadge.className = `level-badge level-${level}`;
             levelBadge.textContent = isTranslated ? translations.zh[`level${level}`] : `LEVEL ${level}`;
-            
-            // Show result screen
             switchScreen(7);
         }
-        
-        // Task Force Commander Easter Egg
-        function triggerCommanderEasterEgg() {
-            // Switch to alert screen
+
+        // 指挥官警报
+        function triggerCommanderAlert() {
+            const lang = isTranslated ? "zh" : "en";
+            alertTitle.textContent = translations[lang].alertTitle;
+            alertSubtitle.textContent = translations[lang].alertSubtitle;
+            alertLine1.textContent = translations[lang].alertLine1;
+            alertLine2.textContent = translations[lang].alertLine2;
+            alertLine3.textContent = translations[lang].alertLine3;
             switchScreen(8);
-            
-            // Add vibration effect (simulated with CSS)
             document.querySelector('.container').style.animation = 'none';
-            setTimeout(() => {
-                document.querySelector('.container').style.animation = 'shake 0.5s';
-            }, 10);
-            
-            // Add CSS for shaking effect
+            setTimeout(() => document.querySelector('.container').style.animation = 'shake 0.5s', 10);
             const style = document.createElement('style');
-            style.textContent = `
-                @keyframes shake {
-                    0% { transform: translate(1px, 1px) rotate(0deg); }
-                    10% { transform: translate(-1px, -2px) rotate(-1deg); }
-                    20% { transform: translate(-3px, 0px) rotate(1deg); }
-                    30% { transform: translate(3px, 2px) rotate(0deg); }
-                    40% { transform: translate(1px, -1px) rotate(1deg); }
-                    50% { transform: translate(-1px, 2px) rotate(-1deg); }
-                    60% { transform: translate(-3px, 1px) rotate(0deg); }
-                    70% { transform: translate(3px, 1px) rotate(-1deg); }
-                    80% { transform: translate(-1px, -1px) rotate(1deg); }
-                    90% { transform: translate(1px, 2px) rotate(0deg); }
-                    100% { transform: translate(1px, -2px) rotate(-1deg); }
-                }
-            `;
+            style.textContent = `@keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }`;
             document.head.appendChild(style);
-            
-            // After 5 seconds, restart
-            setTimeout(() => {
-                restartSystem();
-            }, 5000);
+            setTimeout(() => restartSystem(), 5000);
         }
-        
-        // Restart system
+
         function restartSystem() {
-            // Reset form
-            nameInput.value = "";
-            nationalitySelect.selectedIndex = 0;
-            otherNationalityInput.style.display = "none";
-            otherNationalityInput.value = "";
+            nameInput.value = ""; nationalitySelect.selectedIndex = 0;
+            otherNationalityInput.style.display = "none"; otherNationalityInput.value = "";
             idInput.value = "TF141-2026-";
             departmentSelect.selectedIndex = 0;
             positionSelect.innerHTML = '<option value="">' + (isTranslated ? translations.zh.posDefault : translations.en.posDefault) + '</option>';
-            positionSelect.disabled = true;
-            assignBtn.disabled = true;
-            
-            // Reset state
+            positionSelect.disabled = true; assignBtn.disabled = true;
             isTaskForceCommander = false;
-            
-            // Remove shake animation
             document.querySelector('.container').style.animation = '';
-            
-            // Reset face recognition elements
             faceStatusEl.classList.remove("face-success", "face-failure");
-            
-            // Go back to first screen
             switchScreen(1);
+            checkNationalityForTranslate();
         }
-        
-        // Restart button
+
         restartBtn.addEventListener('click', restartSystem);
-        
-        // Translate button
+
+        // 视频展示按钮 - 点击跳转到B站视频
+        videoShowcaseBtn.addEventListener('click', function() {
+            window.open('https://b23.tv/ahKSzgK', '_blank');
+        });
+
+        // 翻译按钮
         translateBtn.addEventListener('click', function() {
             isTranslated = !isTranslated;
             const lang = isTranslated ? "zh" : "en";
             const t = translations[lang];
-            
-            // Update button text
             translateBtn.textContent = isTranslated ? "Translate to English" : "Translate to Chinese";
             
-            // Update titles
+            // 更新所有静态文本
             document.querySelectorAll('.title').forEach((title, index) => {
-                if (index === 0) title.textContent = t.title1;
-                if (index === 1) title.textContent = t.title2;
-                if (index === 2) title.textContent = t.title3;
-                if (index === 3) title.textContent = t.title4;
-                if (index === 4) title.textContent = t.title5;
-                if (index === 5) title.textContent = t.title6;
-                if (index === 6) title.textContent = t.title7;
+                if(index===0) title.textContent = t.title1; if(index===1) title.textContent = t.title2;
+                if(index===2) title.textContent = t.title3; if(index===3) title.textContent = t.title4;
+                if(index===4) title.textContent = t.title5; 
+                if(index===5) { // screen5b 特殊处理
+                    const screen5bTitle = document.querySelector('#screen5b .title');
+                    if (screen5bTitle) screen5bTitle.textContent = t.title5b;
+                }
+                if(index===5 || (index===5 && !document.querySelector('#screen5b .title'))) { } // 跳过
+                if(index===6) title.textContent = t.title6; 
+                if(index===7) title.textContent = t.title7;
             });
             
-            // Update form labels and placeholders
+            // 手动设置screen5b标题
+            const screen5bTitle = document.querySelector('#screen5b .title');
+            if (screen5bTitle) screen5bTitle.textContent = t.title5b;
+            
             document.querySelector('label[for="name"]').textContent = t.nameLabel;
             nameInput.placeholder = t.namePlaceholder;
-            
             document.querySelector('label[for="nationality"]').textContent = t.nationalityLabel;
             nationalitySelect.querySelector('option[value=""]').textContent = t.nationalityPlaceholder;
             otherNationalityInput.placeholder = t.otherNationalityPlaceholder;
-            
-            // Update nationality options
             const nationalityOptions = nationalitySelect.querySelectorAll('option');
-            nationalityOptions.forEach(option => {
-                const value = option.value;
-                if (value && t[value]) {
-                    option.textContent = t[value];
-                }
-            });
-            
+            nationalityOptions.forEach(option => { const value = option.value; if(value && t[value]) option.textContent = t[value]; });
             document.querySelector('label[for="idNumber"]').textContent = t.idLabel;
             idInput.placeholder = t.idPlaceholder;
-            
             verifyBtn.textContent = t.verifyBtn;
             document.querySelector('.footer').textContent = t.footerText;
-            
             document.querySelector('#screen2 p').textContent = t.loadingText;
-            
             document.querySelector('label[for="department"]').textContent = t.deptLabel;
             departmentSelect.querySelector('option[value=""]').textContent = t.deptDefault;
-            
             document.querySelector('label[for="position"]').textContent = t.posLabel;
-            if (positionSelect.disabled) {
-                positionSelect.querySelector('option[value=""]').textContent = t.posDefault;
-            }
-            
+            if (positionSelect.disabled) positionSelect.querySelector('option[value=""]').textContent = t.posDefault;
             assignBtn.textContent = t.assignBtn;
             restartBtn.textContent = t.restartBtn;
             
-            // Update face recognition screen text
+            // 人脸识别
             const faceScanSection = document.querySelector('.face-scan-section');
             if (faceScanSection) {
                 faceScanSection.querySelector('p').textContent = t.faceInstruction;
-                
-                // Only update status if it's not showing a result message
-                if (!faceStatusEl.classList.contains("face-success") && 
-                    !faceStatusEl.classList.contains("face-failure")) {
+                if(!faceStatusEl.classList.contains("face-success")&&!faceStatusEl.classList.contains("face-failure"))
                     faceStatusEl.textContent = t.faceStatus1;
-                }
             }
-            
-            // Update fingerprint screen text
+            // 指纹
             const fingerprintSection = document.querySelector('.fingerprint-section');
             if (fingerprintSection) {
                 fingerprintSection.querySelector('p:nth-of-type(1)').textContent = t.fingerprintText1;
                 fingerprintSection.querySelector('p:nth-of-type(2)').textContent = t.fingerprintText2;
             }
-            
-            // Update fingerprint button text
             fingerprintBtn.textContent = t.fingerprintBtn;
+            if (fingerprintCountdownEl.textContent) fingerprintCountdownEl.textContent = `${t.countdown} ${fingerprintCountdown}s`;
             
-            // Update countdown text if active
-            if (fingerprintCountdownEl.textContent) {
-                fingerprintCountdownEl.textContent = `${t.countdown} ${fingerprintCountdown}s`;
+            // 虹膜
+            const irisSection = document.querySelector('.iris-section');
+            if (irisSection) {
+                irisSection.querySelector('p:nth-of-type(1)').textContent = t.irisText1;
+                irisSection.querySelector('p:nth-of-type(2)').textContent = t.irisText2;
             }
+            irisBtn.textContent = t.irisBtn;
+            if (irisCountdownEl.textContent) irisCountdownEl.textContent = `${t.countdown} ${irisCountdown}s`;
             
-            // Update access card screen text
+            // 门禁卡
             if (cardInstructionEl) {
                 const levelText = isTranslated ? translations.zh[`level${selectedLevel}`] : `Level ${selectedLevel}`;
                 cardInstructionEl.textContent = t.accessCardInstruction.replace("LEVEL", levelText);
             }
-            
             accessCardBtn.textContent = t.accessCardBtn;
-            
-            if (cardCountdownEl.textContent) {
-                cardCountdownEl.textContent = `${t.countdown} ${accessCardCountdown}s`;
-            }
-            
-            // Update retry buttons
-            faceRetryBtn.textContent = t.retryBtn;
+            if (cardCountdownEl.textContent) cardCountdownEl.textContent = `${t.countdown} ${accessCardCountdown}s`;
+            faceRetryBtn.textContent = t.retryBtn; 
             fingerprintRetryBtn.textContent = t.retryBtn;
+            irisRetryBtn.textContent = t.retryBtn;
             accessCardRetryBtn.textContent = t.retryBtn;
             
-            // Update result labels
-            document.querySelectorAll('.result-label').forEach((label, index) => {
-                if (index === 0) label.textContent = t.resultName;
-                if (index === 1) label.textContent = t.resultNationality;
-                if (index === 2) label.textContent = t.resultId;
-                if (index === 3) label.textContent = t.resultDept;
-                if (index === 4) label.textContent = t.resultPos;
-                if (index === 5) label.textContent = t.resultLevel;
+            // 结果页
+            document.querySelectorAll('.result-label').forEach((label, idx) => {
+                if(idx===0) label.textContent = t.resultName; if(idx===1) label.textContent = t.resultNationality;
+                if(idx===2) label.textContent = t.resultId; if(idx===3) label.textContent = t.resultDept;
+                if(idx===4) label.textContent = t.resultPos; if(idx===5) label.textContent = t.resultLevel;
             });
             
-            // Update department options
+            // 视频按钮
+            videoShowcaseBtn.innerHTML = `<span>▶</span> ${t.videoBtn} <span>▶</span>`;
+            
+            // 部门选项
             const deptOptions = departmentSelect.querySelectorAll('option');
-            deptOptions.forEach(option => {
-                const value = option.value;
-                if (value && t[value]) {
-                    option.textContent = t[value];
-                }
-            });
-            
-            // Update position options if any are loaded
+            deptOptions.forEach(option => { const value = option.value; if(value && t[value]) option.textContent = t[value]; });
+            // 职位选项
             if (!positionSelect.disabled) {
                 const posOptions = positionSelect.querySelectorAll('option');
-                posOptions.forEach(option => {
-                    const value = option.value;
-                    if (value && positionTranslations[lang][value]) {
-                        option.textContent = positionTranslations[lang][value];
-                    }
-                });
+                posOptions.forEach(option => { const value = option.value; if(value && positionTranslations[lang][value]) option.textContent = positionTranslations[lang][value]; });
             }
-            
-            // Update current results if on results screen
-            if (document.getElementById('screen7').classList.contains('active')) {
-                // Update nationality in results
-                const currentNat = resultNationality.textContent;
-                for (const key in translations.en) {
-                    if (translations.en[key] === currentNat && t[key]) {
-                        resultNationality.textContent = t[key];
-                        break;
-                    }
-                }
-                
-                // Update department name in results
-                const currentDept = resultDept.textContent;
-                for (const key in translations.en) {
-                    if (translations.en[key] === currentDept && t[key]) {
-                        resultDept.textContent = t[key];
-                        break;
-                    }
-                }
-                
-                // Update position name in results
-                const currentPos = resultPos.textContent;
-                for (const key in positionTranslations.en) {
-                    if (positionTranslations.en[key] === currentPos && positionTranslations[lang][key]) {
-                        resultPos.textContent = positionTranslations[lang][key];
-                        break;
-                    }
-                }
-                
-                // Update level text
-                const levelMatch = resultLevel.textContent.match(/Level (\d+)/);
-                if (levelMatch) {
-                    const levelNum = levelMatch[1];
-                    resultLevel.textContent = isTranslated ? 
-                        `Level ${levelNum} (${translations.zh[`level${levelNum}`]})` : 
-                        `Level ${levelNum} (${translations.en[`level${levelNum}`]})`;
-                    
-                    levelBadge.textContent = isTranslated ? 
-                        translations.zh[`level${levelNum}`] : 
-                        `LEVEL ${levelNum}`;
-                }
-            }
+            // 协议弹窗
+            protocolTitle.textContent = t.protocolTitle;
+            protocolLine1.textContent = t.protocolLine1;
+            protocolLine2.textContent = t.protocolLine2;
+            protocolLine3.textContent = t.protocolLine3;
+            updateProtocolButtonText();
+            // 签名板
+            signatureTitle.textContent = t.signatureTitle;
+            signatureClear.textContent = t.clearBtn;
+            signatureConfirm.textContent = t.confirmBtn;
+            // 警报界面
+            alertTitle.textContent = t.alertTitle;
+            alertSubtitle.textContent = t.alertSubtitle;
+            alertLine1.textContent = t.alertLine1;
+            alertLine2.textContent = t.alertLine2;
+            alertLine3.textContent = t.alertLine3;
         });
-        
-        // Enter key support
-        nameInput.addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                verifyBtn.click();
-            }
-        });
-        
-        idInput.addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                verifyBtn.click();
-            }
-        });
-        
-        otherNationalityInput.addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                verifyBtn.click();
-            }
-        });
-        
-        // Initialize ID field placeholder
+
+        // Enter 键
+        nameInput.addEventListener('keyup', e => { if (e.key === 'Enter') verifyBtn.click(); });
+        idInput.addEventListener('keyup', e => { if (e.key === 'Enter') verifyBtn.click(); });
+        otherNationalityInput.addEventListener('keyup', e => { if (e.key === 'Enter') verifyBtn.click(); });
+
         idInput.value = "TF141-2026-";
     </script>
 </body>
