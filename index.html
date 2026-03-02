@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>TASK FORCE 141 · 基地准入</title>
+    <title>TASK FORCE 141 · 动态准入</title>
     <style>
         * {
             margin: 0;
@@ -262,7 +262,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.6);
-            text-align: left; /* 区域标题左对齐，保持可读性 */
+            text-align: left;
         }
         .zone-yellow { border-color: #b8860b; color: #ffd966; }
         .zone-purple { border-color: #800080; color: #c77dff; }
@@ -274,7 +274,7 @@
         .map-item {
             background-color: #263445;
             border-radius: 6px;
-            padding: 16px 8px;  /* 增加上下内边距，垂直居中效果更好 */
+            padding: 16px 8px;
             text-align: center;
             font-size: 0.95rem;
             cursor: pointer;
@@ -282,11 +282,11 @@
             transition: all 0.15s;
             display: flex;
             flex-direction: column;
-            align-items: center;     /* 水平居中 */
-            justify-content: center;  /* 垂直居中 */
+            align-items: center;
+            justify-content: center;
             gap: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.5);
-            min-height: 100px;        /* 保证所有卡片有足够高度，内容自然居中 */
+            min-height: 100px;
         }
         .map-item:hover {
             transform: translateY(-2px);
@@ -311,7 +311,7 @@
             padding: 4px 8px;
             border-radius: 16px;
             color: #ccc;
-            display: inline-block;    /* 让背景仅包裹内容 */
+            display: inline-block;
             text-align: center;
         }
         .map-item .loc-level span {
@@ -326,7 +326,7 @@
             padding-top: 15px;
             border-top: 1px solid #3a4a6a;
             font-size: 0.8rem;
-            justify-content: center;   /* 图例居中 */
+            justify-content: center;
         }
         .legend-color {
             display: inline-block;
@@ -354,6 +354,7 @@
             font-size: 24px;
             color: #0055ff;
             font-weight: bold;
+            text-align: center;
         }
         .insufficient-overlay {
             position: fixed;
@@ -554,9 +555,43 @@
             right: 15px;
         }
         .card-reader-light.active { background-color: #00aa00; box-shadow: 0 0 10px #00aa00; }
-        .card-reader-level { font-size: clamp(24px, 6vw, 36px); font-weight: bold; color: #fff; text-shadow: 0 0 10px #0055ff; }
-        .countdown { margin-top: 10px; font-size: 14px; color: #aaa; }
-        .retry-btn { background-color: #ff5500; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 14px; margin-top: 15px; display: inline-block; }
+        .card-reader-level { 
+            font-size: clamp(24px, 6vw, 36px); 
+            font-weight: bold; 
+            color: #fff; 
+            text-shadow: 0 0 10px #0055ff;
+            margin-bottom: 5px;
+        }
+        .card-reader-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-simple-text {
+            font-size: 18px;
+            color: #aaa;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+        .countdown { 
+            margin-top: 10px; 
+            font-size: 14px; 
+            color: #aaa;
+            text-align: center;
+            width: 100%;
+        }
+        .retry-btn { 
+            background-color: #ff5500; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            margin: 15px auto 0;
+            display: inline-block;
+        }
 
         .alert-screen { background-color: rgba(180, 0, 0, 0.15); border-left: 6px solid #ff0000; animation: alertPulse 1s infinite alternate; }
         @keyframes alertPulse { from { background-color: rgba(180, 0, 0, 0.15); } to { background-color: rgba(255, 0, 0, 0.3); } }
@@ -597,7 +632,7 @@
         </div>
         
         <div class="content">
-            <!-- Screen 1: 身份录入 (各占一行，居中)  -->
+            <!-- Screen 1: 身份录入 -->
             <div class="screen active" id="screen1">
                 <h2 class="title" id="screen1Title" data-en="IDENTIFICATION VERIFICATION" data-zh="身份验证">IDENTIFICATION VERIFICATION</h2>
                 <div class="id-entry-container">
@@ -626,7 +661,7 @@
                 <div class="footer-note" id="footerNote" data-en="Personnel ID format: TF141-2026-XXXX (Enter 4 digits)" data-zh="人员ID格式：TF141-2026-XXXX（输入4位数字）">Personnel ID format: TF141-2026-XXXX (Enter 4 digits)</div>
             </div>
 
-            <!-- Screen 0: 2D 基地地图 (默认英文，图标和文字完全居中) -->
+            <!-- Screen 0: 2D 基地地图 -->
             <div class="screen" id="screen0">
                 <h2 class="title" id="mapTitle" data-en="BASE MAP – ACCESS CONTROL" data-zh="基地地图 · 准入控制">BASE MAP – ACCESS CONTROL</h2>
                 <div class="map-screen">
@@ -652,7 +687,7 @@
                 <h2 class="title" data-en="VERIFYING CREDENTIALS" data-zh="正在验证凭证">VERIFYING CREDENTIALS</h2>
                 <div class="loading">
                     <div class="loader"></div>
-                    <p data-en="Accessing secure database..." data-zh="正在访问安全数据库...">Accessing secure database...</p>
+                    <p id="loadingText" data-en="Accessing secure database..." data-zh="正在访问安全数据库...">Accessing secure database...</p>
                 </div>
             </div>
             
@@ -684,7 +719,7 @@
                 <button class="btn" id="assignBtn" disabled data-en="CONFIRM ASSIGNMENT" data-zh="确认分配">CONFIRM ASSIGNMENT</button>
             </div>
             
-            <!-- Screen 4: 人脸识别 (居中) -->
+            <!-- Screen 4: 人脸识别 -->
             <div class="screen" id="screen4">
                 <h2 class="title" data-en="FACIAL RECOGNITION REQUIRED" data-zh="需要人脸识别">FACIAL RECOGNITION REQUIRED</h2>
                 <div class="biometric-container">
@@ -693,7 +728,7 @@
                             <div class="face-overlay"></div>
                             <div class="face-scan-line"></div>
                         </div>
-                        <p data-en="Position your face within the frame" data-zh="将脸部对准框内">Position your face within the frame</p>
+                        <p id="faceInstruction" data-en="Position your face within the frame" data-zh="将脸部对准框内">Position your face within the frame</p>
                         <div class="face-status" id="faceStatus" data-en-default="Please look directly at the camera..." data-zh-default="请直视摄像头...">Please look directly at the camera...</div>
                         <div class="face-result" id="faceResult"></div>
                         <button class="retry-btn" id="faceRetryBtn" style="display: none;" data-en="TRY AGAIN" data-zh="重试">TRY AGAIN</button>
@@ -701,7 +736,7 @@
                 </div>
             </div>
             
-            <!-- Screen 5: 指纹 (居中) -->
+            <!-- Screen 5: 指纹 -->
             <div class="screen" id="screen5">
                 <h2 class="title" data-en="BIOMETRIC VERIFICATION REQUIRED" data-zh="需要生物识别验证">BIOMETRIC VERIFICATION REQUIRED</h2>
                 <div class="biometric-container">
@@ -711,8 +746,8 @@
                                 <div class="fingerprint-line"></div><div class="fingerprint-line"></div><div class="fingerprint-line"></div><div class="fingerprint-line"></div><div class="fingerprint-line"></div>
                             </div>
                         </div>
-                        <p data-en="Clearance Level 4+ requires fingerprint verification" data-zh="四级及以上权限需要指纹验证">Clearance Level 4+ requires fingerprint verification</p>
-                        <p data-en="Press and hold the button below for 3 seconds" data-zh="长按下方按钮3秒钟">Press and hold the button below for 3 seconds</p>
+                        <p id="fingerprintText1" data-en="Clearance Level 4+ requires fingerprint verification" data-zh="四级及以上权限需要指纹验证">Clearance Level 4+ requires fingerprint verification</p>
+                        <p id="fingerprintText2" data-en="Press and hold the button below for 3 seconds" data-zh="长按下方按钮3秒钟">Press and hold the button below for 3 seconds</p>
                         <button class="fingerprint-btn" id="fingerprintBtn" data-en="PRESS AND HOLD FOR VERIFICATION" data-zh="长按进行验证">PRESS AND HOLD FOR VERIFICATION</button>
                         <div class="countdown" id="fingerprintCountdown"></div>
                         <div class="fingerprint-result" id="fingerprintResult"></div>
@@ -721,14 +756,14 @@
                 </div>
             </div>
             
-            <!-- Screen 5B: 虹膜 (居中) -->
+            <!-- Screen 5B: 虹膜 -->
             <div class="screen" id="screen5b">
                 <h2 class="title" data-en="IRIS RECOGNITION REQUIRED" data-zh="需要虹膜识别">IRIS RECOGNITION REQUIRED</h2>
                 <div class="biometric-container">
                     <div class="iris-section">
                         <div class="iris-scanner"><div class="iris-pupil"></div><div class="iris-scan-line"></div></div>
-                        <p data-en="Level 5 requires iris pattern verification" data-zh="五级权限需要虹膜识别">Level 5 requires iris pattern verification</p>
-                        <p data-en="Look directly into the scanner" data-zh="请直视扫描仪">Look directly into the scanner</p>
+                        <p id="irisText1" data-en="Level 5 requires iris pattern verification" data-zh="五级权限需要虹膜识别">Level 5 requires iris pattern verification</p>
+                        <p id="irisText2" data-en="Look directly into the scanner" data-zh="请直视扫描仪">Look directly into the scanner</p>
                         <button class="iris-btn" id="irisBtn" data-en="START IRIS SCAN" data-zh="开始虹膜扫描">START IRIS SCAN</button>
                         <div class="countdown" id="irisCountdown"></div>
                         <div class="iris-result" id="irisResult"></div>
@@ -737,20 +772,23 @@
                 </div>
             </div>
             
-            <!-- Screen 6: 门禁卡 (居中) -->
+            <!-- Screen 6: 门禁卡 -->
             <div class="screen" id="screen6">
                 <h2 class="title" data-en="ACCESS CARD VERIFICATION" data-zh="门禁卡验证">ACCESS CARD VERIFICATION</h2>
                 <div class="biometric-container">
                     <div class="access-card-section">
                         <div class="card-reader">
                             <div class="card-reader-light" id="cardLight"></div>
-                            <div class="card-reader-text"><div>LEVEL</div><div class="card-reader-level" id="cardLevel">1</div><div>ACCESS CARD</div></div>
+                            <div class="card-reader-text">
+                                <div class="card-reader-level" id="cardLevel">●</div>
+                                <div class="card-simple-text" id="cardSimpleText" data-en="Swipe Card" data-zh="刷门禁卡">刷门禁卡</div>
+                            </div>
                         </div>
-                        <p id="cardInstruction" data-en-prefix="Place your Level " data-zh-prefix="将您的"></p>
-                        <button class="access-card-btn" id="accessCardBtn" data-en="PLACE CARD ON READER" data-zh="放置门禁卡">PLACE CARD ON READER</button>
+                        <p id="cardInstruction" style="display: none;"></p>
+                        <button class="access-card-btn" id="accessCardBtn" data-en="PLACE CARD ON READER" data-zh="放置门禁卡">放置门禁卡</button>
                         <div class="countdown" id="cardCountdown"></div>
                         <div class="access-result" id="accessResult"></div>
-                        <button class="retry-btn" id="accessCardRetryBtn" style="display: none;" data-en="TRY AGAIN" data-zh="重试">TRY AGAIN</button>
+                        <button class="retry-btn" id="accessCardRetryBtn" style="display: none;" data-en="TRY AGAIN" data-zh="重试">重试</button>
                     </div>
                 </div>
             </div>
@@ -791,7 +829,7 @@
     <!-- 权限不足弹窗 -->
     <div class="insufficient-overlay" id="insufficientModal">
         <div class="insufficient-box">
-            <h2 data-en="⛔ ACCESS DENIED" data-zh="⛔ 访问被拒">⛔ ACCESS DENIED</h2>
+            <h2 id="insufficientTitle" data-en="⛔ ACCESS DENIED" data-zh="⛔ 访问被拒">⛔ ACCESS DENIED</h2>
             <p id="insufficientMsg" data-en-default="Your clearance level is insufficient for this area" data-zh-default="您的权限等级不足以进入该区域">Your clearance level is insufficient for this area</p>
             <button id="closeInsufficientBtn" data-en="CONFIRM" data-zh="确认">CONFIRM</button>
         </div>
@@ -800,7 +838,7 @@
     <!-- 加载动画 -->
     <div class="loading-overlay" id="locationLoading">
         <div class="loader"></div>
-        <div class="loading-text" data-en="Verifying area access, please wait..." data-zh="验证区域权限，请稍后...">Verifying area access, please wait...</div>
+        <div class="loading-text" id="loadingMapText" data-en="Verifying area access, please wait..." data-zh="验证区域权限，请稍后...">验证区域权限，请稍后...</div>
     </div>
 
     <!-- 安全协议弹窗 -->
@@ -874,7 +912,7 @@
                 ]
             };
 
-            // 地图数据 (只保留地点名称和等级，不显示认证方式)
+            // 地图数据
             const mapLocations = [
                 { zone:'1级区域', zoneClass:'zone-yellow', level:1, nameEn:'Main Gate Booth', nameZh:'主入口岗亭' },
                 { zone:'1级区域', zoneClass:'zone-yellow', level:1, nameEn:'Personnel Security Check', nameZh:'人员安检通道' },
@@ -999,6 +1037,7 @@
                     insufficientTitle: "⛔ ACCESS DENIED",
                     insufficientMsg: "Your clearance level is insufficient for this area",
                     loadingTextMap: "Verifying area access, please wait...",
+                    cardSimpleText: "Swipe Card"
                 },
                 zh: {
                     title0: "基地地图 · 准入控制",
@@ -1090,6 +1129,7 @@
                     insufficientTitle: "⛔ 访问被拒",
                     insufficientMsg: "您的权限等级不足以进入该区域",
                     loadingTextMap: "验证区域权限，请稍后...",
+                    cardSimpleText: "刷门禁卡"
                 }
             };
 
@@ -1163,6 +1203,7 @@
             const insufficientModal = document.getElementById('insufficientModal');
             const closeInsufficient = document.getElementById('closeInsufficientBtn');
             const insufficientMsg = document.getElementById('insufficientMsg');
+            const insufficientTitle = document.getElementById('insufficientTitle');
             const faceStatusEl = document.getElementById('faceStatus');
             const faceRetryBtn = document.getElementById('faceRetryBtn');
             const fingerprintBtn = document.getElementById('fingerprintBtn');
@@ -1177,9 +1218,8 @@
             const cardCountdownEl = document.getElementById('cardCountdown');
             const accessResultEl = document.getElementById('accessResult');
             const accessCardRetryBtn = document.getElementById('accessCardRetryBtn');
-            const cardLevelEl = document.getElementById('cardLevel');
             const cardLightEl = document.getElementById('cardLight');
-            const cardInstructionEl = document.getElementById('cardInstruction');
+            const cardSimpleText = document.getElementById('cardSimpleText');
             const resultName = document.getElementById('resultName');
             const resultNationality = document.getElementById('resultNationality');
             const resultId = document.getElementById('resultId');
@@ -1205,8 +1245,15 @@
             const signatureConfirm = document.getElementById('signatureConfirm');
             const signatureCanvas = document.getElementById('signatureCanvas');
             const ctx = signatureCanvas.getContext('2d');
+            const loadingMapText = document.getElementById('loadingMapText');
+            const loadingText = document.getElementById('loadingText');
+            const faceInstruction = document.getElementById('faceInstruction');
+            const fingerprintText1 = document.getElementById('fingerprintText1');
+            const fingerprintText2 = document.getElementById('fingerprintText2');
+            const irisText1 = document.getElementById('irisText1');
+            const irisText2 = document.getElementById('irisText2');
 
-            let isTranslated = false;  // 初始为英文
+            let isTranslated = false;
             let currentName = "", currentNationality = "", currentId = "";
             let selectedLevel = 1, selectedPosition = "", selectedDepartment = "";
             let isTaskForceCommander = false;
@@ -1237,7 +1284,7 @@
                     if (loc.zone !== lastZone) {
                         const zoneDiv = document.createElement('div');
                         zoneDiv.className = `map-zone ${loc.zoneClass}`;
-                        zoneDiv.textContent = loc.zone;  // 区域中文名固定
+                        zoneDiv.textContent = loc.zone;
                         container.appendChild(zoneDiv);
                         lastZone = loc.zone;
                     }
@@ -1246,7 +1293,6 @@
                     item.dataset.level = loc.level;
                     item.dataset.nameEn = loc.nameEn;
                     item.dataset.nameZh = loc.nameZh;
-                    // 默认显示英文名
                     item.innerHTML = `<div class="loc-name">${loc.nameEn}</div><div class="loc-level">Clearance <span>${loc.level}</span></div>`;
                     item.addEventListener('click', function() {
                         if (currentSelectedLocationElem) currentSelectedLocationElem.classList.remove('selected');
@@ -1292,23 +1338,31 @@
             });
             otherNationalityInput.addEventListener('input', checkNationalityForTranslate);
 
-            // 翻译功能
+            // 翻译功能 - 确保所有元素都被翻译
             function applyTranslation() {
                 const lang = isTranslated ? 'zh' : 'en';
                 const t = translations[lang];
                 
-                // 更新所有带 data-en / data-zh 的静态文本
+                // 更新所有带 data-en 属性的元素
                 document.querySelectorAll('[data-en]').forEach(el => {
                     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                         if (el.placeholder && el.getAttribute(`data-${lang}-placeholder`)) {
                             el.placeholder = el.getAttribute(`data-${lang}-placeholder`);
                         }
                     } else if (el.tagName === 'SELECT') {
-                        // options单独处理
+                        // 不处理select本身
                     } else {
-                        el.textContent = el.getAttribute(`data-${lang}`) || el.textContent;
+                        const zhText = el.getAttribute('data-zh');
+                        const enText = el.getAttribute('data-en');
+                        if (lang === 'zh' && zhText) {
+                            el.textContent = zhText;
+                        } else if (lang === 'en' && enText) {
+                            el.textContent = enText;
+                        }
                     }
                 });
+
+                // 更新所有select选项
                 document.querySelectorAll('select option').forEach(opt => {
                     if (opt.value && opt.getAttribute(`data-${lang}`)) {
                         opt.textContent = opt.getAttribute(`data-${lang}`);
@@ -1326,6 +1380,9 @@
                 irisRetryBtn.textContent = t.retryBtn;
                 accessCardRetryBtn.textContent = t.retryBtn;
                 translateBtn.textContent = isTranslated ? "Translate to English" : "Translate to Chinese";
+                
+                // 更新门禁卡简单文字
+                cardSimpleText.textContent = t.cardSimpleText;
 
                 // 更新职位下拉 (如果已启用)
                 if (!positionSelect.disabled) {
@@ -1336,13 +1393,6 @@
                             option.textContent = positionTranslations[lang][val];
                         }
                     });
-                }
-
-                // 更新门禁卡提示
-                if (cardInstructionEl) {
-                    const levelText = isTranslated ? translations.zh[`level${selectedLevel}`] : `Level ${selectedLevel}`;
-                    const instruction = t.accessCardInstruction.replace('{level}', levelText);
-                    cardInstructionEl.textContent = instruction;
                 }
 
                 // 更新地图上的地点名称
@@ -1361,12 +1411,40 @@
                     }
                 });
 
-                // 更新选中地点的名称变量
                 if (currentSelectedLocationElem) {
                     const idx = Array.from(mapItems).indexOf(currentSelectedLocationElem);
                     if (idx !== -1) {
                         selectedLocationName = isTranslated ? mapLocations[idx].nameZh : mapLocations[idx].nameEn;
                     }
+                }
+
+                // 更新所有动态文本
+                if (faceStatusEl) {
+                    const defaultText = isTranslated ? translations.zh.faceStatus1 : translations.en.faceStatus1;
+                    if (!faceStatusEl.classList.contains('face-success') && !faceStatusEl.classList.contains('face-failure')) {
+                        faceStatusEl.textContent = defaultText;
+                    }
+                }
+                
+                // 更新倒计时文本前缀
+                if (fingerprintCountdownEl.textContent) {
+                    const seconds = fingerprintCountdown;
+                    fingerprintCountdownEl.textContent = `${isTranslated ? "保持" : "Hold for"} ${seconds}s`;
+                }
+                if (irisCountdownEl.textContent) {
+                    const seconds = irisCountdown;
+                    irisCountdownEl.textContent = `${isTranslated ? "保持" : "Hold for"} ${seconds}s`;
+                }
+                if (cardCountdownEl.textContent) {
+                    const seconds = accessCardCountdown;
+                    cardCountdownEl.textContent = `${isTranslated ? "保持" : "Hold for"} ${seconds}s`;
+                }
+
+                // 更新协议弹窗按钮
+                if (protocolSeconds > 0) {
+                    protocolConfirmBtn.textContent = (isTranslated ? translations.zh.protocolBtn : translations.en.protocolBtn) + ` (${protocolSeconds}s)`;
+                } else {
+                    protocolConfirmBtn.textContent = isTranslated ? translations.zh.protocolBtn : translations.en.protocolBtn;
                 }
             }
 
@@ -1439,6 +1517,9 @@
                         protocolTimer = null;
                         protocolConfirmBtn.disabled = false;
                     }
+                    // 更新按钮文字
+                    const btnText = isTranslated ? translations.zh.protocolBtn : translations.en.protocolBtn;
+                    protocolConfirmBtn.textContent = protocolConfirmBtn.disabled ? `${btnText} (${protocolSeconds}s)` : btnText;
                 }, 1000);
             }
             protocolConfirmBtn.addEventListener('click', () => {
@@ -1493,47 +1574,75 @@
                 selectedDepartment = dept;
                 currentUserLevel = level;
                 isTaskForceCommander = (pos === "Task Force Commander");
-                switchScreen(0); // 去地图
+                switchScreen(0);
             });
 
-            confirmLocationBtn.addEventListener('click', function() {
-                if (!selectedLocationName) return;
-                loadingOverlay.classList.add('active');
-                setTimeout(() => {
-                    loadingOverlay.classList.remove('active');
-                    if (currentUserLevel < selectedLocationLevel) {
-                        insufficientMsg.textContent = isTranslated ? 
-                            `您的权限等级 (${currentUserLevel}) 不足以进入「${selectedLocationName}」(需要等级 ${selectedLocationLevel})` :
-                            `Your level (${currentUserLevel}) insufficient for "${selectedLocationName}" (requires level ${selectedLocationLevel})`;
-                        insufficientModal.classList.add('active');
-                    } else {
-                        if (selectedLevel >= 3) startFaceRecognition();
-                        else startAccessCardVerification();
-                    }
-                }, 2500);
-            });
-            closeInsufficient.addEventListener('click', function() {
-                insufficientModal.classList.remove('active');
-            });
-            backToIdBtn.addEventListener('click', function() {
-                switchScreen(1);
-                if (currentSelectedLocationElem) {
-                    currentSelectedLocationElem.classList.remove('selected');
-                    currentSelectedLocationElem = null;
+            // 根据人员和区域等级决定验证流程
+            function startAreaVerification() {
+                if (currentUserLevel < selectedLocationLevel) {
+                    insufficientMsg.textContent = isTranslated ? 
+                        `您的权限等级 (${currentUserLevel}) 不足以进入「${selectedLocationName}」(需要等级 ${selectedLocationLevel})` :
+                        `Your level (${currentUserLevel}) insufficient for "${selectedLocationName}" (requires level ${selectedLocationLevel})`;
+                    insufficientModal.classList.add('active');
+                    return;
                 }
-                confirmLocationBtn.disabled = true;
-            });
 
-            // 人脸识别
-            function startFaceRecognition() {
+                let steps = [];
+                steps.push({ type: 'card', level: 1 });
+                if (selectedLocationLevel >= 2) steps.push({ type: 'face', level: 2 });
+                if (selectedLocationLevel >= 3) steps.push({ type: 'fingerprint', level: 3 });
+                if (selectedLocationLevel >= 4) steps.push({ type: 'iris', level: 4 });
+
+                executeNextStep(steps, 0);
+            }
+
+            function executeNextStep(steps, index) {
+                if (index >= steps.length) {
+                    setTimeout(() => {
+                        let deptName = selectedDepartment;
+                        const lang = isTranslated ? "zh" : "en";
+                        deptName = translations[lang][selectedDepartment] || selectedDepartment;
+                        let posName = selectedPosition;
+                        if (positionTranslations[lang] && positionTranslations[lang][selectedPosition]) posName = positionTranslations[lang][selectedPosition];
+                        showFinalResults(selectedLevel, deptName, posName);
+                    }, 500);
+                    return;
+                }
+
+                const step = steps[index];
+                switch (step.type) {
+                    case 'card':
+                        startAccessCardVerification(() => {
+                            executeNextStep(steps, index + 1);
+                        });
+                        break;
+                    case 'face':
+                        startFaceRecognition(() => {
+                            executeNextStep(steps, index + 1);
+                        });
+                        break;
+                    case 'fingerprint':
+                        startFingerprintVerificationScreen(() => {
+                            executeNextStep(steps, index + 1);
+                        });
+                        break;
+                    case 'iris':
+                        startIrisScreen(() => {
+                            executeNextStep(steps, index + 1);
+                        });
+                        break;
+                }
+            }
+
+            function startFaceRecognition(onSuccess) {
                 switchScreen(4);
                 faceStatusEl.textContent = isTranslated ? translations.zh.faceStatus1 : translations.en.faceStatus1;
                 faceRetryBtn.style.display = "none";
                 setTimeout(() => {
-                    setTimeout(() => completeFaceRecognition(), 2000);
+                    setTimeout(() => completeFaceRecognition(onSuccess), 2000);
                 }, 1000);
             }
-            function completeFaceRecognition() {
+            function completeFaceRecognition(onSuccess) {
                 const success = Math.random() > 0.25;
                 if (success) {
                     faceStatusEl.textContent = isTranslated ? translations.zh.faceSuccess : translations.en.faceSuccess;
@@ -1542,17 +1651,21 @@
                         return;
                     }
                     setTimeout(() => {
-                        if (selectedLevel >= 4) startFingerprintVerificationScreen();
-                        else startAccessCardVerification();
+                        if (onSuccess) onSuccess();
                     }, 1500);
                 } else {
                     faceStatusEl.textContent = isTranslated ? translations.zh.faceFailure : translations.en.faceFailure;
                     faceRetryBtn.style.display = "block";
+                    faceRetryBtn.onclick = () => startFaceRecognition(onSuccess);
                 }
             }
-            faceRetryBtn.addEventListener('click', startFaceRecognition);
 
-            function startFingerprintVerificationScreen() { switchScreen(5); resetFingerprint(); }
+            function startFingerprintVerificationScreen(onSuccess) { 
+                switchScreen(5); 
+                resetFingerprint();
+                fingerprintBtn.onmousedown = () => startFingerprint(onSuccess);
+                fingerprintBtn.ontouchstart = (e) => { e.preventDefault(); startFingerprint(onSuccess); };
+            }
             function resetFingerprint() {
                 fingerprintBtn.classList.remove('active','failed');
                 fingerprintBtn.textContent = isTranslated ? translations.zh.fingerprintBtn : translations.en.fingerprintBtn;
@@ -1560,12 +1673,7 @@
                 fingerprintResultEl.textContent = "";
                 fingerprintRetryBtn.style.display = "none";
             }
-            fingerprintBtn.addEventListener('mousedown', startFingerprint);
-            fingerprintBtn.addEventListener('touchstart', e => { e.preventDefault(); startFingerprint(); });
-            fingerprintBtn.addEventListener('mouseup', stopFingerprint);
-            fingerprintBtn.addEventListener('touchend', stopFingerprint);
-            fingerprintBtn.addEventListener('mouseleave', stopFingerprint);
-            function startFingerprint() {
+            function startFingerprint(onSuccess) {
                 if (fingerprintTimer) return;
                 fingerprintBtn.classList.add('active');
                 fingerprintCountdown = 3;
@@ -1573,31 +1681,34 @@
                 fingerprintTimer = setInterval(() => {
                     fingerprintCountdown--;
                     if (fingerprintCountdown > 0) fingerprintCountdownEl.textContent = `${isTranslated ? "保持" : "Hold for"} ${fingerprintCountdown}s`;
-                    else { clearInterval(fingerprintTimer); fingerprintTimer = null; completeFingerprint(); }
+                    else { clearInterval(fingerprintTimer); fingerprintTimer = null; completeFingerprint(onSuccess); }
                 }, 1000);
             }
             function stopFingerprint() {
                 if (fingerprintTimer) { clearInterval(fingerprintTimer); fingerprintTimer = null; resetFingerprint(); }
             }
-            function completeFingerprint() {
+            function completeFingerprint(onSuccess) {
                 const success = Math.random() > 0.25;
                 if (success) {
                     fingerprintResultEl.textContent = isTranslated ? translations.zh.fingerprintSuccess : translations.en.fingerprintSuccess;
                     fingerprintResultEl.style.color = "#00aa00";
                     setTimeout(() => {
-                        if (selectedLevel >= 5) startIrisScreen();
-                        else startAccessCardVerification();
+                        if (onSuccess) onSuccess();
                     }, 1500);
                 } else {
                     fingerprintBtn.classList.add('failed');
                     fingerprintResultEl.textContent = isTranslated ? translations.zh.fingerprintFailure : translations.en.fingerprintFailure;
                     fingerprintResultEl.style.color = "#ff5500";
                     fingerprintRetryBtn.style.display = "block";
+                    fingerprintRetryBtn.onclick = () => startFingerprintVerificationScreen(onSuccess);
                 }
             }
-            fingerprintRetryBtn.addEventListener('click', startFingerprintVerificationScreen);
 
-            function startIrisScreen() { switchScreen('5b'); resetIris(); }
+            function startIrisScreen(onSuccess) { 
+                switchScreen('5b'); 
+                resetIris();
+                irisBtn.onclick = () => startIris(onSuccess);
+            }
             function resetIris() {
                 irisBtn.classList.remove('active','failed');
                 irisBtn.textContent = isTranslated ? translations.zh.irisBtn : translations.en.irisBtn;
@@ -1605,7 +1716,7 @@
                 irisResultEl.textContent = "";
                 irisRetryBtn.style.display = "none";
             }
-            irisBtn.addEventListener('click', function() {
+            function startIris(onSuccess) {
                 if (irisTimer) return;
                 irisBtn.classList.add('active');
                 irisCountdown = 3;
@@ -1613,30 +1724,31 @@
                 irisTimer = setInterval(() => {
                     irisCountdown--;
                     if (irisCountdown > 0) irisCountdownEl.textContent = `${isTranslated ? "保持" : "Hold for"} ${irisCountdown}s`;
-                    else { clearInterval(irisTimer); irisTimer = null; completeIris(); }
+                    else { clearInterval(irisTimer); irisTimer = null; completeIris(onSuccess); }
                 }, 1000);
-            });
-            function completeIris() {
+            }
+            function completeIris(onSuccess) {
                 const success = Math.random() > 0.25;
                 if (success) {
                     irisResultEl.textContent = isTranslated ? translations.zh.irisSuccess : translations.en.irisSuccess;
                     irisResultEl.style.color = "#00aa00";
-                    setTimeout(() => startAccessCardVerification(), 1500);
+                    setTimeout(() => {
+                        if (onSuccess) onSuccess();
+                    }, 1500);
                 } else {
                     irisBtn.classList.add('failed');
                     irisResultEl.textContent = isTranslated ? translations.zh.irisFailure : translations.en.irisFailure;
                     irisResultEl.style.color = "#ff5500";
                     irisRetryBtn.style.display = "block";
+                    irisRetryBtn.onclick = () => startIrisScreen(onSuccess);
                 }
             }
-            irisRetryBtn.addEventListener('click', startIrisScreen);
 
-            function startAccessCardVerification() {
+            function startAccessCardVerification(onSuccess) {
                 switchScreen(6);
                 resetCard();
-                cardLevelEl.textContent = selectedLevel;
-                const levelText = isTranslated ? translations.zh[`level${selectedLevel}`] : `Level ${selectedLevel}`;
-                cardInstructionEl.textContent = (isTranslated ? translations.zh.accessCardInstruction : translations.en.accessCardInstruction).replace('{level}', levelText);
+                accessCardBtn.onmousedown = () => startCard(onSuccess);
+                accessCardBtn.ontouchstart = (e) => { e.preventDefault(); startCard(onSuccess); };
             }
             function resetCard() {
                 accessCardBtn.classList.remove('active','failed');
@@ -1646,12 +1758,7 @@
                 cardLightEl.className = "card-reader-light";
                 accessCardRetryBtn.style.display = "none";
             }
-            accessCardBtn.addEventListener('mousedown', startCard);
-            accessCardBtn.addEventListener('touchstart', e => { e.preventDefault(); startCard(); });
-            accessCardBtn.addEventListener('mouseup', stopCard);
-            accessCardBtn.addEventListener('touchend', stopCard);
-            accessCardBtn.addEventListener('mouseleave', stopCard);
-            function startCard() {
+            function startCard(onSuccess) {
                 if (accessCardTimer) return;
                 accessCardBtn.classList.add('active');
                 cardLightEl.classList.add('active');
@@ -1660,25 +1767,20 @@
                 accessCardTimer = setInterval(() => {
                     accessCardCountdown--;
                     if (accessCardCountdown > 0) cardCountdownEl.textContent = `${isTranslated ? "保持" : "Hold for"} ${accessCardCountdown}s`;
-                    else { clearInterval(accessCardTimer); accessCardTimer = null; completeCard(); }
+                    else { clearInterval(accessCardTimer); accessCardTimer = null; completeCard(onSuccess); }
                 }, 1000);
             }
             function stopCard() {
                 if (accessCardTimer) { clearInterval(accessCardTimer); accessCardTimer = null; cardLightEl.classList.remove('active'); resetCard(); }
             }
-            function completeCard() {
+            function completeCard(onSuccess) {
                 const success = Math.random() > 0.25;
                 if (success) {
                     cardLightEl.classList.add('active');
                     accessResultEl.textContent = isTranslated ? translations.zh.accessCardSuccess : translations.en.accessCardSuccess;
                     accessResultEl.classList.add("access-success");
                     setTimeout(() => {
-                        let deptName = selectedDepartment;
-                        const lang = isTranslated ? "zh" : "en";
-                        deptName = translations[lang][selectedDepartment] || selectedDepartment;
-                        let posName = selectedPosition;
-                        if (positionTranslations[lang] && positionTranslations[lang][selectedPosition]) posName = positionTranslations[lang][selectedPosition];
-                        showFinalResults(selectedLevel, deptName, posName);
+                        if (onSuccess) onSuccess();
                     }, 1500);
                 } else {
                     accessCardBtn.classList.add('failed');
@@ -1686,9 +1788,31 @@
                     accessResultEl.textContent = isTranslated ? translations.zh.accessCardFailure : translations.en.accessCardFailure;
                     accessResultEl.classList.add("access-failure");
                     accessCardRetryBtn.style.display = "block";
+                    accessCardRetryBtn.onclick = () => startAccessCardVerification(onSuccess);
                 }
             }
-            accessCardRetryBtn.addEventListener('click', startAccessCardVerification);
+
+            confirmLocationBtn.addEventListener('click', function() {
+                if (!selectedLocationName) return;
+                loadingOverlay.classList.add('active');
+                setTimeout(() => {
+                    loadingOverlay.classList.remove('active');
+                    startAreaVerification();
+                }, 2500);
+            });
+
+            closeInsufficient.addEventListener('click', function() {
+                insufficientModal.classList.remove('active');
+            });
+
+            backToIdBtn.addEventListener('click', function() {
+                switchScreen(1);
+                if (currentSelectedLocationElem) {
+                    currentSelectedLocationElem.classList.remove('selected');
+                    currentSelectedLocationElem = null;
+                }
+                confirmLocationBtn.disabled = true;
+            });
 
             function showFinalResults(level, deptName, posName) {
                 resultName.textContent = currentName;
@@ -1719,9 +1843,7 @@
                 setTimeout(() => restartSystem(), 5000);
             }
 
-            // 重点：重新认证时重置语言为英文，并且翻译按钮隐藏
             function restartSystem() {
-                // 重置所有输入
                 nameInput.value = ""; 
                 nationalitySelect.selectedIndex = 0;
                 otherNationalityInput.style.display = "none"; 
@@ -1739,15 +1861,13 @@
                 }
                 confirmLocationBtn.disabled = true;
                 
-                // 关键：重置语言为英文
                 isTranslated = false;
-                applyTranslation();  // 强制更新所有文本为英文
+                applyTranslation();
                 
-                // 隐藏翻译按钮（因为国籍已清空）
                 translateBtn.classList.remove('visible');
                 
                 switchScreen(1);
-                checkNationalityForTranslate(); // 重新检测国籍（此时为空，按钮隐藏）
+                checkNationalityForTranslate();
             }
             restartBtn.addEventListener('click', restartSystem);
             videoBtn.addEventListener('click', () => window.open('https://b23.tv/ahKSzgK', '_blank'));
