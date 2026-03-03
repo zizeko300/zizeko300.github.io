@@ -103,7 +103,7 @@
             border-bottom: 1px solid #333;
         }
         
-        /* ===== 身份录入界面 - 各占一行，居中不拥挤 ===== */
+        /* ===== 身份录入界面 ===== */
         .id-entry-container {
             max-width: 500px;
             margin: 0 auto;
@@ -178,6 +178,118 @@
             padding-top: 15px;
         }
         
+        /* ===== 密码输入界面 ===== */
+        .password-container {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .password-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .password-hint {
+            color: #aaa;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .error-message {
+            color: #ff5555;
+            font-size: 14px;
+            text-align: center;
+            min-height: 20px;
+        }
+        
+        /* ===== 随机事件界面 ===== */
+        .event-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #1e2a3a;
+            border-radius: 10px;
+            padding: 30px;
+            border: 2px solid #3a5a7a;
+            box-shadow: 0 0 30px rgba(0, 100, 255, 0.3);
+        }
+        
+        .event-chat-box {
+            background-color: #0f1a24;
+            border-radius: 18px 18px 18px 4px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #2a4a6a;
+            position: relative;
+        }
+        
+        .event-chat-box::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            bottom: 10px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 20px 20px 0;
+            border-color: transparent #0f1a24 transparent transparent;
+        }
+        
+        .event-speaker {
+            color: #8ab8ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .event-message {
+            color: #e0e0e0;
+            font-size: 1rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        
+        .event-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .event-option-btn {
+            background-color: #1e3a5a;
+            color: white;
+            border: 2px solid #3a6a9a;
+            border-radius: 8px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        .event-option-btn:hover {
+            background-color: #2a4a7a;
+            border-color: #5a8ac0;
+            transform: translateX(5px);
+        }
+        
+        .event-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #1a2a3a;
+            color: #aaccff;
+            text-align: center;
+            font-style: italic;
+            border-left: 4px solid #5a9aff;
+        }
+        
         .loading {
             text-align: center;
             padding: 40px;
@@ -239,7 +351,7 @@
         .level-4 { background-color: #008000; } 
         .level-5 { background-color: #ff0000; } 
         
-        /* ========== 2D 地图样式 - 确保图标和文字完全居中 ========== */
+        /* ========== 2D 地图样式 ========== */
         .map-screen {
             background-color: #0f172a;
             border: 1px solid #2a3a5a;
@@ -604,15 +716,13 @@
             border: 2px solid #ffaa00; box-shadow: 0 0 20px #ff5500;
         }
 
-        .modal-overlay, .signature-overlay {
+        .modal-overlay {
             position: fixed; top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:1000;
         }
-        .modal-overlay.active, .signature-overlay.active { display: flex; }
+        .modal-overlay.active { display: flex; }
         .modal-box { background: #1a1a1a; border: 2px solid #0055ff; border-radius: 10px; padding: 30px; max-width: 500px; color: #eee; text-align: center; }
         .modal-btn { background-color: #0055ff; color: white; border: none; padding: 12px 30px; border-radius: 5px; font-size: 18px; cursor: pointer; margin-top: 15px; }
         .modal-btn:disabled { background-color: #555; cursor: not-allowed; }
-        .signature-box { background: white; border-radius: 12px; padding: 20px; max-width: 700px; text-align: center; }
-        canvas.signature-pad { width:100%; height:200px; background: white; border:2px solid #333; border-radius:8px; touch-action: none; cursor: crosshair; }
 
         @media (max-width: 700px) {
             .map-container { grid-template-columns: repeat(2,1fr); }
@@ -632,7 +742,7 @@
         </div>
         
         <div class="content">
-            <!-- Screen 1: 身份录入 -->
+            <!-- Screen 1: 身份录入 (默认英文) -->
             <div class="screen active" id="screen1">
                 <h2 class="title" id="screen1Title" data-en="IDENTIFICATION VERIFICATION" data-zh="身份验证">IDENTIFICATION VERIFICATION</h2>
                 <div class="id-entry-container">
@@ -661,27 +771,33 @@
                 <div class="footer-note" id="footerNote" data-en="Personnel ID format: TF141-2026-XXXX (Enter 4 digits)" data-zh="人员ID格式：TF141-2026-XXXX（输入4位数字）">Personnel ID format: TF141-2026-XXXX (Enter 4 digits)</div>
             </div>
 
-            <!-- Screen 0: 2D 基地地图 -->
-            <div class="screen" id="screen0">
-                <h2 class="title" id="mapTitle" data-en="BASE MAP – ACCESS CONTROL" data-zh="基地地图 · 准入控制">BASE MAP – ACCESS CONTROL</h2>
-                <div class="map-screen">
-                    <div class="map-container" id="mapContainer"></div>
-                    <div class="map-legend">
-                        <span><span class="legend-color" style="background:#b8860b;"></span> <span id="legend1" data-en="Level 1 Low" data-zh="1级 低权限">Level 1 Low</span></span>
-                        <span><span class="legend-color" style="background:#800080;"></span> <span id="legend2" data-en="Level 2 Combat" data-zh="2级 作战人员">Level 2 Combat</span></span>
-                        <span><span class="legend-color" style="background:#0055ff;"></span> <span id="legend3" data-en="Level 3 Core" data-zh="3级 技术核心">Level 3 Core</span></span>
-                        <span><span class="legend-color" style="background:#008000;"></span> <span id="legend4" data-en="Level 4 Command" data-zh="4级 指挥决策">Level 4 Command</span></span>
-                        <span><span class="legend-color" style="background:#ff0000;"></span> <span id="legend5" data-en="Level 5 Strategic" data-zh="5级 最高战略">Level 5 Strategic</span></span>
-                        <span><span class="legend-color" style="background:#6c757d;"></span> <span id="legend6" data-en="Logistics" data-zh="后勤特殊">Logistics</span></span>
+            <!-- Screen 1.5: 签名板 -->
+            <div class="screen" id="screen1_5">
+                <h2 class="title" id="signatureScreenTitle" data-en="OFFICIAL SIGNATURE REQUIRED" data-zh="需要官方签名">OFFICIAL SIGNATURE REQUIRED</h2>
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <div style="background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.5);">
+                        <canvas id="signatureCanvas" width="600" height="200" style="width:100%; height:200px; background: white; border:2px solid #333; border-radius:8px; touch-action: none; cursor: crosshair; display: block;"></canvas>
                     </div>
-                    <p style="text-align:center; margin:15px 0 5px; color:#9cb0d0;" id="mapHint" data-en="Click a zone, then confirm to start access procedure" data-zh="点击目标区域，确认后开始准入流程">Click a zone, then confirm to start access procedure</p>
-                    <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
-                        <button class="btn" id="confirmLocationBtn" style="width:auto; padding:12px 40px;" disabled data-en="Confirm Location" data-zh="确认选择地点">Confirm Location</button>
-                        <button class="btn" id="backToIdBtn" style="width:auto; background:#444;" data-en="Back to ID Entry" data-zh="返回身份录入">Back to ID Entry</button>
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn" id="signatureClearBtn" style="background-color: #6c757d; width: auto; padding: 12px 30px;" data-en="CLEAR" data-zh="清除">CLEAR</button>
+                        <button class="btn" id="signatureConfirmBtn" disabled style="width: auto; padding: 12px 30px;" data-en="CONFIRM SIGNATURE" data-zh="确认签名">CONFIRM SIGNATURE</button>
                     </div>
                 </div>
             </div>
-            
+
+            <!-- Screen 1.6: 密码输入 -->
+            <div class="screen" id="screen1_6">
+                <h2 class="title" id="passwordTitle" data-en="ACCESS PASSWORD REQUIRED" data-zh="需要访问密码">ACCESS PASSWORD REQUIRED</h2>
+                <div class="password-container">
+                    <div class="password-input-group">
+                        <input type="password" id="passwordInput" placeholder="Enter access password" data-en-placeholder="Enter access password" data-zh-placeholder="请输入访问密码">
+                        <div class="error-message" id="passwordError"></div>
+                        <button class="btn" id="submitPasswordBtn" data-en="VERIFY PASSWORD" data-zh="验证密码">VERIFY PASSWORD</button>
+                    </div>
+                    <div class="password-hint" id="passwordHint" data-en="Hint: Use provided passwords" data-zh="提示：使用提供的密码">Hint: Use provided passwords</div>
+                </div>
+            </div>
+
             <!-- Screen 2: 验证中 -->
             <div class="screen" id="screen2">
                 <h2 class="title" data-en="VERIFYING CREDENTIALS" data-zh="正在验证凭证">VERIFYING CREDENTIALS</h2>
@@ -717,6 +833,14 @@
                 </div>
                 
                 <button class="btn" id="assignBtn" disabled data-en="CONFIRM ASSIGNMENT" data-zh="确认分配">CONFIRM ASSIGNMENT</button>
+            </div>
+            
+            <!-- Screen 3.5: 随机事件界面 -->
+            <div class="screen" id="screen3_5">
+                <h2 class="title" id="eventTitle" data-en="ENCOUNTER" data-zh="遭遇">ENCOUNTER</h2>
+                <div class="event-container" id="eventContainer">
+                    <!-- 动态填充事件内容 -->
+                </div>
             </div>
             
             <!-- Screen 4: 人脸识别 -->
@@ -781,19 +905,19 @@
                             <div class="card-reader-light" id="cardLight"></div>
                             <div class="card-reader-text">
                                 <div class="card-reader-level" id="cardLevel">●</div>
-                                <div class="card-simple-text" id="cardSimpleText" data-en="Swipe Card" data-zh="刷门禁卡">刷门禁卡</div>
+                                <div class="card-simple-text" id="cardSimpleText" data-en="Swipe Card" data-zh="刷门禁卡">Swipe Card</div>
                             </div>
                         </div>
                         <p id="cardInstruction" style="display: none;"></p>
-                        <button class="access-card-btn" id="accessCardBtn" data-en="PLACE CARD ON READER" data-zh="放置门禁卡">放置门禁卡</button>
+                        <button class="access-card-btn" id="accessCardBtn" data-en="PLACE CARD ON READER" data-zh="放置门禁卡">PLACE CARD ON READER</button>
                         <div class="countdown" id="cardCountdown"></div>
                         <div class="access-result" id="accessResult"></div>
-                        <button class="retry-btn" id="accessCardRetryBtn" style="display: none;" data-en="TRY AGAIN" data-zh="重试">重试</button>
+                        <button class="retry-btn" id="accessCardRetryBtn" style="display: none;" data-en="TRY AGAIN" data-zh="重试">TRY AGAIN</button>
                     </div>
                 </div>
             </div>
             
-            <!-- Screen 7: 结果页 + 视频按钮 -->
+            <!-- Screen 7: 结果页 -->
             <div class="screen" id="screen7">
                 <h2 class="title" data-en="IDENTIFICATION CONFIRMED" data-zh="身份已确认">IDENTIFICATION CONFIRMED</h2>
                 <div class="result">
@@ -823,6 +947,27 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Screen 0: 2D 基地地图 -->
+            <div class="screen" id="screen0">
+                <h2 class="title" id="mapTitle" data-en="BASE MAP – ACCESS CONTROL" data-zh="基地地图 · 准入控制">BASE MAP – ACCESS CONTROL</h2>
+                <div class="map-screen">
+                    <div class="map-container" id="mapContainer"></div>
+                    <div class="map-legend">
+                        <span><span class="legend-color" style="background:#b8860b;"></span> <span id="legend1" data-en="Level 1 Low" data-zh="1级 低权限">Level 1 Low</span></span>
+                        <span><span class="legend-color" style="background:#800080;"></span> <span id="legend2" data-en="Level 2 Combat" data-zh="2级 作战人员">Level 2 Combat</span></span>
+                        <span><span class="legend-color" style="background:#0055ff;"></span> <span id="legend3" data-en="Level 3 Core" data-zh="3级 技术核心">Level 3 Core</span></span>
+                        <span><span class="legend-color" style="background:#008000;"></span> <span id="legend4" data-en="Level 4 Command" data-zh="4级 指挥决策">Level 4 Command</span></span>
+                        <span><span class="legend-color" style="background:#ff0000;"></span> <span id="legend5" data-en="Level 5 Strategic" data-zh="5级 最高战略">Level 5 Strategic</span></span>
+                        <span><span class="legend-color" style="background:#6c757d;"></span> <span id="legend6" data-en="Logistics" data-zh="后勤特殊">Logistics</span></span>
+                    </div>
+                    <p style="text-align:center; margin:15px 0 5px; color:#9cb0d0;" id="mapHint" data-en="Click a zone, then confirm to start access procedure" data-zh="点击目标区域，确认后开始准入流程">Click a zone, then confirm to start access procedure</p>
+                    <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
+                        <button class="btn" id="confirmLocationBtn" style="width:auto; padding:12px 40px;" disabled data-en="Confirm Location" data-zh="确认选择地点">Confirm Location</button>
+                        <button class="btn" id="backToIdBtn" style="width:auto; background:#444;" data-en="Back to ID Entry" data-zh="返回身份录入">Back to ID Entry</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -838,30 +983,18 @@
     <!-- 加载动画 -->
     <div class="loading-overlay" id="locationLoading">
         <div class="loader"></div>
-        <div class="loading-text" id="loadingMapText" data-en="Verifying area access, please wait..." data-zh="验证区域权限，请稍后...">验证区域权限，请稍后...</div>
+        <div class="loading-text" id="loadingMapText" data-en="Verifying area access, please wait..." data-zh="验证区域权限，请稍后...">Verifying area access, please wait...</div>
     </div>
 
-    <!-- 安全协议弹窗 -->
+    <!-- 安全协议弹窗 (5秒倒计时) -->
     <div class="modal-overlay" id="protocolModal">
         <div class="modal-box">
             <h2 style="color:#0055ff;" id="protocolTitle" data-en="⚠️ SECURITY PROTOCOL" data-zh="⚠️ 安全协议">⚠️ SECURITY PROTOCOL</h2>
             <p id="protocolLine1" data-en="1. All information is classified." data-zh="1. 所有信息均属机密。">1. All information is classified.</p>
             <p id="protocolLine2" data-en="2. Unauthorized disclosure is prohibited." data-zh="2. 严禁未经授权披露。">2. Unauthorized disclosure is prohibited.</p>
             <p id="protocolLine3" data-en="3. You are subject to continuous monitoring." data-zh="3. 您将受到持续监控。">3. You are subject to continuous monitoring.</p>
-            <div class="modal-countdown" id="protocolCountdown">8</div>
+            <div class="modal-countdown" id="protocolCountdown">5</div>
             <button class="modal-btn" id="protocolConfirmBtn" disabled data-en="ACKNOWLEDGE" data-zh="确认">ACKNOWLEDGE</button>
-        </div>
-    </div>
-
-    <!-- 签名板弹窗 -->
-    <div class="signature-overlay" id="signatureModal">
-        <div class="signature-box">
-            <div class="signature-title" id="signatureTitle" data-en="OFFICIAL SIGNATURE REQUIRED" data-zh="需要官方签名">OFFICIAL SIGNATURE REQUIRED</div>
-            <canvas id="signatureCanvas" class="signature-pad" width="600" height="200"></canvas>
-            <div class="signature-actions">
-                <button class="clear-btn" id="signatureClear" data-en="CLEAR" data-zh="清除">CLEAR</button>
-                <button class="confirm-btn" id="signatureConfirm" disabled data-en="CONFIRM SIGNATURE" data-zh="确认签名">CONFIRM SIGNATURE</button>
-            </div>
         </div>
     </div>
 
@@ -946,12 +1079,540 @@
                 { zone:'后勤与特殊流线', zoneClass:'zone-gray', level:1, nameEn:'Helipad', nameZh:'直升机停机坪' }
             ];
 
+            // 密码映射表
+            const passwordLevelMap = {
+                'TF141LEVELONE1417': 1,
+                'TF141LEVELTWO1356': 2,
+                'TF141LEVELTHREE1689': 3,
+                'TF141LEVELFOUR4569': 4,
+                'TF141LEVELFIVE3568': 5
+            };
+
+            // ---------- 随机事件库 (35个事件, 每个事件独立概率20%) ----------
+            const randomEvents = [
+                // 原有25个事件
+                {
+                    name: 'Soap',
+                    messageEn: "Hey {name}, you heading to the range? Want to spot for me?",
+                    messageZh: "嘿{name}，你要去靶场吗？帮我当观察员？",
+                    optionsEn: [
+                        { text: "Sure, let's go", response: "Nice! I'll save you a lane." },
+                        { text: "Maybe later, on duty", response: "No worries, catch you later." },
+                        { text: "I'm actually headed to supply", response: "Ah, okay. Stay sharp!" }
+                    ],
+                    optionsZh: [
+                        { text: "好啊，走吧", response: "太好了！我给你留个靶道。" },
+                        { text: "改天吧，执勤中", response: "没事，回头见。" },
+                        { text: "我正要去补给处", response: "啊好吧。保持警惕！" }
+                    ]
+                },
+                {
+                    name: 'Ghost',
+                    messageEn: "{name}. Need you to keep an eye on sector 7. Something feels off.",
+                    messageZh: "{name}。需要你留意7号区域。感觉不太对劲。",
+                    optionsEn: [
+                        { text: "On it, ma'am", response: "Good. Report anything unusual." },
+                        { text: "I'll have a look after my shift", response: "Make it priority." },
+                        { text: "Maybe it's just the wind?", response: "...I don't like it." }
+                    ],
+                    optionsZh: [
+                        { text: "明白，长官", response: "很好。有任何异常立即报告。" },
+                        { text: "我下班后去看看", response: "优先处理。" },
+                        { text: "也许只是风声？", response: "……我不喜欢这样。" }
+                    ]
+                },
+                {
+                    name: 'Gaz',
+                    messageEn: "Hey {name}! Did you see the match last night?",
+                    messageZh: "嘿{name}！昨晚的比赛你看了吗？",
+                    optionsEn: [
+                        { text: "Yeah, that goal was insane!", response: "Right?! Best game ever." },
+                        { text: "No, I was on night watch", response: "Ah, tough luck. It was a good one." },
+                        { text: "Sports? I only care about tactical drills", response: "You're missing out, mate." }
+                    ],
+                    optionsZh: [
+                        { text: "看了，那个进球太疯狂了！", response: "对吧？！史上最佳比赛。" },
+                        { text: "没看，我值夜班", response: "啊，真可惜。那场比赛很精彩。" },
+                        { text: "体育？我只关心战术训练", response: "你会错过的，姐妹。" }
+                    ]
+                },
+                {
+                    name: 'Cafeteria Lady',
+                    messageEn: "{name}, you want extra portion today? Looking skinny.",
+                    messageZh: "{name}，今天要加餐吗？看起来有点瘦。",
+                    optionsEn: [
+                        { text: "Yes please, thank you!", response: "Here you go, stay strong." },
+                        { text: "No thanks, I'm good", response: "Suit yourself, soldier." },
+                        { text: "Got any of that apple pie?", response: "Sorry, all out. Tomorrow maybe." }
+                    ],
+                    optionsZh: [
+                        { text: "好的，谢谢！", response: "给你，保持强壮。" },
+                        { text: "不用了，我够了", response: "随你吧，战士。" },
+                        { text: "还有苹果派吗？", response: "抱歉，卖完了。明天也许有。" }
+                    ]
+                },
+                {
+                    name: 'Laswell',
+                    messageEn: "{name}, I need those satellite images analyzed by 1800.",
+                    messageZh: "{name}，我需要在18点前分析完那些卫星图像。",
+                    optionsEn: [
+                        { text: "Understood, Laswell", response: "Good. Send them directly to me." },
+                        { text: "I'll get right on it", response: "Appreciated." },
+                        { text: "Can Kyle help with that?", response: "He's on another task." }
+                    ],
+                    optionsZh: [
+                        { text: "明白，Laswell", response: "很好。直接发给我。" },
+                        { text: "我马上处理", response: "多谢。" },
+                        { text: "Kyle能帮忙吗？", response: "他有别的任务。" }
+                    ]
+                },
+                {
+                    name: 'Mechanic',
+                    messageEn: "{name}, the transmission on your truck is acting up. Bring it by.",
+                    messageZh: "{name}，你卡车的变速箱有问题。开过来看看。",
+                    optionsEn: [
+                        { text: "Thanks, I'll bring it now", response: "I'll have it ready in an hour." },
+                        { text: "Can it wait till tomorrow?", response: "Sure, but don't push it hard." },
+                        { text: "That explains the noise...", response: "Yeah, don't ignore that." }
+                    ],
+                    optionsZh: [
+                        { text: "谢谢，我这就开过来", response: "一小时内修好。" },
+                        { text: "能等到明天吗？", response: "可以，但别开太猛。" },
+                        { text: "难怪有异响……", response: "对，别忽视。" }
+                    ]
+                },
+                {
+                    name: 'Rookie',
+                    messageEn: "Sergeant {name}? Can I ask you about the new tactical protocol?",
+                    messageZh: "{name}中士？能请教您新的战术protocol吗？",
+                    optionsEn: [
+                        { text: "Of course, what's the question?", response: "Thanks! It's about entry clearance..." },
+                        { text: "Not now, I'm busy", response: "Sorry, I'll find someone else." },
+                        { text: "Read the manual first, then ask", response: "Yes, ma'am. Right away." }
+                    ],
+                    optionsZh: [
+                        { text: "当然，什么问题？", response: "谢谢！是关于准入权限的……" },
+                        { text: "现在不行，我很忙", response: "抱歉，我找别人吧。" },
+                        { text: "先看手册，再提问", response: "是，长官。立刻去。" }
+                    ]
+                },
+                {
+                    name: 'Nikolai',
+                    messageEn: "{name}, my helicopter needs refueling. Can you arrange it?",
+                    messageZh: "{name}，我的直升机需要加油。能安排一下吗？",
+                    optionsEn: [
+                        { text: "I'll call logistics now", response: "Spasibo, my friend." },
+                        { text: "Use the regular fuel depot", response: "Already did, they're busy." },
+                        { text: "I'm not fuel crew, Nikolai", response: "Da, but you know people." }
+                    ],
+                    optionsZh: [
+                        { text: "我立刻联系后勤", response: "谢谢，我的朋友。" },
+                        { text: "去普通加油站", response: "去过了，他们很忙。" },
+                        { text: "我不是加油队的，Nikolai", response: "对，但你认识人。" }
+                    ]
+                },
+                {
+                    name: 'Random Soldier',
+                    messageEn: "{name}, you dropped your ID card earlier. Here.",
+                    messageZh: "{name}，你刚才掉了ID卡。给你。",
+                    optionsEn: [
+                        { text: "Oh thanks, saved me!", response: "No problem, stay safe." },
+                        { text: "That's not mine", response: "Oh, sorry. Looks just like you." },
+                        { text: "Where did you find it?", response: "Near the mess hall." }
+                    ],
+                    optionsZh: [
+                        { text: "哦谢谢，救了我！", response: "不客气，注意安全。" },
+                        { text: "那不是我的", response: "哦抱歉。看起来很像你。" },
+                        { text: "你在哪捡到的？", response: "食堂附近。" }
+                    ]
+                },
+                {
+                    name: 'Kyle',
+                    messageEn: "{name}, have you seen my new tactical vest? It's got extra pouches!",
+                    messageZh: "{name}，你看到我的新战术背心了吗？多了好多口袋！",
+                    optionsEn: [
+                        { text: "Looks great, where'd you get it?", response: "Quartermaster's new shipment." },
+                        { text: "Too bulky for me", response: "It's not that bad!" },
+                        { text: "I prefer the old model", response: "Each to their own." }
+                    ],
+                    optionsZh: [
+                        { text: "看起来不错，哪儿弄的？", response: "军需官新到的货。" },
+                        { text: "对我来说太笨重了", response: "没那么糟啦！" },
+                        { text: "我更喜欢老款", response: "各有所爱。" }
+                    ]
+                },
+                {
+                    name: 'Farah',
+                    messageEn: "{name}, the training exercise starts in 30. You ready?",
+                    messageZh: "{name}，训练演习30分钟后开始。准备好了吗？",
+                    optionsEn: [
+                        { text: "Always ready.", response: "That's my girl." },
+                        { text: "Need to grab my gear first", response: "Hurry up, don't be late." },
+                        { text: "Can I sit this one out?", response: "Negative. We need you." }
+                    ],
+                    optionsZh: [
+                        { text: "时刻准备着。", response: "这才是我的好姑娘。" },
+                        { text: "我得先去拿装备", response: "快点，别迟到。" },
+                        { text: "我能不参加这次吗？", response: "不行。我们需要你。" }
+                    ]
+                },
+                {
+                    name: 'Alex',
+                    messageEn: "{name}, did you hear? They're serving pizza in the mess tonight!",
+                    messageZh: "{name}，听说了吗？今晚食堂有披萨！",
+                    optionsEn: [
+                        { text: "Finally! Some real food!", response: "I know, right?" },
+                        { text: "I hope it's not synthetic again", response: "It's real, I saw the boxes." },
+                        { text: "Pizza? I'm on a diet.", response: "Since when do soldiers diet?" }
+                    ],
+                    optionsZh: [
+                        { text: "终于！来点正经食物了！", response: "就是就是！" },
+                        { text: "希望不是合成的", response: "是真的，我看见箱子了。" },
+                        { text: "披萨？我在节食。", response: "战士什么时候节食过？" }
+                    ]
+                },
+                {
+                    name: 'Roach',
+                    messageEn: "{name}, can you help me with this new rifle? The sight won't zero.",
+                    messageZh: "{name}，能帮我看看这把新步枪吗？准星归不了零。",
+                    optionsEn: [
+                        { text: "Let me take a look", response: "Thanks! You're the best." },
+                        { text: "Have you tried adjusting the windage?", response: "Yeah, still off." },
+                        { text: "Bring it to the armorer", response: "They're all busy today." }
+                    ],
+                    optionsZh: [
+                        { text: "让我看看", response: "谢谢！你最棒了。" },
+                        { text: "你调过风偏吗？", response: "调了，还是不行。" },
+                        { text: "拿去给军械师", response: "他们今天都很忙。" }
+                    ]
+                },
+                {
+                    name: 'Otter',
+                    messageEn: "{name}, someone stole my protein bars again!",
+                    messageZh: "{name}，又有人偷了我的蛋白棒！",
+                    optionsEn: [
+                        { text: "Check the lockers in sector B", response: "Good idea, thanks!" },
+                        { text: "Maybe you ate them and forgot", response: "No way, I counted them!" },
+                        { text: "I'll keep an eye out", response: "Appreciate it." }
+                    ],
+                    optionsZh: [
+                        { text: "查查B区的储物柜", response: "好主意，谢谢！" },
+                        { text: "可能你自己吃了忘了", response: "不可能，我数过的！" },
+                        { text: "我会留意的", response: "多谢。" }
+                    ]
+                },
+                {
+                    name: 'Charly',
+                    messageEn: "{name}, the wifi in the barracks is down again. Can you fix it?",
+                    messageZh: "{name}，营房的wifi又断了。能修一下吗？",
+                    optionsEn: [
+                        { text: "I'll reset the router", response: "You're a lifesaver!" },
+                        { text: "Call IT support", response: "They never answer." },
+                        { text: "Use mobile data like the rest of us", response: "Ugh, fine." }
+                    ],
+                    optionsZh: [
+                        { text: "我去重启路由器", response: "你救了我一命！" },
+                        { text: "打给IT支持", response: "他们从来不接。" },
+                        { text: "像我们一样用流量", response: "呃，好吧。" }
+                    ]
+                },
+                {
+                    name: 'Mace',
+                    messageEn: "{name}, I bet I can do more pull-ups than you.",
+                    messageZh: "{name}，我打赌我引体向上做得比你多。",
+                    optionsEn: [
+                        { text: "You're on! Let's go to the gym", response: "Prepare to lose!" },
+                        { text: "Not interested in showing off", response: "Chicken?" },
+                        { text: "I've got better things to do", response: "Sure you do." }
+                    ],
+                    optionsZh: [
+                        { text: "来啊！去健身房", response: "准备输吧！" },
+                        { text: "没兴趣炫耀", response: "怕了？" },
+                        { text: "我有更好的事要做", response: "随你怎么说。" }
+                    ]
+                },
+                {
+                    name: 'Gromsko',
+                    messageEn: "{name}, the new night vision goggles are amazing. You tried them?",
+                    messageZh: "{name}，新夜视仪太棒了。你试过了吗？",
+                    optionsEn: [
+                        { text: "Not yet, where can I sign one out?", response: "Armory, but hurry, limited supply." },
+                        { text: "I prefer the old ones", response: "You're crazy, these are way better." },
+                        { text: "Too bulky for my liking", response: "You get used to it." }
+                    ],
+                    optionsZh: [
+                        { text: "还没，哪儿能借？", response: "军械库，但快点，数量有限。" },
+                        { text: "我更喜欢旧的", response: "你疯了，这些好多了。" },
+                        { text: "对我来说太笨重", response: "你会习惯的。" }
+                    ]
+                },
+                {
+                    name: 'Mín',
+                    messageEn: "{name}, can you cover my watch tonight? I have a date.",
+                    messageZh: "{name}，今晚能替我值勤吗？我有个约会。",
+                    optionsEn: [
+                        { text: "Sure, go have fun", response: "You're the best!" },
+                        { text: "I'm off duty tonight, sorry", response: "No problem, I'll find someone else." },
+                        { text: "Who's the lucky person?", response: "Someone from logistics." }
+                    ],
+                    optionsZh: [
+                        { text: "当然，去玩吧", response: "你最好了！" },
+                        { text: "我今晚休息，抱歉", response: "没事，我找别人。" },
+                        { text: "谁这么幸运？", response: "后勤部门的。" }
+                    ]
+                },
+                {
+                    name: 'Zane',
+                    messageEn: "{name}, the coffee machine in the break room is broken again.",
+                    messageZh: "{name}，休息室的咖啡机又坏了。",
+                    optionsEn: [
+                        { text: "I'll take a look at it", response: "You're a hero!" },
+                        { text: "Use the one in sector C", response: "Too far." },
+                        { text: "Tea is better anyway", response: "Heresy!" }
+                    ],
+                    optionsZh: [
+                        { text: "我去看看", response: "你是英雄！" },
+                        { text: "用C区那台", response: "太远了。" },
+                        { text: "茶更好喝", response: "异端！" }
+                    ]
+                },
+                {
+                    name: 'Sentinel',
+                    messageEn: "{name}, I'm organizing a movie night. You in?",
+                    messageZh: "{name}，我要组织电影之夜。你来吗？",
+                    optionsEn: [
+                        { text: "What's playing?", response: "Black Hawk Down, of course." },
+                        { text: "Sounds fun, count me in", response: "Great! Bring snacks." },
+                        { text: "I have to study the manual", response: "You can study anytime." }
+                    ],
+                    optionsZh: [
+                        { text: "放什么电影？", response: "黑鹰坠落，当然。" },
+                        { text: "听起来不错，算我一个", response: "太好了！带零食来。" },
+                        { text: "我得看手册", response: "你随时都能看。" }
+                    ]
+                },
+                {
+                    name: 'Dokkaebi',
+                    messageEn: "{name}, I found a weird USB drive in the parking lot. What should I do?",
+                    messageZh: "{name}，我在停车场捡到一个奇怪的U盘。该怎么办？",
+                    optionsEn: [
+                        { text: "Turn it into security immediately", response: "On my way." },
+                        { text: "Plug it in and see what's on it", response: "That's how you get a virus!" },
+                        { text: "Throw it away", response: "What if it's important?" }
+                    ],
+                    optionsZh: [
+                        { text: "立刻交给安保", response: "我这就去。" },
+                        { text: "插进去看看有什么", response: "你会中病毒的！" },
+                        { text: "扔掉", response: "万一是重要的呢？" }
+                    ]
+                },
+                {
+                    name: 'Lion',
+                    messageEn: "{name}, the new drone is here. Want to test it out?",
+                    messageZh: "{name}，新无人机到了。要试试吗？",
+                    optionsEn: [
+                        { text: "Absolutely! Let's go", response: "Meet me at the airfield." },
+                        { text: "Maybe after my shift", response: "Sure, I'll be there." },
+                        { text: "Drones aren't my thing", response: "You're missing out." }
+                    ],
+                    optionsZh: [
+                        { text: "当然！走吧", response: "机场见。" },
+                        { text: "也许下班后", response: "好，我等你。" },
+                        { text: "我对无人机不感兴趣", response: "你会错过的。" }
+                    ]
+                },
+                {
+                    name: 'Finka',
+                    messageEn: "{name}, I made some energy bars. Want to try one?",
+                    messageZh: "{name}，我做了些能量棒。要尝一个吗？",
+                    optionsEn: [
+                        { text: "Sure, thanks!", response: "Hope you like it." },
+                        { text: "What's in them?", response: "Oats, honey, protein powder." },
+                        { text: "No thanks, I'm good", response: "More for me then." }
+                    ],
+                    optionsZh: [
+                        { text: "好啊，谢谢！", response: "希望你喜欢。" },
+                        { text: "里面有什么？", response: "燕麦、蜂蜜、蛋白粉。" },
+                        { text: "不用了，我够了", response: "那我自己多吃点。" }
+                    ]
+                },
+                {
+                    name: 'Nomad',
+                    messageEn: "{name}, I'm heading into town. Need anything?",
+                    messageZh: "{name}，我要去镇上。需要带什么吗？",
+                    optionsEn: [
+                        { text: "Can you grab me some snacks?", response: "Sure, what kind?" },
+                        { text: "No thanks, I'm set", response: "Alright, see you later." },
+                        { text: "Bring me back a souvenir!", response: "I'll see what I can find." }
+                    ],
+                    optionsZh: [
+                        { text: "能帮我带点零食吗？", response: "当然，要哪种？" },
+                        { text: "不用了，我都有", response: "好吧，回头见。" },
+                        { text: "给我带个纪念品！", response: "我看看能找到什么。" }
+                    ]
+                },
+                // ========== 新增10个经典角色事件 ==========
+                {
+                    name: 'Price',
+                    messageEn: "{name}, I need you to check the ammo inventory. We're running low on 5.56.",
+                    messageZh: "{name}，我需要你检查弹药库存。我们的5.56不多了。",
+                    optionsEn: [
+                        { text: "On it, Captain", response: "Good. Report back in an hour." },
+                        { text: "I'll do it after my patrol", response: "Make it priority, soldier." },
+                        { text: "The armorer just restocked", response: "Double-check anyway." }
+                    ],
+                    optionsZh: [
+                        { text: "马上办，上尉", response: "好。一小时后报告。" },
+                        { text: "巡逻结束后就去", response: "优先处理，战士。" },
+                        { text: "军械师刚补过货", response: "再检查一遍。" }
+                    ]
+                },
+                {
+                    name: 'Ghost',
+                    messageEn: "{name}, I've got intel on a possible threat. Meet me in the briefing room.",
+                    messageZh: "{name}，我收到关于潜在威胁的情报。来简报室找我。",
+                    optionsEn: [
+                        { text: "On my way, sir", response: "Hurry. Time is critical." },
+                        { text: "Can it wait 10 minutes?", response: "No. Move now." },
+                        { text: "Should I bring the new recruit?", response: "No, just you." }
+                    ],
+                    optionsZh: [
+                        { text: "马上到，长官", response: "快点。时间紧迫。" },
+                        { text: "能等10分钟吗？", response: "不行。立刻行动。" },
+                        { text: "要带新兵一起来吗？", response: "不，就你一个人。" }
+                    ]
+                },
+                {
+                    name: 'Soap',
+                    messageEn: "{name}, fancy a game of pool after shift? I need to redeem myself.",
+                    messageZh: "{name}，下班后打场台球？我得挽回面子。",
+                    optionsEn: [
+                        { text: "You're on! I'll crush you", response: "We'll see about that!" },
+                        { text: "Maybe next time, I'm tired", response: "Come on, one game?" },
+                        { text: "I don't play pool", response: "I can teach you." }
+                    ],
+                    optionsZh: [
+                        { text: "来啊！我赢定你", response: "走着瞧！" },
+                        { text: "下次吧，我累了", response: "就一局？" },
+                        { text: "我不会打台球", response: "我可以教你。" }
+                    ]
+                },
+                {
+                    name: 'Gaz',
+                    messageEn: "{name}, the new combat training simulation is live. Want to run it together?",
+                    messageZh: "{name}，新的战斗训练模拟上线了。要一起跑一遍吗？",
+                    optionsEn: [
+                        { text: "Sounds fun, let's go", response: "Race you to the VR room!" },
+                        { text: "I'll do it solo later", response: "It's better with a partner." },
+                        { text: "Is it the close quarters one?", response: "Yeah, urban warfare." }
+                    ],
+                    optionsZh: [
+                        { text: "听起来有趣，走吧", response: "比比谁先到VR室！" },
+                        { text: "我晚点自己练", response: "有搭档更好。" },
+                        { text: "是近距离作战那个吗？", response: "对，城市战。" }
+                    ]
+                },
+                {
+                    name: 'Price',
+                    messageEn: "{name}, I need you to deliver this encrypted message to Laswell personally.",
+                    messageZh: "{name}，我需要你亲自把这封加密信息交给Laswell。",
+                    optionsEn: [
+                        { text: "Understood, Captain", response: "Eyes only. Don't let anyone see it." },
+                        { text: "Is it urgent?", response: "Very. Move out." },
+                        { text: "Where is she now?", response: "Last seen in the comms center." }
+                    ],
+                    optionsZh: [
+                        { text: "明白，上尉", response: "绝密。别让任何人看到。" },
+                        { text: "很紧急吗？", response: "非常紧急。出发。" },
+                        { text: "她现在在哪？", response: "最后出现在通信中心。" }
+                    ]
+                },
+                {
+                    name: 'Ghost',
+                    messageEn: "{name}, I'm heading out on a recon mission. Want to join?",
+                    messageZh: "{name}，我要出去执行侦察任务。要一起来吗？",
+                    optionsEn: [
+                        { text: "Absolutely, Ghost", response: "Gear up. We leave in 10." },
+                        { text: "I have duty tonight", response: "I'll find someone else." },
+                        { text: "Where are we heading?", response: "Sector 8. Intel says enemy activity." }
+                    ],
+                    optionsZh: [
+                        { text: "当然，Ghost", response: "收拾装备。10分钟后出发。" },
+                        { text: "我今晚有勤务", response: "那我找别人。" },
+                        { text: "我们去哪？", response: "8区。情报说有敌情。" }
+                    ]
+                },
+                {
+                    name: 'Soap',
+                    messageEn: "{name}, have you seen my lucky charm? The little Scottish flag?",
+                    messageZh: "{name}，你看到我的幸运符了吗？那个苏格兰小旗？",
+                    optionsEn: [
+                        { text: "Check your locker", response: "Already did. Not there." },
+                        { text: "Maybe you left it in the mess", response: "Good thinking, I'll look." },
+                        { text: "I'll help you search", response: "Thanks, mate!" }
+                    ],
+                    optionsZh: [
+                        { text: "检查你的储物柜", response: "查过了。不在那。" },
+                        { text: "可能落在食堂了", response: "好主意，我去看看。" },
+                        { text: "我帮你一起找", response: "谢谢，姐妹！" }
+                    ]
+                },
+                {
+                    name: 'Gaz',
+                    messageEn: "{name}, I'm organizing a football match. We need one more player. You in?",
+                    messageZh: "{name}，我在组织足球赛。还差一个人。你来吗？",
+                    optionsEn: [
+                        { text: "Count me in!", response: "Great! We're on the south field." },
+                        { text: "I'm not good at football", response: "It's just for fun." },
+                        { text: "What time?", response: "1800 hours." }
+                    ],
+                    optionsZh: [
+                        { text: "算我一个！", response: "太好了！我们在南场。" },
+                        { text: "我足球踢得不好", response: "就是玩玩而已。" },
+                        { text: "几点？", response: "18点。" }
+                    ]
+                },
+                {
+                    name: 'Price',
+                    messageEn: "{name}, I want you to lead the next training exercise. Show the rookies how it's done.",
+                    messageZh: "{name}，我要你带队下一次训练演习。给新兵们做个示范。",
+                    optionsEn: [
+                        { text: "Honored, Captain", response: "Make us proud." },
+                        { text: "I'm not ready for that", response: "Yes, you are. I have faith." },
+                        { text: "Can I choose my own team?", response: "Within reason." }
+                    ],
+                    optionsZh: [
+                        { text: "荣幸之至，上尉", response: "让我们骄傲。" },
+                        { text: "我还没准备好", response: "不，你准备好了。我相信你。" },
+                        { text: "我能自己选队员吗？", response: "合理范围内可以。" }
+                    ]
+                },
+                {
+                    name: 'Ghost',
+                    messageEn: "{name}, I need you to keep an eye on the new guy. Something about him seems off.",
+                    messageZh: "{name}，我需要你盯着那个新兵。他看起来有点不对劲。",
+                    optionsEn: [
+                        { text: "I've noticed that too", response: "Report anything suspicious." },
+                        { text: "He seems fine to me", response: "Trust your gut. Something's wrong." },
+                        { text: "Should I follow him?", response: "Discreetly. Don't spook him." }
+                    ],
+                    optionsZh: [
+                        { text: "我也注意到了", response: "有任何可疑立即报告。" },
+                        { text: "我觉得他挺正常", response: "相信直觉。不对劲。" },
+                        { text: "要我跟踪他吗？", response: "小心点，别惊动他。" }
+                    ]
+                }
+            ];
+
             const translations = {
                 en: {
                     title0: "BASE MAP – ACCESS CONTROL",
                     title1: "IDENTIFICATION VERIFICATION",
+                    title1_5: "OFFICIAL SIGNATURE REQUIRED",
+                    title1_6: "ACCESS PASSWORD REQUIRED",
                     title2: "VERIFYING CREDENTIALS",
                     title3: "ASSIGNMENT SELECTION",
+                    title3_5: "ENCOUNTER",
                     title4: "FACIAL RECOGNITION REQUIRED",
                     title5: "BIOMETRIC VERIFICATION REQUIRED",
                     title5b: "IRIS RECOGNITION REQUIRED",
@@ -1037,13 +1698,20 @@
                     insufficientTitle: "⛔ ACCESS DENIED",
                     insufficientMsg: "Your clearance level is insufficient for this area",
                     loadingTextMap: "Verifying area access, please wait...",
-                    cardSimpleText: "Swipe Card"
+                    cardSimpleText: "Swipe Card",
+                    passwordPlaceholder: "Enter access password",
+                    passwordHint: "Hint: Use provided passwords",
+                    passwordError: "Invalid password",
+                    submitPassword: "VERIFY PASSWORD"
                 },
                 zh: {
                     title0: "基地地图 · 准入控制",
                     title1: "身份验证",
+                    title1_5: "需要官方签名",
+                    title1_6: "需要访问密码",
                     title2: "正在验证凭证",
                     title3: "分配选择",
+                    title3_5: "遭遇",
                     title4: "需要人脸识别",
                     title5: "需要生物识别验证",
                     title5b: "需要虹膜识别",
@@ -1129,7 +1797,11 @@
                     insufficientTitle: "⛔ 访问被拒",
                     insufficientMsg: "您的权限等级不足以进入该区域",
                     loadingTextMap: "验证区域权限，请稍后...",
-                    cardSimpleText: "刷门禁卡"
+                    cardSimpleText: "刷门禁卡",
+                    passwordPlaceholder: "请输入访问密码",
+                    passwordHint: "提示：使用提供的密码",
+                    passwordError: "密码错误",
+                    submitPassword: "验证密码"
                 }
             };
 
@@ -1192,6 +1864,20 @@
             const otherNationalityInput = document.getElementById('otherNationality');
             const idInput = document.getElementById('idNumber');
             const verifyBtn = document.getElementById('verifyBtn');
+            
+            // 签名板相关
+            const signatureCanvas = document.getElementById('signatureCanvas');
+            const signatureClearBtn = document.getElementById('signatureClearBtn');
+            const signatureConfirmBtn = document.getElementById('signatureConfirmBtn');
+            
+            // 密码相关
+            const passwordInput = document.getElementById('passwordInput');
+            const submitPasswordBtn = document.getElementById('submitPasswordBtn');
+            const passwordError = document.getElementById('passwordError');
+            
+            // 事件相关
+            const eventContainer = document.getElementById('eventContainer');
+            
             const departmentSelect = document.getElementById('department');
             const positionSelect = document.getElementById('position');
             const assignBtn = document.getElementById('assignBtn');
@@ -1239,12 +1925,6 @@
             const protocolLine3 = document.getElementById('protocolLine3');
             const protocolCountdownEl = document.getElementById('protocolCountdown');
             const protocolConfirmBtn = document.getElementById('protocolConfirmBtn');
-            const signatureModal = document.getElementById('signatureModal');
-            const signatureTitle = document.getElementById('signatureTitle');
-            const signatureClear = document.getElementById('signatureClear');
-            const signatureConfirm = document.getElementById('signatureConfirm');
-            const signatureCanvas = document.getElementById('signatureCanvas');
-            const ctx = signatureCanvas.getContext('2d');
             const loadingMapText = document.getElementById('loadingMapText');
             const loadingText = document.getElementById('loadingText');
             const faceInstruction = document.getElementById('faceInstruction');
@@ -1253,6 +1933,9 @@
             const irisText1 = document.getElementById('irisText1');
             const irisText2 = document.getElementById('irisText2');
 
+            // 签名板上下文
+            const ctx = signatureCanvas.getContext('2d');
+            
             let isTranslated = false;
             let currentName = "", currentNationality = "", currentId = "";
             let selectedLevel = 1, selectedPosition = "", selectedDepartment = "";
@@ -1261,11 +1944,12 @@
             let selectedLocationName = "";
             let currentSelectedLocationElem = null;
             let currentUserLevel = 1;
+            let passwordLevel = 0;
 
             let fingerprintTimer = null, fingerprintCountdown = 0;
             let irisTimer = null, irisCountdown = 0;
             let accessCardTimer = null, accessCardCountdown = 0;
-            let protocolTimer = null, protocolSeconds = 8;
+            let protocolTimer = null, protocolSeconds = 5;
 
             let isDrawing = false, lastX = 0, lastY = 0, signatureDrawn = false;
 
@@ -1274,7 +1958,7 @@
                 document.getElementById(`screen${screenNumber}`).classList.add('active');
             }
 
-            // 渲染地图 (默认英文)
+            // 渲染地图
             function renderMap() {
                 const container = document.getElementById('mapContainer');
                 if (!container) return;
@@ -1307,7 +1991,31 @@
             }
             renderMap();
 
-            // 国籍监听 (显示翻译按钮)
+            // 根据密码等级过滤职位选项 (只显示与密码等级相同的职位)
+            function filterPositionsByLevel() {
+                positionSelect.innerHTML = '<option value="">' + (isTranslated ? translations.zh.posDefault : translations.en.posDefault) + '</option>';
+                positionSelect.disabled = true;
+                assignBtn.disabled = true;
+
+                const dept = departmentSelect.value;
+                if (!dept || !positionsData[dept]) return;
+
+                // 只显示职位等级 == passwordLevel 的职位
+                const filteredPositions = positionsData[dept].filter(pos => pos.level === passwordLevel);
+                
+                if (filteredPositions.length > 0) {
+                    filteredPositions.forEach(pos => {
+                        const option = document.createElement('option');
+                        option.value = pos.name;
+                        option.textContent = isTranslated ? positionTranslations.zh[pos.name] || pos.name : positionTranslations.en[pos.name] || pos.name;
+                        option.dataset.level = pos.level;
+                        positionSelect.appendChild(option);
+                    });
+                    positionSelect.disabled = false;
+                }
+            }
+
+            // 国籍监听
             function checkNationalityForTranslate() {
                 const natValue = nationalitySelect.value;
                 const otherValue = otherNationalityInput.value.trim().toLowerCase();
@@ -1338,19 +2046,17 @@
             });
             otherNationalityInput.addEventListener('input', checkNationalityForTranslate);
 
-            // 翻译功能 - 确保所有元素都被翻译
+            // 翻译功能
             function applyTranslation() {
                 const lang = isTranslated ? 'zh' : 'en';
                 const t = translations[lang];
                 
-                // 更新所有带 data-en 属性的元素
                 document.querySelectorAll('[data-en]').forEach(el => {
                     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                         if (el.placeholder && el.getAttribute(`data-${lang}-placeholder`)) {
                             el.placeholder = el.getAttribute(`data-${lang}-placeholder`);
                         }
                     } else if (el.tagName === 'SELECT') {
-                        // 不处理select本身
                     } else {
                         const zhText = el.getAttribute('data-zh');
                         const enText = el.getAttribute('data-en');
@@ -1362,7 +2068,6 @@
                     }
                 });
 
-                // 更新所有select选项
                 document.querySelectorAll('select option').forEach(opt => {
                     if (opt.value && opt.getAttribute(`data-${lang}`)) {
                         opt.textContent = opt.getAttribute(`data-${lang}`);
@@ -1371,7 +2076,6 @@
                     }
                 });
 
-                // 更新按钮文本
                 fingerprintBtn.textContent = t.fingerprintBtn;
                 irisBtn.textContent = t.irisBtn;
                 accessCardBtn.textContent = t.accessCardBtn;
@@ -1381,10 +2085,13 @@
                 accessCardRetryBtn.textContent = t.retryBtn;
                 translateBtn.textContent = isTranslated ? "Translate to English" : "Translate to Chinese";
                 
-                // 更新门禁卡简单文字
                 cardSimpleText.textContent = t.cardSimpleText;
+                
+                if (passwordInput) passwordInput.placeholder = t.passwordPlaceholder;
+                if (submitPasswordBtn) submitPasswordBtn.textContent = t.submitPassword;
+                const passwordHint = document.getElementById('passwordHint');
+                if (passwordHint) passwordHint.textContent = t.passwordHint;
 
-                // 更新职位下拉 (如果已启用)
                 if (!positionSelect.disabled) {
                     const posOptions = positionSelect.querySelectorAll('option');
                     posOptions.forEach(option => {
@@ -1395,38 +2102,26 @@
                     });
                 }
 
-                // 更新地图上的地点名称
                 const mapItems = document.querySelectorAll('.map-item');
                 mapItems.forEach((item, index) => {
                     const loc = mapLocations[index];
                     if (loc) {
                         const nameDiv = item.querySelector('.loc-name');
-                        if (nameDiv) {
-                            nameDiv.textContent = isTranslated ? loc.nameZh : loc.nameEn;
-                        }
+                        if (nameDiv) nameDiv.textContent = isTranslated ? loc.nameZh : loc.nameEn;
                         const levelDiv = item.querySelector('.loc-level');
-                        if (levelDiv) {
-                            levelDiv.innerHTML = isTranslated ? `权限等级 <span>${loc.level}</span>` : `Clearance <span>${loc.level}</span>`;
-                        }
+                        if (levelDiv) levelDiv.innerHTML = isTranslated ? `权限等级 <span>${loc.level}</span>` : `Clearance <span>${loc.level}</span>`;
                     }
                 });
 
                 if (currentSelectedLocationElem) {
                     const idx = Array.from(mapItems).indexOf(currentSelectedLocationElem);
-                    if (idx !== -1) {
-                        selectedLocationName = isTranslated ? mapLocations[idx].nameZh : mapLocations[idx].nameEn;
-                    }
+                    if (idx !== -1) selectedLocationName = isTranslated ? mapLocations[idx].nameZh : mapLocations[idx].nameEn;
                 }
 
-                // 更新所有动态文本
-                if (faceStatusEl) {
-                    const defaultText = isTranslated ? translations.zh.faceStatus1 : translations.en.faceStatus1;
-                    if (!faceStatusEl.classList.contains('face-success') && !faceStatusEl.classList.contains('face-failure')) {
-                        faceStatusEl.textContent = defaultText;
-                    }
+                if (faceStatusEl && !faceStatusEl.classList.contains('face-success') && !faceStatusEl.classList.contains('face-failure')) {
+                    faceStatusEl.textContent = isTranslated ? translations.zh.faceStatus1 : translations.en.faceStatus1;
                 }
                 
-                // 更新倒计时文本前缀
                 if (fingerprintCountdownEl.textContent) {
                     const seconds = fingerprintCountdown;
                     fingerprintCountdownEl.textContent = `${isTranslated ? "保持" : "Hold for"} ${seconds}s`;
@@ -1440,7 +2135,6 @@
                     cardCountdownEl.textContent = `${isTranslated ? "保持" : "Hold for"} ${seconds}s`;
                 }
 
-                // 更新协议弹窗按钮
                 if (protocolSeconds > 0) {
                     protocolConfirmBtn.textContent = (isTranslated ? translations.zh.protocolBtn : translations.en.protocolBtn) + ` (${protocolSeconds}s)`;
                 } else {
@@ -1455,40 +2149,61 @@
 
             // 签名板初始化
             function initSignaturePad() {
-                ctx.strokeStyle = '#000';
+                ctx.strokeStyle = '#000000';
                 ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
                 ctx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
                 signatureDrawn = false;
-                signatureConfirm.disabled = true;
+                signatureConfirmBtn.disabled = true;
             }
+
             function startDrawing(e) {
                 e.preventDefault();
                 isDrawing = true;
                 const pos = getCanvasCoordinates(e);
-                lastX = pos.x; lastY = pos.y;
+                lastX = pos.x;
+                lastY = pos.y;
                 ctx.beginPath();
                 ctx.moveTo(lastX, lastY);
             }
+
             function draw(e) {
                 e.preventDefault();
                 if (!isDrawing) return;
                 const pos = getCanvasCoordinates(e);
                 ctx.lineTo(pos.x, pos.y);
                 ctx.stroke();
-                lastX = pos.x; lastY = pos.y;
+                lastX = pos.x;
+                lastY = pos.y;
                 signatureDrawn = true;
-                signatureConfirm.disabled = false;
+                signatureConfirmBtn.disabled = false;
             }
-            function stopDrawing() { isDrawing = false; }
+
+            function stopDrawing() { 
+                isDrawing = false; 
+            }
+
             function getCanvasCoordinates(e) {
                 const rect = signatureCanvas.getBoundingClientRect();
                 const scaleX = signatureCanvas.width / rect.width;
                 const scaleY = signatureCanvas.height / rect.height;
                 let clientX, clientY;
-                if (e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
-                else { clientX = e.clientX; clientY = e.clientY; }
-                return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+                if (e.touches) {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                const x = (clientX - rect.left) * scaleX;
+                const y = (clientY - rect.top) * scaleY;
+                return { 
+                    x: Math.min(signatureCanvas.width, Math.max(0, x)), 
+                    y: Math.min(signatureCanvas.height, Math.max(0, y)) 
+                };
             }
+
             signatureCanvas.addEventListener('mousedown', startDrawing);
             signatureCanvas.addEventListener('mousemove', draw);
             signatureCanvas.addEventListener('mouseup', stopDrawing);
@@ -1496,16 +2211,18 @@
             signatureCanvas.addEventListener('touchstart', startDrawing, { passive: false });
             signatureCanvas.addEventListener('touchmove', draw, { passive: false });
             signatureCanvas.addEventListener('touchend', stopDrawing);
-            signatureClear.addEventListener('click', initSignaturePad);
-            signatureConfirm.addEventListener('click', () => {
-                signatureModal.classList.remove('active');
-                switchScreen(2);
-                setTimeout(() => switchScreen(3), 2500);
+            signatureCanvas.addEventListener('touchcancel', stopDrawing);
+            
+            signatureClearBtn.addEventListener('click', initSignaturePad);
+
+            signatureConfirmBtn.addEventListener('click', () => {
+                switchScreen('1_6');
             });
 
+            // 安全协议弹窗
             function startProtocolModal() {
                 protocolModal.classList.add('active');
-                protocolSeconds = 8;
+                protocolSeconds = 5;
                 protocolCountdownEl.textContent = protocolSeconds;
                 protocolConfirmBtn.disabled = true;
                 if (protocolTimer) clearInterval(protocolTimer);
@@ -1517,19 +2234,20 @@
                         protocolTimer = null;
                         protocolConfirmBtn.disabled = false;
                     }
-                    // 更新按钮文字
                     const btnText = isTranslated ? translations.zh.protocolBtn : translations.en.protocolBtn;
                     protocolConfirmBtn.textContent = protocolConfirmBtn.disabled ? `${btnText} (${protocolSeconds}s)` : btnText;
                 }, 1000);
             }
+
             protocolConfirmBtn.addEventListener('click', () => {
                 if (protocolConfirmBtn.disabled) return;
                 protocolModal.classList.remove('active');
                 if (protocolTimer) clearInterval(protocolTimer);
                 initSignaturePad();
-                signatureModal.classList.add('active');
+                switchScreen('1_5');
             });
 
+            // 身份验证按钮
             verifyBtn.addEventListener('click', function() {
                 currentName = nameInput.value.trim();
                 currentId = idInput.value.trim();
@@ -1539,63 +2257,148 @@
                 if (!currentName) { alert(isTranslated ? "请输入姓名" : "Please enter your name"); return; }
                 if (!currentNationality) { alert(isTranslated ? "请选择或输入国籍" : "Please select or enter nationality"); return; }
                 if (!currentId.match(/^TF141-2026-\d{4}$/)) { alert(isTranslated ? "ID格式无效。正确格式：TF141-2026-XXXX（4位数字）" : "Invalid ID format. Correct format: TF141-2026-XXXX (4 digits)"); return; }
+                
                 startProtocolModal();
             });
 
-            departmentSelect.addEventListener('change', function() {
-                const dept = this.value;
-                positionSelect.innerHTML = '<option value="">' + (isTranslated ? translations.zh.posDefault : translations.en.posDefault) + '</option>';
-                positionSelect.disabled = !dept;
-                assignBtn.disabled = true;
-                if (dept && positionsData[dept]) {
-                    positionsData[dept].forEach(pos => {
-                        const option = document.createElement('option');
-                        option.value = pos.name;
-                        option.textContent = isTranslated ? positionTranslations.zh[pos.name] || pos.name : positionTranslations.en[pos.name] || pos.name;
-                        option.dataset.level = pos.level;
-                        positionSelect.appendChild(option);
-                    });
+            // 密码验证
+            submitPasswordBtn.addEventListener('click', function() {
+                const enteredPassword = passwordInput.value.trim();
+                const level = passwordLevelMap[enteredPassword];
+                
+                if (level && level >= 1 && level <= 5) {
+                    passwordLevel = level;
+                    passwordError.textContent = '';
+                    switchScreen(2);
+                    setTimeout(() => {
+                        switchScreen(3);
+                        departmentSelect.value = '';
+                        filterPositionsByLevel();
+                    }, 2500);
+                } else {
+                    passwordError.textContent = isTranslated ? translations.zh.passwordError : translations.en.passwordError;
                 }
             });
+
+            departmentSelect.addEventListener('change', filterPositionsByLevel);
+
             positionSelect.addEventListener('change', function() {
                 assignBtn.disabled = !this.value;
             });
+
             assignBtn.addEventListener('click', function() {
                 const dept = departmentSelect.value;
                 const pos = positionSelect.value;
                 if (!dept || !pos) return;
+                
                 let level = 1;
                 if (positionsData[dept]) {
                     const found = positionsData[dept].find(p => p.name === pos);
                     if (found) level = found.level;
                 }
+                
                 selectedLevel = level;
                 selectedPosition = pos;
                 selectedDepartment = dept;
                 currentUserLevel = level;
                 isTaskForceCommander = (pos === "Task Force Commander");
+                
                 switchScreen(0);
             });
 
-            // 根据人员和区域等级决定验证流程
-            function startAreaVerification() {
-                if (currentUserLevel < selectedLocationLevel) {
-                    insufficientMsg.textContent = isTranslated ? 
-                        `您的权限等级 (${currentUserLevel}) 不足以进入「${selectedLocationName}」(需要等级 ${selectedLocationLevel})` :
-                        `Your level (${currentUserLevel}) insufficient for "${selectedLocationName}" (requires level ${selectedLocationLevel})`;
-                    insufficientModal.classList.add('active');
-                    return;
+            // 地图确认 - 触发随机事件 (每个事件独立20%概率)
+            confirmLocationBtn.addEventListener('click', function() {
+                if (!selectedLocationName) return;
+                
+                // 随机选择一个事件 (每个事件20%概率)
+                const eventIndex = Math.floor(Math.random() * randomEvents.length);
+                const selectedEvent = randomEvents[eventIndex];
+                
+                // 20%概率触发
+                if (Math.random() < 0.2) {
+                    // 渲染事件界面
+                    renderEvent(selectedEvent);
+                    switchScreen('3_5');
+                } else {
+                    // 没有触发事件，直接进入加载
+                    startVerificationAfterEvent();
                 }
+            });
 
-                let steps = [];
-                steps.push({ type: 'card', level: 1 });
-                if (selectedLocationLevel >= 2) steps.push({ type: 'face', level: 2 });
-                if (selectedLocationLevel >= 3) steps.push({ type: 'fingerprint', level: 3 });
-                if (selectedLocationLevel >= 4) steps.push({ type: 'iris', level: 4 });
-
-                executeNextStep(steps, 0);
+            // 渲染随机事件 (支持中英文)
+            function renderEvent(event) {
+                const lang = isTranslated ? 'zh' : 'en';
+                const namePlaceholder = currentName || 'Soldier';
+                
+                // 根据语言选择消息和选项
+                const message = lang === 'zh' ? event.messageZh.replace('{name}', namePlaceholder) : event.messageEn.replace('{name}', namePlaceholder);
+                const options = lang === 'zh' ? event.optionsZh : event.optionsEn;
+                
+                let html = `
+                    <div class="event-chat-box">
+                        <div class="event-speaker">${event.name}</div>
+                        <div class="event-message">${message}</div>
+                    </div>
+                    <div class="event-options">
+                `;
+                
+                options.forEach((opt, index) => {
+                    html += `
+                        <button class="event-option-btn" data-opt-index="${index}">
+                            ${opt.text}
+                        </button>
+                    `;
+                });
+                
+                html += `</div><div class="event-result" id="eventResult"></div>`;
+                
+                eventContainer.innerHTML = html;
+                
+                // 绑定选项事件
+                document.querySelectorAll('.event-option-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const optIndex = this.dataset.optIndex;
+                        const response = options[optIndex].response;
+                        document.getElementById('eventResult').textContent = '> ' + response;
+                        
+                        // 禁用所有选项
+                        document.querySelectorAll('.event-option-btn').forEach(b => b.disabled = true);
+                        
+                        // 延迟后返回地图界面
+                        setTimeout(() => {
+                            switchScreen(0);
+                        }, 2000);
+                    });
+                });
             }
 
+            // 事件后开始验证 (从地图点击后调用)
+            function startVerificationAfterEvent() {
+                loadingOverlay.classList.add('active');
+                setTimeout(() => {
+                    loadingOverlay.classList.remove('active');
+                    
+                    // 检查权限
+                    if (currentUserLevel < selectedLocationLevel) {
+                        insufficientMsg.textContent = isTranslated ? 
+                            `您的职位等级 (${currentUserLevel}) 不足以进入「${selectedLocationName}」(需要等级 ${selectedLocationLevel})` :
+                            `Your position level (${currentUserLevel}) insufficient for "${selectedLocationName}" (requires level ${selectedLocationLevel})`;
+                        insufficientModal.classList.add('active');
+                        return;
+                    }
+
+                    // 开始生物识别流程
+                    let steps = [];
+                    steps.push({ type: 'card', level: 1 });
+                    if (selectedLocationLevel >= 3) steps.push({ type: 'face', level: 3 });
+                    if (selectedLocationLevel >= 4) steps.push({ type: 'fingerprint', level: 4 });
+                    if (selectedLocationLevel >= 5) steps.push({ type: 'iris', level: 5 });
+
+                    executeNextStep(steps, 0);
+                }, 2500);
+            }
+
+            // 后续生物识别函数
             function executeNextStep(steps, index) {
                 if (index >= steps.length) {
                     setTimeout(() => {
@@ -1612,24 +2415,16 @@
                 const step = steps[index];
                 switch (step.type) {
                     case 'card':
-                        startAccessCardVerification(() => {
-                            executeNextStep(steps, index + 1);
-                        });
+                        startAccessCardVerification(() => executeNextStep(steps, index + 1));
                         break;
                     case 'face':
-                        startFaceRecognition(() => {
-                            executeNextStep(steps, index + 1);
-                        });
+                        startFaceRecognition(() => executeNextStep(steps, index + 1));
                         break;
                     case 'fingerprint':
-                        startFingerprintVerificationScreen(() => {
-                            executeNextStep(steps, index + 1);
-                        });
+                        startFingerprintVerificationScreen(() => executeNextStep(steps, index + 1));
                         break;
                     case 'iris':
-                        startIrisScreen(() => {
-                            executeNextStep(steps, index + 1);
-                        });
+                        startIrisScreen(() => executeNextStep(steps, index + 1));
                         break;
                 }
             }
@@ -1642,6 +2437,7 @@
                     setTimeout(() => completeFaceRecognition(onSuccess), 2000);
                 }, 1000);
             }
+
             function completeFaceRecognition(onSuccess) {
                 const success = Math.random() > 0.25;
                 if (success) {
@@ -1650,9 +2446,7 @@
                         setTimeout(() => triggerCommanderAlert(), 1500);
                         return;
                     }
-                    setTimeout(() => {
-                        if (onSuccess) onSuccess();
-                    }, 1500);
+                    setTimeout(onSuccess, 1500);
                 } else {
                     faceStatusEl.textContent = isTranslated ? translations.zh.faceFailure : translations.en.faceFailure;
                     faceRetryBtn.style.display = "block";
@@ -1666,6 +2460,7 @@
                 fingerprintBtn.onmousedown = () => startFingerprint(onSuccess);
                 fingerprintBtn.ontouchstart = (e) => { e.preventDefault(); startFingerprint(onSuccess); };
             }
+
             function resetFingerprint() {
                 fingerprintBtn.classList.remove('active','failed');
                 fingerprintBtn.textContent = isTranslated ? translations.zh.fingerprintBtn : translations.en.fingerprintBtn;
@@ -1673,6 +2468,7 @@
                 fingerprintResultEl.textContent = "";
                 fingerprintRetryBtn.style.display = "none";
             }
+
             function startFingerprint(onSuccess) {
                 if (fingerprintTimer) return;
                 fingerprintBtn.classList.add('active');
@@ -1684,17 +2480,13 @@
                     else { clearInterval(fingerprintTimer); fingerprintTimer = null; completeFingerprint(onSuccess); }
                 }, 1000);
             }
-            function stopFingerprint() {
-                if (fingerprintTimer) { clearInterval(fingerprintTimer); fingerprintTimer = null; resetFingerprint(); }
-            }
+
             function completeFingerprint(onSuccess) {
                 const success = Math.random() > 0.25;
                 if (success) {
                     fingerprintResultEl.textContent = isTranslated ? translations.zh.fingerprintSuccess : translations.en.fingerprintSuccess;
                     fingerprintResultEl.style.color = "#00aa00";
-                    setTimeout(() => {
-                        if (onSuccess) onSuccess();
-                    }, 1500);
+                    setTimeout(onSuccess, 1500);
                 } else {
                     fingerprintBtn.classList.add('failed');
                     fingerprintResultEl.textContent = isTranslated ? translations.zh.fingerprintFailure : translations.en.fingerprintFailure;
@@ -1709,6 +2501,7 @@
                 resetIris();
                 irisBtn.onclick = () => startIris(onSuccess);
             }
+
             function resetIris() {
                 irisBtn.classList.remove('active','failed');
                 irisBtn.textContent = isTranslated ? translations.zh.irisBtn : translations.en.irisBtn;
@@ -1716,6 +2509,7 @@
                 irisResultEl.textContent = "";
                 irisRetryBtn.style.display = "none";
             }
+
             function startIris(onSuccess) {
                 if (irisTimer) return;
                 irisBtn.classList.add('active');
@@ -1727,14 +2521,13 @@
                     else { clearInterval(irisTimer); irisTimer = null; completeIris(onSuccess); }
                 }, 1000);
             }
+
             function completeIris(onSuccess) {
                 const success = Math.random() > 0.25;
                 if (success) {
                     irisResultEl.textContent = isTranslated ? translations.zh.irisSuccess : translations.en.irisSuccess;
                     irisResultEl.style.color = "#00aa00";
-                    setTimeout(() => {
-                        if (onSuccess) onSuccess();
-                    }, 1500);
+                    setTimeout(onSuccess, 1500);
                 } else {
                     irisBtn.classList.add('failed');
                     irisResultEl.textContent = isTranslated ? translations.zh.irisFailure : translations.en.irisFailure;
@@ -1750,6 +2543,7 @@
                 accessCardBtn.onmousedown = () => startCard(onSuccess);
                 accessCardBtn.ontouchstart = (e) => { e.preventDefault(); startCard(onSuccess); };
             }
+
             function resetCard() {
                 accessCardBtn.classList.remove('active','failed');
                 accessCardBtn.textContent = isTranslated ? translations.zh.accessCardBtn : translations.en.accessCardBtn;
@@ -1758,6 +2552,7 @@
                 cardLightEl.className = "card-reader-light";
                 accessCardRetryBtn.style.display = "none";
             }
+
             function startCard(onSuccess) {
                 if (accessCardTimer) return;
                 accessCardBtn.classList.add('active');
@@ -1770,18 +2565,14 @@
                     else { clearInterval(accessCardTimer); accessCardTimer = null; completeCard(onSuccess); }
                 }, 1000);
             }
-            function stopCard() {
-                if (accessCardTimer) { clearInterval(accessCardTimer); accessCardTimer = null; cardLightEl.classList.remove('active'); resetCard(); }
-            }
+
             function completeCard(onSuccess) {
                 const success = Math.random() > 0.25;
                 if (success) {
                     cardLightEl.classList.add('active');
                     accessResultEl.textContent = isTranslated ? translations.zh.accessCardSuccess : translations.en.accessCardSuccess;
                     accessResultEl.classList.add("access-success");
-                    setTimeout(() => {
-                        if (onSuccess) onSuccess();
-                    }, 1500);
+                    setTimeout(onSuccess, 1500);
                 } else {
                     accessCardBtn.classList.add('failed');
                     cardLightEl.classList.add('failed');
@@ -1791,15 +2582,6 @@
                     accessCardRetryBtn.onclick = () => startAccessCardVerification(onSuccess);
                 }
             }
-
-            confirmLocationBtn.addEventListener('click', function() {
-                if (!selectedLocationName) return;
-                loadingOverlay.classList.add('active');
-                setTimeout(() => {
-                    loadingOverlay.classList.remove('active');
-                    startAreaVerification();
-                }, 2500);
-            });
 
             closeInsufficient.addEventListener('click', function() {
                 insufficientModal.classList.remove('active');
@@ -1855,6 +2637,7 @@
                 assignBtn.disabled = true;
                 isTaskForceCommander = false; 
                 currentUserLevel = 1;
+                passwordLevel = 0;
                 if (currentSelectedLocationElem) {
                     currentSelectedLocationElem.classList.remove('selected');
                     currentSelectedLocationElem = null;
@@ -1873,6 +2656,9 @@
             videoBtn.addEventListener('click', () => window.open('https://b23.tv/ahKSzgK', '_blank'));
 
             idInput.value = "TF141-2026-";
+            
+            // 初始化签名板
+            initSignaturePad();
         })();
     </script>
 </body>
