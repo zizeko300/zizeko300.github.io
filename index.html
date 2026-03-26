@@ -1041,7 +1041,9 @@
                 command: [
                     { name: "Deputy Operations Commander", level: 4 }, { name: "Chief Intelligence Officer", level: 4 },
                     { name: "Operations Planner", level: 4 }, { name: "Tactical Advisor", level: 4 },
-                    { name: "Task Force Commander", level: 5 }
+                    { name: "Task Force Commander", level: 5 },{ name: "Strategic Operations Director", level: 5 },
+                    { name: "Intelligence & Reconnaissance", level: 5 },{ name: "Senior Tactical Advisor", level: 5 },
+                    { name: "High-Value Target Coordinator", level: 5 }
                 ]
             };
 
@@ -1049,7 +1051,7 @@
             const mapLocations = [
                 { zone:'1级区域', zoneClass:'zone-yellow', level:1, nameEn:'Main Gate Booth', nameZh:'主入口岗亭' },
                 { zone:'1级区域', zoneClass:'zone-yellow', level:1, nameEn:'Personnel Security Check', nameZh:'人员安检通道' },
-                { zone:'1级区域', zoneClass:'zone-yellow', level:1, nameEn:'Living Quarters', nameZh:'生活组团' },
+                { zone:'1级区域', zoneClass:'zone-yellow', level:1, nameEn:'Lounge', nameZh:'休息室' },
                 { zone:'1级区域', zoneClass:'zone-yellow', level:1, nameEn:'Soldiers Mess Hall', nameZh:'士兵食堂' },
                 { zone:'1级区域', zoneClass:'zone-yellow', level:1, nameEn:'General Supply Warehouse', nameZh:'普通物资仓库' },
                 { zone:'1级区域', zoneClass:'zone-yellow', level:1, nameEn:'Laundry Room', nameZh:'洗衣房' },
@@ -3491,7 +3493,7 @@
                         messageZh: "{name}，你的建议让我们避免了糟糕局面。谢谢。",
                         optionsEn: [
                             { text: "Glad I could help", response: "You did." },
-                            { text: "Just Experienced talking", response: "Valuable experience" },
+                            { text: "Just Experienced talking", response: "Valuable experience." },
                             { text: "Anytime, Gaz", response: "Appreciate it." }
                         ],
                         optionsZh: [
@@ -3561,23 +3563,256 @@
                             { text: "我们是一个团队", response: "最好的团队。" },
                             { text: "很荣幸领导你们", response: "我们很荣幸效劳。" }
                         ]
+                    }
+                ],
+                'Strategic Operations Director': [
+                    {
+                        name: 'Soap',
+                        messageEn: "{name}, the joint exercise with allied forces is coming up. Need your strategic plan.",
+                        messageZh: "{name}，与盟军的联合演习快到了。需要你的战略计划。",
+                        optionsEn: [
+                            { text: "We should integrate their command structure", response: "Good thinking." },
+                            { text: "What's the exercise objective?", response: "Interoperability and rapid deployment." },
+                            { text: "I'll draft the scenario", response: "Send it to me by 1800." }
+                        ],
+                        optionsZh: [
+                            { text: "我们应该整合他们的指挥体系", response: "想得周到。" },
+                            { text: "演习目标是什么", response: "互操作性和快速部署。" },
+                            { text: "我会起草方案", response: "1800之前发给我。" }
+                        ]
+                    },
+                    {
+                        name: 'Ghost',
+                        messageEn: "{name}, we're allocating strategic assets for the next phase. Your input is required.",
+                        messageZh: "{name}，我们正在为下一阶段分配战略资产，需要你的意见。",
+                        optionsEn: [
+                            { text: "I'll review the asset list now", response: "Make your recommendations by 1400." },
+                            { text: "Which units are available", response: "All special operations groups are on standby." },
+                            { text: "Prioritize intelligence platforms first.", response: "Agreed.I will allocate accordingly" }
+                        ],
+                        optionsZh: [
+                            { text: "我现在审查资产清单", response: "好好教他们。" },
+                            { text: "哪些单位可用？", response: "好。" },
+                            { text: "优先安排情报平台", response: "城市战。" }
+                        ]
+                    },
+                    {
+                        name: 'Gaz',
+                        messageEn: "{name}, the Director wants a strategic overview of our current posture. Any changes?",
+                        messageZh: "{name}，总监想要我们当前态势的战略概述，有什么变化吗？",
+                        optionsEn: [
+                            { text: "No major changes.we are within parameters", response: "Good.I'll pass that along." },
+                            { text: "I'm adjusting our presence in the Pacific", response: "Copy that.Let me know when it's finalized." },
+                            { text: "Tell him we're ready for any contingency", response: "I'll relay the message." }
+                        ],
+                        optionsZh: [
+                            { text: "没有重大变化。我们在参数范围内", response: "好。我转达。" },
+                            { text: "我正在调整我们在太平洋的存在", response: "收到。定稿后告诉我。" },
+                            { text: "告诉他我们已经准备好应对任何突发情况", response: "我会转达。" }
+                        ]
                     },
                     {
                         name: 'Price',
-                        messageEn: "{name}, the mission is yours. Make the call.",
-                        messageZh: "{name}，任务交给你了。你做决定。",
+                        messageEn: "{name}, the global threat assessment has changed. We need a new operational framework by 0600. ",
+                        messageZh: "{name}，全球威胁评估已更新。我们需要在0600前制定新的行动框架。",
                         optionsEn: [
-                            { text: "I'll lead it personally", response: "Good luck." },
-                            { text: "I'll delegate", response: "Trust your team." },
-                            { text: "We go at dawn", response: "Understood." }
+                            { text: "On it, Captain. I'll coordinate with all sectors", response: "Good. This goes straight to command." },
+                            { text: "What's the priority region?", response: "Eastern Europe. Move fast.." },
+                            { text: "I'll pull the team together now", response: "Keep me updated hourly." }
                         ],
                         optionsZh: [
-                            { text: "我亲自带队", response: "祝好运。" },
-                            { text: "我指派别人", response: "相信你的团队。" },
-                            { text: "黎明行动", response: "明白。" }
+                            { text: "明白，上尉。我会协调所有区域", response: "好。这要直接上报指挥部。" },
+                            { text: "优先区域是哪里？", response: "东欧。动作要快。" },
+                            { text: "我现在就召集团队", response: "每小时向我汇报。" }
                         ]
                     }
-                ]
+                ],
+                'Intelligence & Reconnaissance Director': [
+                    {
+                        name: 'Soap',
+                        messageEn: "{name}, the new signal intercepts are coming in. Looks like chatter about a major op.",
+                        messageZh: "{name}，新的信号拦截到了。看起来在讨论一次重大行动。",
+                        optionsEn: [
+                            { text: "I'll run it through decryption now", response: "Need results ASAP." },
+                            { text: "Can you pinpoint the location?", response: "Triangulating now. I'll let you know." },
+                            { text: "Forward it to the analysis team", response: "Already on it." }
+                        ],
+                        optionsZh: [
+                            { text: "我现在进行解密", response: "尽快出结果。" },
+                            { text: "能定位位置吗？", response: "正在三角定位。有消息告诉你。" },
+                            { text: "转发给分析团队", response: "已经在做了。" }
+                        ]
+                    },
+                    {
+                        name: 'Ghost',
+                        messageEn: "{name}, our HUMINT source is compromised. Extract or leave?",
+                        messageZh: "{name}，我们的人力情报源暴露了。撤离还是留下？",
+                        optionsEn: [
+                            { text: "Extract immediately. Can't risk the asset", response: "Agreed. I'll authorize exfil." },
+                            { text: "Leave in place if they can still feed intel", response: "Risky. We'll monitor for 24 hours." },
+                            { text: "Let me assess the operational impact first", response: "Do it quickly. Time is critical." }
+                        ],
+                        optionsZh: [
+                            { text: "立即撤离。不能冒险失去情报源", response: "同意。我批准撤离。" },
+                            { text: "如果还能提供情报就留下", response: "有风险。我们先监控24小时。" },
+                            { text: "让我先评估行动影响", response: "城快点。时间紧迫。" }
+                        ]
+                    },
+                    {
+                        name: 'Gaz',
+                        messageEn: "{name}, the intel you provided was spot on. Saved the patrol from an ambush.",
+                        messageZh: "{name}，你提供的情报非常准确。让巡逻队避开了伏击。",
+                        optionsEn: [
+                            { text: "That's what we're here for", response: "You do good work." },
+                            { text: "Glad it helped. Any casualties?", response: "None. They pulled back in time." },
+                            { text: "I'll double down on that source", response: "Good. Keep me posted." }
+                        ],
+                        optionsZh: [
+                            { text: "那就是我们的职责", response: "你工作做得很好。" },
+                            { text: "很高兴帮上忙。有伤亡吗？", response: "没有。他们及时撤回了。" },
+                            { text: "我会加强对这个情报源的追踪", response: "好。随时告诉我进展。" }
+                        ]
+                    },
+                    {
+                        name: 'Price',
+                        messageEn: "{name}, satellite picked up unusual activity in sector 7. Need your analysis.",
+                        messageZh: "{name}，卫星在7区捕捉到异常活动。需要你的分析。",
+                        optionsEn: [
+                            { text: "Pulling the full imagery now", response: "Do it fast. Don't get spotted." },
+                            { text: "Could be a diversion. I'll cross-reference", response: "Good instinct. Let me know." },
+                            { text: "I'll deploy a drone for closer look", response: "Do it fast. Don't get spotted." }
+                        ],
+                        optionsZh: [
+                            { text: "正在调取全幅图像", response: "30分钟内报告。" },
+                            { text: "可能是佯攻", response: "直觉不错。告诉我结果。" },
+                            { text: "我派无人机近距离侦查", response: "快点。别被发现。" }
+                        ]
+                    }
+                ],
+                'Senior Tactical Advisor': [
+                    {
+                        name: 'Soap',
+                        messageEn: "{name}, the enemy's adapting to our tactics. We need to switch it up.",
+                        messageZh: "{name}，敌人开始适应我们的战术了。我们需要换套路。",
+                        optionsEn: [
+                            { text: "I've been working on a new approach", response: "Show me what you've got." },
+                            { text: "Let's introduce decoys and false signals", response: "I like it. Implement in the next op." },
+                            { text: "Go unconventional. Break patterns", response: "Exactly what I was thinking.." }
+                        ],
+                        optionsZh: [
+                            { text: "我一直在研究新的方法", response: "让我看看你的方案。" },
+                            { text: "我们引入诱饵和假新号", response: "我喜欢。下次行动就实施。" },
+                            { text: "用非常规方式。打破模式", response: "正是我想的。" }
+                        ]
+                    },
+                    {
+                        name: 'Ghost',
+                        messageEn: "{name}, the rookies are struggling with CQB drills. Any suggestions?",
+                        messageZh: "{name}，新兵们近战训练有困难。有什么建议吗？",
+                        optionsEn: [
+                            { text: "I'll run a session with them tomorrow", response: "Appreciate it. 0800 at the kill house." },
+                            { text: "Slow it down. Speed comes from muscle memory", response: "Good advice. I'll adjust the pace." },
+                            { text: "Pair them with experienced operators", response: "I'll set that up." }
+                        ],
+                        optionsZh: [
+                            { text: "我明天给他们上一课", response: "多谢。0800在模拟屋。" },
+                            { text: "放慢速度。速度来自肌肉记忆", response: "好建议。我会调整节奏。" },
+                            { text: "让他们和老队员配对训练", response: "我来安排。" }
+                        ]
+                    },
+                    {
+                        name: 'Gaz',
+                        messageEn: "{name}, your tactical briefing was on point. Everyone's clear on the plan now.",
+                        messageZh: "{name}，你的战术简报非常到位。现在大家都清楚计划了。",
+                        optionsEn: [
+                            { text: "Good. Execution is what matters", response: "Agreed. We're ready." },
+                            { text: "Any questions from the team?", response: "No, you covered everything." },
+                            { text: "Make sure comms are tight during the op", response: "Will do. Comms check in 1 hour." }
+                        ],
+                        optionsZh: [
+                            { text: "好。执行才是关键", response: "同意。我们准备好了。" },
+                            { text: "团队有什么问题吗？", response: "没有。你都覆盖了。" },
+                            { text: "确保行动中通讯紧密", response: "明白。一小时后通讯检查。" }
+                        ]
+                    },
+                    {
+                        name: 'Price',
+                        messageEn: "{name}, we're planning a complex urban assault. Need your tactical assessment.",
+                        messageZh: "{name}，我们正在计划一次复杂的城市攻坚。需要你的战术评估。",
+                        optionsEn: [
+                            { text: "Let me review the layout. I'll have options", response: "I'll send you the schematics." },
+                            { text: "Urban ops need multiple entry points", response: "Agreed. Plan for three breach points." },
+                            { text: "I recommend a night infiltration approach", response: "Good. Draft the timeline." }
+                        ],
+                        optionsZh: [
+                            { text: "让我看看布局。我会给几个方案", response: "我把图纸发给你。" },
+                            { text: "城市作战需要多个切入口", response: "同意。规划三个切入口。" },
+                            { text: "我建议夜间渗透方案", response: "好。起草时间表。" }
+                        ]
+                    }
+                ],
+                'High-Value Target Coordinator': [
+                    {
+                        name: 'Soap',
+                        messageEn: "{name}, the HVT is trying to exfiltrate. We need a quick decision.",
+                        messageZh: "{name}，目标试图撤离。我们需要快速决策。",
+                        optionsEn: [
+                            { text: "Take them now before they escape", response: "Authorized. Go loud if needed." },
+                            { text: "Let them move. See where they lead", response: "Risky but approved. Maintain surveillance." },
+                            { text: "Intercept at the border crossing", response: "I'll coordinate with border units." }
+                        ],
+                        optionsZh: [
+                            { text: "在他们逃跑前立刻行动", response: "批准。必要时直接行动。" },
+                            { text: "让他们走。看他们去哪", response: "有风险但同意。保持监视。" },
+                            { text: "在边境口岸拦截", response: "我与边境单位协调。" }
+                        ]
+                    },
+                    {
+                        name: 'Ghost',
+                        messageEn: "{name}, multiple assets are tracking HVT-5. Need you to coordinate the intercept.",
+                        messageZh: "{name}，多个单位正在追踪HVT-5。需要你协调拦截。",
+                        optionsEn: [
+                            { text: "Let's set up a rolling roadblock", response: "Good. Channel 8, encrypted." },
+                            { text: "Who has eyes on now?", response: "UAV has visual. Ground teams en route." },
+                            { text: "I'll establish a unified comms channel", response: "Coordinate with local police. Discreetly." }
+                        ],
+                        optionsZh: [
+                            { text: "我建立统一通讯频道", response: "好。8频道。加密。" },
+                            { text: "现在谁在监视？", response: "无人机有画面。地面小队在途中。" },
+                            { text: "我们设滚动路障", response: "与当地警方协调。要隐蔽。" }
+                        ]
+                    },
+                    {
+                        name: 'Gaz',
+                        messageEn: "{name}, the HVT takedown went perfectly. Clean capture.",
+                        messageZh: "{name}，目标抓捕行动非常完美。干净利落。",
+                        optionsEn: [
+                            { text: "Good work to the whole team", response: "I'll pass that along." },
+                            { text: "Any resistance? Casualties?", response: "None. They were caught off guard." },
+                            { text: "Secure the target for immediate debrief", response: "Already en route to the safe house." }
+                        ],
+                        optionsZh: [
+                            { text: "全队干得好", response: "我会转达。" },
+                            { text: "有抵抗吗？伤亡情况？", response: "没有。他们措手不及。" },
+                            { text: "看住目标。立即审讯", response: "已经在送往安全屋上的路上。" }
+                        ]
+                    },
+                    {
+                        name: 'Price',
+                        messageEn: "{name}, we have a confirmed sighting of HVT-7. Need a coordination plan.",
+                        messageZh: "{name}，我们确认发现HVT-7。需要协调方案。",
+                        optionsEn: [
+                            { text: "Let's set up a perimeter and observe", response: "Agreed. But be ready to move." },
+                            { text: "What's the current location?", response: "Eastern district. Moving vehicle." },
+                            { text: "I'll assemble the strike team immediately", response: "Do it fast. Window is closing." }
+                        ],
+                        optionsZh: [
+                            { text: "我们设观察圈先监视", response: "同意。但要随时准备行动。" },
+                            { text: "当前位置在哪？", response: "东区。移动车辆。" },
+                            { text: "我立即集结打击小组", response: "快点。窗口期快过了。" }
+                        ]
+                    }
+                ],    
             };
 
             const translations = {
@@ -3804,7 +4039,9 @@
                     "Psychological Intervention Specialist":"Psychological Intervention Specialist","Counter-Terrorism Negotiator":"Counter-Terrorism Negotiator",
                     "Administration Chief":"Administration Chief","Personnel Officer / Archivist":"Personnel Officer / Archivist",
                     "Security Clearance Officer":"Security Clearance Officer","Communications Chief":"Communications Chief",
-                    "Task Force Commander":"Task Force Commander"
+                    "Task Force Commander":"Task Force Commander","Strategic Operations Director":"Strategic Operations Director",
+                    "Intelligence & Reconnaissance":"Intelligence & Reconnaissance","Senior Tactical Advisor":"Senior Tactical Advisor",
+                    "High-Value Target Coordinator":"High-Value Target Coordinator"
                 },
                 zh: {
                     "Rifleman":"步枪手","Breacher":"破门手","Machine Gunner":"机枪手","Entry Operator":"突入队员",
@@ -3828,7 +4065,9 @@
                     "Psychological Intervention Specialist":"心理干预专员","Counter-Terrorism Negotiator":"反恐谈判专家",
                     "Administration Chief":"行政主管","Personnel Officer / Archivist":"人事官/档案管理员",
                     "Security Clearance Officer":"安全审查官","Communications Chief":"通信主管",
-                    "Task Force Commander":"特遣队指挥官"
+                    "Task Force Commander":"特遣队指挥官","Strategic Operations Director":"战略行动总监",
+                    "Intelligence & Reconnaissance":"情报与侦查总监","Senior Tactical Advisor":"高级战术顾问",
+                    "High-Value Target Coordinator":"高价值目标协调官"
                 }
             };
 
@@ -4282,12 +4521,12 @@
                 switchScreen(0);
             });
 
-            // 地图确认 - 触发随机事件 (20%概率, 根据职位选择对应事件)
+            // 地图确认 - 触发随机事件 (30%概率, 根据职位选择对应事件)
             confirmLocationBtn.addEventListener('click', function() {
                 if (!selectedLocationName) return;
                 
-                // 20%概率触发
-                if (Math.random() < 0.2) {
+                // 30%概率触发
+                if (Math.random() < 0.3) {
                     // 获取当前职位的专属事件列表
                     const positionEvents = eventsByPosition[selectedPosition];
                     
